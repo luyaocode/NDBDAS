@@ -1,0 +1,2 @@
+mysql
+	sys_permission_info		侧边栏主菜单

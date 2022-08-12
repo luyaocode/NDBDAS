@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 442.93 436.1">
+  <defs>
+    <style>
+      .cls-1{fill:aqua;stroke:#000;stroke-miterlimit:10;}
+    </style>
+  </defs>
+  <g id="图层_1">
+    <polygon id="f1" class="cls-1" points="226.57 435.55 1.39 336.29 226.57 237.03 439.9 336.29 226.57 435.55"/>
+  </g>
+
+  <g id="图层_2">
+    <polygon id="f2" class="cls-1" points="228.41 377.6 3.23 278.34 228.41 179.08 441.74 278.34 228.41 377.6"/>
+  </g>
+
+  <g id="图层_3">
+    <polygon id="f3" class="cls-1" points="226.42 317.42 1.24 218.16 226.42 118.9 439.75 218.16 226.42 317.42"/>
+  </g>
+
+  <g id="图层_4">
+    <polygon id="f4" class="cls-1" points="228.41 254.42 3.23 155.16 228.41 55.91 441.74 155.16 228.41 254.42"/>
+  </g>
+
+  <g id="图层_5">
+    <polygon id="f5" class="cls-1" points="228.41 199.07 3.23 99.81 228.41 0.55 441.74 99.81 228.41 199.07"/>
+  </g>
+</svg>
