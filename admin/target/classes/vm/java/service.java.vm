@@ -1,0 +1,43 @@
+package ${packageName}.service;
+
+import ${packageName}.entity.${ClassName};
+import com.asurplus.system.vo.TableInfo;
+import com.asurplus.common.utils.RES;
+import com.baomidou.mybatisplus.extension.service.IService;
+
+/**
+ * ${functionName}Service接口
+ *
+ * @author ${author}
+ * @date ${datetime}
+ */
+public interface ${ClassName}Service extends IService<${ClassName}> {
+
+    /**
+    * 查询${ClassName}
+    *
+    * @param isExport 是否导出，0-否，1-是
+    * @return
+    */
+    TableInfo list(${ClassName} ${className}, int isExport);
+
+    /**
+     * 获取${ClassName}
+     */
+    RES get${ClassName}(${pkColumn.javaType} ${pkColumn.javaField});
+
+    /**
+     * 新增${ClassName}
+     */
+    RES add(${ClassName} ${className});
+
+    /**
+     * 修改${ClassName}
+     */
+    RES update(${ClassName} ${className});
+
+    /**
+     * 删除${ClassName}
+     */
+    RES delete(${pkColumn.javaType}[] ${pkColumn.javaField}s);
+}

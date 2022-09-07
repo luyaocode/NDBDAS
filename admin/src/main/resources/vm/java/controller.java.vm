@@ -1,0 +1,80 @@
+package ${packageName}.controller;
+
+import java.util.List;
+import cn.dev33.satoken.annotation.SaCheckPermission;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+import com.asurplus.common.utils.RES;
+import ${packageName}.entity.${ClassName};
+import ${packageName}.service.${ClassName}Service;
+import com.asurplus.common.excel.ExportExcelUtil;
+import com.asurplus.system.vo.TableInfo;
+
+/**
+ * ${functionName}Controller
+ * 
+ * @author ${author}
+ * @date ${datetime}
+ */
+@RestController
+@RequestMapping("/${moduleName}/${pathName}")
+public class ${ClassName}Controller {
+
+    @Autowired
+    private ${ClassName}Service ${className}Service;
+
+    /**
+     * 查询${functionName}
+     */
+    @SaCheckPermission("${permissionPrefix}:list")
+    @GetMapping("/list")
+    public TableInfo list(${ClassName} ${className}) {
+        return ${className}Service.list(${className}, 0);
+    }
+
+    /**
+     * 获取${functionName}
+     */
+    @SaCheckPermission("${permissionPrefix}:query")
+    @GetMapping(value = "/{${pkColumn.javaField}}")
+    public RES get${ClassName}(@PathVariable("${pkColumn.javaField}") ${pkColumn.javaType} ${pkColumn.javaField}) {
+        return ${className}Service.get${ClassName}(${pkColumn.javaField});
+    }
+
+    /**
+     * 新增${functionName}
+     */
+    @SaCheckPermission("${permissionPrefix}:add")
+    @PostMapping
+    public RES add(@RequestBody ${ClassName} ${className}) {
+        return ${className}Service.add(${className});
+    }
+
+    /**
+     * 修改${functionName}
+     */
+    @SaCheckPermission("${permissionPrefix}:edit")
+    @PutMapping
+    public RES edit(@RequestBody ${ClassName} ${className}) {
+        return ${className}Service.update(${className});
+    }
+
+    /**
+     * 删除${functionName}
+     */
+    @SaCheckPermission("${permissionPrefix}:del")
+    @DeleteMapping("/{${pkColumn.javaField}s}")
+    public RES remove(@PathVariable ${pkColumn.javaType}[] ${pkColumn.javaField}s) {
+        return ${className}Service.delete(${pkColumn.javaField}s);
+    }
+
+    /**
+     * 导出${functionName}
+     */
+    @SaCheckPermission("${permissionPrefix}:export")
+    @GetMapping("/export")
+    public void export(${ClassName} ${className}) {
+        List<?> list = ${className}Service.list(${className}, 1).getRows();
+        ExportExcelUtil.exportExcel(list, ${ClassName}.class, "${functionName}表", "${functionName}统计");
+    }
+}

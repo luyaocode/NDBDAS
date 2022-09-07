@@ -1,0 +1,17 @@
+package ${packageName}.mapper;
+
+import ${packageName}.entity.${ClassName};
+#if($table.sub)
+import ${packageName}.entity.${subClassName};
+#end
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+
+/**
+ * ${functionName}Mapper接口
+ * 
+ * @author ${author}
+ * @date ${datetime}
+ */
+public interface ${ClassName}Mapper extends BaseMapper<${ClassName}> {
+
+}
