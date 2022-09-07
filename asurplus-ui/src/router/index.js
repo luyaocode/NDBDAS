@@ -150,7 +150,19 @@ export const constantRoutes = [
     ]
   },
 
-  //自定义
+  {
+    path: '/building',
+    component: Layout,
+    hidden: true,
+    children: [
+      {
+        path: '',
+        component: (resolve) => require(['@/views/building'], resolve),
+        name: 'floor',
+        meta: {title: '选择楼层'}
+      }
+    ]
+  },
   {
     path: '/show',
     component: Layout,

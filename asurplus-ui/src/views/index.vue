@@ -1,54 +1,35 @@
 <template>
-  <div style="background: #1ab394">
-    <span>大楼示意图</span>
-<!--    svg-pan-zoom控件-->
-  <SvgPanZoom
-    style="width: 500px; height: 500px; border:1px solid black;"
-    :zoomEnabled="true"
-    :controlIconsEnabled="true"
-    :fit="false"
-    :center="true"
-  >
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="-250 -250 1200 1200" style="width:500px;height:500px;background: #f1fa8c">
-
-      <g id="图层_1">
-        <!--        几种实现页面跳转的方式：
-                    1、a标签                              （×）
-                    2、window.open()                     （×）
-                    3、路由跳转router-link标签包裹图形-->
-        <router-link to="/show/table">
-          <polygon id="f1" class="cls-1" points="226.57 435.55 1.39 336.29 226.57 237.03 439.9 336.29 226.57 435.55"/>
+  <div class="industrial-zone">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080">
+      <g id="图层_2" data-name="图层 2">
+        <router-link to="/building">
+        <polygon class="cls-1"
+                 points="674.5 729.5 974.5 566.5 1056.5 634.5 1054.5 727.5 759.5 875.5 676.5 814.5 674.5 729.5"/>
         </router-link>
-
       </g>
-
-      <g id="图层_2">
-        <polygon id="f2" class="cls-1" points="228.41 377.6 3.23 278.34 228.41 179.08 441.74 278.34 228.41 377.6"/>
+      <g id="图层_3" data-name="图层 3">
+        <polygon class="cls-1"
+                 points="596.5 562.5 824.5 477.5 883.5 529.5 885.5 596.5 659.5 696.5 602.5 646.5 596.5 562.5"/>
       </g>
-
-      <g id="图层_3">
-        <polygon id="f3" class="cls-1" points="226.42 317.42 1.24 218.16 226.42 118.9 439.75 218.16 226.42 317.42"/>
+      <g id="图层_4" data-name="图层 4">
+        <polygon class="cls-1"
+                 points="437.5 410.5 765.5 303.5 857.5 359.5 866.5 434.5 528.5 555.5 456.5 481.5 437.5 410.5"/>
       </g>
-
-      <g id="图层_4">
-        <polygon id="f4" class="cls-1" points="228.41 254.42 3.23 155.16 228.41 55.91 441.74 155.16 228.41 254.42"/>
+      <g id="图层_5" data-name="图层 5">
+        <polygon class="cls-1"
+                 points="289.5 277.5 854.5 110.5 948.5 162.5 960.5 231.5 365.5 424.5 309.5 342.5 289.5 277.5"/>
       </g>
-
-      <g id="图层_5">
-        <polygon id="f5" class="cls-1" points="228.41 199.07 3.23 99.81 228.41 0.55 441.74 99.81 228.41 199.07"/>
+      <g id="图层_6" data-name="图层 6">
+        <polygon class="cls-1"
+                 points="1048.5 216.5 1417.5 414.5 1420.5 473.5 1254.5 555.5 898.5 325.5 906.5 258.5 1048.5 216.5"/>
       </g>
-
     </svg>
-  </SvgPanZoom>
-    <div>
-
-    </div>
   </div>
-
 </template>
 
 <script>
   import SvgPanZoom from "vue-svg-pan-zoom";
+
   export default {
     name: "index",
     data() {
@@ -63,7 +44,7 @@
         window.open(href, "_blank");
       },
     },
-    components: {  SvgPanZoom }
+    components: {SvgPanZoom}
 
   };
 
@@ -138,14 +119,26 @@
 
 <style>
   .cls-1 {
-    fill: aqua;
-    stroke: #000000;
+    fill: black;
+    stroke: blue;
     stroke-miterlimit: 10;
-    /*width:1px;*/
-    /*height: 1px;*/
-    max-height: 50px;
-    max-width: 50px;
+    stroke-width: 2px;
+    opacity: 0;
 
+  }
+
+  .industrial-zone {
+    background-image: url('../assets/images/industrial-zone.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /*min-width: 1600px;*/
+    /* z-index: -10;*/
+    zoom: 1;
+    overflow-y: scroll; /*解决切换页面剧烈抖动的问题*/
 
   }
 </style>

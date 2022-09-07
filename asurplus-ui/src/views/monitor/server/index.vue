@@ -108,6 +108,7 @@
 
       <div>
         <el-row :gutter="6">
+<!--          左侧：CPU监控列-->
           <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12" style="margin-bottom: 10px">
             <el-card class="box-card">
               <div slot="header" class="clearfix">
@@ -118,6 +119,7 @@
               </div>
             </el-card>
           </el-col>
+<!--          右侧：内存使用率监控-->
           <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12" style="margin-bottom: 10px">
             <el-card class="box-card">
               <div slot="header" class="clearfix">
