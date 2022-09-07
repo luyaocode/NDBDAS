@@ -1,3 +1,19 @@
+####快速帮助
+克隆当前仓库 不知道如何操作？访问 此处 查看帮助！
+http://10.1.3.43:3000/NDBDAS/NewDistributionDAS
+##从命令行创建一个新的仓库
+touch README.md
+git init
+git add README.md
+git commit -m "first commit"
+git remote add origin http://10.1.3.43:3000/chenluyao/ipdc.git
+git push -u origin master
+
+##从命令行推送已经创建的仓库
+git remote add origin http://10.1.3.43:3000/chenluyao/ipdc.git
+git push -u origin master
+
+
 # Asurplus-Vue
 
 #### 介绍
