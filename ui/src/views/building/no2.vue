@@ -25,7 +25,7 @@
   import SvgPanZoom from "vue-svg-pan-zoom";
 
   export default {
-    name: "index",
+    name: "No1",
     data() {
       return {
         // 版本号
@@ -112,14 +112,14 @@
 </style>
 
 <style>
-  .cls-1 {
-    fill: black;
-    stroke: blue;
-    stroke-miterlimit: 10;
-    stroke-width: 2px;
-    opacity: 0.5;
+  /*.cls-1 {*/
+  /*  fill: black;*/
+  /*  stroke: blue;*/
+  /*  stroke-miterlimit: 10;*/
+  /*  stroke-width: 2px;*/
+  /*  opacity: 0.5;*/
 
-  }
+  /*}*/
 
   .signal-building {
     background-image: url('../../assets/images/signalbuilding.jpg');

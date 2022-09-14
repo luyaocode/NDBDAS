@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import './plugins/axios'
 
 import Cookies from 'js-cookie'
 

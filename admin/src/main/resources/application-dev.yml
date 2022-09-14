@@ -104,6 +104,7 @@ knife4j:
   enabled: true
 
 # mybatis配置
+# mybatis-plus配置
 mybatis-plus:
   # xml文件路径
   mapper-locations: classpath:mapper/*/*.xml

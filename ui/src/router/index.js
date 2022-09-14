@@ -28,6 +28,89 @@ import InnerLink from '@/layout/components/InnerLink'
 
 // 公共路由
 export const constantRoutes = [
+  //自定义路由
+  {
+    path: '/operation',
+    component: Layout,
+    hidden: true,
+    children: [
+      {
+        path: '',
+        component: (resolve) => require(['@/views/operation'], resolve),
+        name: 'operation',
+        meta: {title: '操作控制'}
+      }
+    ]
+  },
+  //通过楼号-楼层号-设备号定位到具体设备
+  {
+    path: '/building',
+    component: Layout,
+    hidden: true,
+    children: [
+      // {
+      //   path: '',
+      //   component: (resolve) => require(['@/views/building'], resolve),
+      //   name: 'floor',
+      //   meta: {title: '选择楼层'}
+      // },
+      //切记：子路由不要再写/
+      {
+        path: 'no1',
+        component: (resolve) => require(['@/views/building/no1'], resolve),
+        name: 'no1',
+        meta: {title: '1号楼'},
+      },
+      {
+        path: 'no2',
+        component: (resolve) => require(['@/views/building/no2'], resolve),
+        name: 'no2',
+        meta: {title: '2号楼'}
+      },
+      {
+        path: 'no3',
+        component: (resolve) => require(['@/views/building/no3'], resolve),
+        name: 'no3',
+        meta: {title: '3号楼'}
+      },
+      {
+        path: 'no4',
+        component: (resolve) => require(['@/views/building/no4'], resolve),
+        name: 'no4',
+        meta: {title: '4号楼'}
+      },
+      {
+        path: 'no5',
+        component: (resolve) => require(['@/views/building/no5'], resolve),
+        name: 'no5',
+        meta: {title: '5号楼'}
+      },
+      {
+        path: 'no1/f1',
+        component: (resolve) => require(['@/views/building/no1/f1'], resolve),
+        name: 'no1-f1',
+        meta: {title: '1号楼-1层'},
+      },
+
+
+    ]
+  },
+  //设备之状态显示、操作模块
+  {
+    path: '/device',
+    component: Layout,
+    hidden: true,
+    children: [
+      {
+        path: 'show/:id',
+        component: (resolve) => require(['@/views/device/show.vue'], resolve),
+        name: 'DeviceInfo',
+        meta: {title: '设备详情'},
+      }
+    ]
+
+  },
+
   {
     path: '/redirect',
     component: Layout,
@@ -132,54 +215,6 @@ export const constantRoutes = [
         name: 'GenEdit',
         meta: {title: '修改生成配置'}
       }
-    ]
-  },
-
-  //自定义
-  {
-    path: '/operation',
-    component: Layout,
-    hidden: true,
-    children: [
-      {
-        path: '',
-        component: (resolve) => require(['@/views/operation'], resolve),
-        name: 'operation',
-        meta: {title: '操作控制'}
-      }
-    ]
-  },
-
-  {
-    path: '/building',
-    component: Layout,
-    hidden: true,
-    children: [
-      {
-        path: '',
-        component: (resolve) => require(['@/views/building'], resolve),
-        name: 'floor',
-        meta: {title: '选择楼层'}
-      }
-    ]
-  },
-  {
-    path: '/show',
-    component: Layout,
-    hidden: true,
-    children: [
-      {
-        path: 'table',
-        component: (resolve) => require(['@/views/show/table'], resolve),
-        name: 'Table',
-        meta: {title: '表格'}
-      },
-      {
-        path: 'chart',
-        component: (resolve) => require(['@/views/show/chart'], resolve),
-        name: 'Chart',
-        meta: {title: '折线图'}
-      },
     ]
   },
 

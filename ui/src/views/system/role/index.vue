@@ -1,3 +1,5 @@
+<!--对应系统管理之角色管理-->
+
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" v-show="showSearch" :inline="true">
@@ -43,6 +45,7 @@
       </el-form-item>
     </el-form>
 
+    <!--    新增、修改、删除、导出功能按钮-->
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
         <el-button
@@ -87,9 +90,11 @@
           v-hasPermi="['system:role:export']"
         >导出</el-button>
       </el-col>
-      <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
+      <!-- 隐藏搜索框、刷新数据的全局组件     -->
+      <right-toolbar :showSearch.sync="showSearch" @queryTable="getList" />
     </el-row>
 
+    <!--数据显示    -->
     <el-table v-loading="loading" :data="roleList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="角色编号" prop="id" width="120" />
@@ -103,7 +108,7 @@
             active-value="0"
             inactive-value="1"
             @change="handleStatusChange(scope.row)"
-          ></el-switch>
+          />
         </template>
       </el-table-column>
       <el-table-column label="备注" prop="remake" width="200" />
@@ -130,7 +135,7 @@
           >删除</el-button>
           <el-dropdown size="mini" @command="(command) => handleCommand(command, scope.row)">
             <span class="el-dropdown-link">
-              <i class="el-icon-d-arrow-right el-icon--right"></i>更多
+              <i class="el-icon-d-arrow-right el-icon--right" />更多
             </span>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item v-if="false" command="handleDataScope" icon="el-icon-circle-check"
@@ -143,13 +148,14 @@
       </el-table-column>
     </el-table>
 
+<!--   分页组件 -->
     <pagination
-      v-show="total>0"
-      :total="total"
-      :page.sync="queryParams.pageNum"
-      :limit.sync="queryParams.pageSize"
-      @pagination="getList"
-    />
+    v-show="total>0"
+    :total="total"
+    :page.sync="queryParams.pageNum"
+    :limit.sync="queryParams.pageSize"
+    @pagination="getList"
+  />
 
     <!-- 添加或修改角色配置对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>

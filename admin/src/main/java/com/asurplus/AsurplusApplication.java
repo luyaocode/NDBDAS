@@ -16,6 +16,9 @@ import java.net.UnknownHostException;
  */
 @Slf4j
 @SpringBootApplication
+//不配置@MapperScan也能运行
+//@MapperScan("com.asurplus.device.mapper")
+//@MapperScan("com.asurplus.system.mapper")
 public class AsurplusApplication {
 
     public static void main(String[] args) throws UnknownHostException {
