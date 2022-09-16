@@ -37,7 +37,7 @@ import java.util.Date;
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-@TableName("dev_epara_info")
+@TableName("dev_epara_info_t1")
 @ApiModel(value = "DevEParaInfo对象", description = "电参量信息表")
 public class DevEParaInfo extends Model<DevEParaInfo> {
     @ApiModelProperty(value = "数据项标识id")

@@ -1,7 +1,8 @@
 <template>
   <div class="app-container">
+    <!--    搜索功能-->
     <el-form :model="queryParams" ref="queryForm" v-show="showSearch" :inline="true">
-<!--      输入框-->
+      <!--      输入框-->
       <el-form-item label="设备编号" prop="devId">
         <el-input
           v-model="queryParams.name"
@@ -13,45 +14,55 @@
         /><!--点击回车键触发handleQuery函数 -->
       </el-form-item>
 
-<!--      搜索按钮-->
+      <!--      搜索按钮-->
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
+      </el-form-item>
+
+      <!--      操作控制按钮-->
+      <el-form-item>
+        <el-button type="primary" size="mini" @click="handleCommand">控制按钮</el-button>
+      </el-form-item>
+
+      <!--      刷新数据按钮-->
+      <el-form-item>
+        <el-button type="primary" size="mini" @click="handleRefresh">刷新按钮</el-button>
       </el-form-item>
     </el-form>
 
     <!--数据显示    -->
     <el-table v-loading="loading" :data="eParaList" @selection-change="handleSelectionChange">
-      <el-table-column type="selection" />
-      <el-table-column label="记录编号" prop="id" />
-      <el-table-column label="设备编号" prop="devId" />
-      <el-table-column label="设备名称" prop="devName" />
-      <el-table-column label="时间" prop="createTime" />
-      <el-table-column label="频率" prop="freq" />
-      <el-table-column label="总功率" prop="totalPow" />
-      <el-table-column label="A相电压" prop="voltA" />
-      <el-table-column label="B相电压" prop="voltB" />
-      <el-table-column label="C相电压" prop="voltC" />
-      <el-table-column label="A相电流" prop="currA" />
-      <el-table-column label="B相电流" prop="currB" />
-      <el-table-column label="C相电流" prop="currC" />
-      <el-table-column label="A相有功" prop="actiPowA" />
-      <el-table-column label="B相有功" prop="actiPowB" />
-      <el-table-column label="C相有功" prop="actiPowC" />
-      <el-table-column label="A相无功" prop="wattPowA" />
-      <el-table-column label="B相无功" prop="wattPowB" />
-      <el-table-column label="C相无功" prop="wattPowC" />
-      <el-table-column label="A相视在" prop="apprPowA" />
-      <el-table-column label="B相视在" prop="apprPowB" />
-      <el-table-column label="C相视在" prop="apprPowC" />
-      <el-table-column label="A相电压相角" prop="voltPhaA" />
-      <el-table-column label="B相电压相角" prop="voltPhaB" />
-      <el-table-column label="C相电压相角" prop="voltPhaC" />
-      <el-table-column label="A相电流相角" prop="currPhaA" />
-      <el-table-column label="B相电流相角" prop="currPhaB" />
-      <el-table-column label="C相电流相角" prop="currPhaC" />
-
+      <el-table-column type="selection"/>
+      <el-table-column label="记录编号" prop="id"/>
+      <el-table-column label="设备编号" prop="devId"/>
+      <el-table-column label="设备名称" prop="devName"/>
+      <el-table-column label="时间" prop="createTime"/>
+      <el-table-column label="频率" prop="freq"/>
+      <el-table-column label="总功率" prop="totalPow"/>
+      <el-table-column label="A相电压" prop="voltA"/>
+      <el-table-column label="B相电压" prop="voltB"/>
+      <el-table-column label="C相电压" prop="voltC"/>
+      <el-table-column label="A相电流" prop="currA"/>
+      <el-table-column label="B相电流" prop="currB"/>
+      <el-table-column label="C相电流" prop="currC"/>
+      <el-table-column label="A相有功" prop="actiPowA"/>
+      <el-table-column label="B相有功" prop="actiPowB"/>
+      <el-table-column label="C相有功" prop="actiPowC"/>
+      <el-table-column label="A相无功" prop="wattPowA"/>
+      <el-table-column label="B相无功" prop="wattPowB"/>
+      <el-table-column label="C相无功" prop="wattPowC"/>
+      <el-table-column label="A相视在" prop="apprPowA"/>
+      <el-table-column label="B相视在" prop="apprPowB"/>
+      <el-table-column label="C相视在" prop="apprPowC"/>
+      <el-table-column label="A相电压相角" prop="voltPhaA"/>
+      <el-table-column label="B相电压相角" prop="voltPhaB"/>
+      <el-table-column label="C相电压相角" prop="voltPhaC"/>
+      <el-table-column label="A相电流相角" prop="currPhaA"/>
+      <el-table-column label="B相电流相角" prop="currPhaB"/>
+      <el-table-column label="C相电流相角" prop="currPhaC"/>
 
     </el-table>
+
 
     <!--   分页组件 -->
     <pagination
@@ -66,10 +77,18 @@
 
 <script>
   import {listEPara} from "@/api/device/dev";
+  import {readHoldingRegister} from "@/api/device/dev";
+
   export default {
     name: "DeviceStatus",
     data() {
       return {
+        //控制指令
+        command: "",
+
+        //后端信号返回值, 默认false
+        signal: false,
+
         // 遮罩层
         loading: true,
         // 状态数据字典
@@ -92,13 +111,13 @@
         },
       }
     },
-    created(){
+    created() {
       this.getList();
       // this.getDicts("status").then(response => {
       //   this.statusOptions = response.data;
       // });
     },
-    methods:{
+    methods: {
       /** 查询角色列表 */
       getList() {
         //开始加载
@@ -125,6 +144,7 @@
          */
         listEPara().then(
           response => {
+            //查看后端返回的是什么东西
             console.log(response);
             this.eParaList = response;
             // this.total = response.total;
@@ -139,10 +159,29 @@
         this.getList();
       },
 
+      //控制按钮
+      handleCommand() {
+        //在这里定义命令帧的格式，传给后端
+        this.command = "0808 0000 0006 01 03 9c41 0001";
+        readHoldingRegister(this.command).then(
+          response =>{
+            console.log(response);
+            alert(response);
+            //操作控制完成后刷新电参量
+            this.getList();
+          }
+        )
+      },
+
+      //刷新数据按钮
+      handleRefresh() {
+        this.getList();
+      },
+
       // 多选框选中数据
       handleSelectionChange(selection) {
         this.ids = selection.map(item => item.id)
-        this.single = selection.length!=1
+        this.single = selection.length != 1
         this.multiple = !selection.length
       },
     }

@@ -1,4 +1,66 @@
-# Asurplus-Vue
+#NDBDAS项目记录
+一. 版本情况
+1. IDE：ideaIU-2019.3.1    
+2. 项目管理工具：apache-maven-3.3.9  
+3. jdk	1.8.0_333  
+4. springboot  2.3.1.RELEASE  
+5. 数据库：mysql8.0.29, Redis-x64-3.0.504  
+6. vue 2.6
+7. npm 8.11.0
+8. Node.js 16.16.0  
+
+二. 日志  
+<el-card> 加页面模块  
+asurplus-ui/src/layout/components/Sidebar/Logo.vue      侧边栏的系统名称  
+侧边栏加模块，直接改数据库  
+还要改路由   
+views/config        系统配置  
+views/monitor       系统监控  
+views/system        系统管理  
+views/tools         系统工具  
+部署到linux服务器（×）  
+前端：  
+    ctrl+shift+r查找关键字localhost和127.0.0.1，替换为linux服务器ip地址192.168.253.130  
+数据库：  
+    windows  
+后端：  
+文件application-dev和application-prod.yml  
+    server.port：后端运行的端口号，默认8080  
+    spring.datasource.url：连接MYSQL数据库，url改成windows的ip地址  
+    username：MYSQL用户名  
+    password：MYSQL密码  
+mysql  
+	sys_permission_info		侧边栏主菜单  
+首页      
+设备管理(device)       
+#####2022.9.13
+数据库设计  
+dev_epara_info  
+电压voltage---volt_a/b/c  
+电流current---curr_a/b/c  
+总功率total_pow  
+频率freq  
+有功功率---acti_pow_a/b/c  
+无功功率---watt_pow_a/b/c  
+视在功率---appr_pow_a/b/c  
+相角phase_angle  
+电压相角---volt_pha_a/b/c  
+电流相角---curr_pha_a/b/c  
+  
+#####2022.9.14 
+前后端，数据库串联  
+#####2022.9.16
+1. 新建网关数据库表，使项目启动时自动查网关表并建立socket连接  
+2. 使用多线程接收多个网关的响应：使用全局静态数组存放每个Socket对象，使用@Async注解开启异步方法connect()和receive()  
+connect()用于与网关建立socket连接并返回socket对象，使用Future< Socket >接收异步方法的返回参数。在项目入口函数进行调用    
+static send(Socket socket)用于向网关传送数据，该方法在controller层进行调用  
+receive(Socket socket)用于接收网关响应帧  
+3. 前端show.vue加入一个控制按钮，编写前后端交互接口 dev.js，新增03读寄存器函数，使得网页点击“控制按钮”，前端携带命令帧字符串通过api传递给后端的controller层。后端读取全局静态数组socket，以其为参数调用静态方法send()向网关发送命令  
+4. 接收到网关响应帧之后进行帧格式校验、解析（待完成），编写sql工具类将关键数据更新到对应的数据库表  
+
+
+
+#Asurplus-Vue
 
 #### 介绍
 本项目本着避免重复造轮子的原则，建立一套快速开发JavaWEB项目（asurplus-vue），能满足大部分后台管理系统基础开发功能，使得开发人员直接可从业务模块开始，减少大量的重复开发工作。前端框架使用 ruoyi-vue：https://gitee.com/y_project/RuoYi-Vue?_from=gitee_search

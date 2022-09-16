@@ -10,3 +10,13 @@ export function listEPara() {
     // params: query
   })
 }
+
+//读单个线圈
+export function readHoldingRegister(data) {
+  return request({
+    url: baseUrl + 'A01-01/0x03',
+    method: 'post',
+    data: data
+    // params: query
+  })
+}

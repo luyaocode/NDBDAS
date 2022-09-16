@@ -216,7 +216,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>com.asurplus.AsurplusApplication</mainClass>
+                    <mainClass>com.asurplus.App</mainClass>
                     <layout>ZIP</layout>
                     <includes>
                         <include>
