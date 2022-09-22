@@ -331,7 +331,7 @@
               type: 'line',
               areaStyle: {
                 normal: {
-                  // color: 'rgb(32, 160, 255)' // 改变区域颜色
+                  color: 'rgb(32, 160, 255)' // 改变区域颜色
                 }
               },
               itemStyle: {
@@ -359,19 +359,23 @@
       //查询历史电参量,给eParaList赋值
       // this.ListEPara();
 
-      //  设置定时器
+      //  设置定时器，定为0.5秒后开始第一次读数据，以后每5秒读一次数据
+      /**
+       * =>{} 是匿名函数的写法，(a,b)=>{}有参匿名函数  ()=>{}无参匿名函数
+       * @type {number}
+       */
       this.alarm = window.setInterval(() => {
         setTimeout(() => {
           this.getEParas();
-        }, 1000)
+        }, 500)
       }, 5000);
 
-      //测试用，模拟电参量实时变化
+      //测试用，模拟电参量实时变化，暂定为每5s写一条数据
       window.setInterval(() => {
         setTimeout(() => {
           this.testAdd();
-        }, 3000)
-      }, 10000);
+        })
+      }, 5000);
 
 
     },
@@ -415,6 +419,7 @@
               this.voltInfo.series[0].data.shift();
               this.voltInfo.series[1].data.shift();
             }
+
             if (this.currInfo.xAxis.data.length >= 8) {
               //  电流赋值
               this.currInfo.xAxis.data.shift();
@@ -423,14 +428,20 @@
               this.currInfo.series[2].data.shift();
             }
             //电压：截取时间存到x轴，舍弃日期
-            this.voltInfo.xAxis.data.push(this.eParas.createTime.slice(11));
+            if(this.voltInfo.xAxis.data.at(-1)!==this.eParas.createTime.slice(11)){
+              this.voltInfo.xAxis.data.push(this.eParas.createTime.slice(11));
+            }
+
             console.log(parseFloat(this.eParas.voltA).toFixed(2));
             this.voltInfo.series[0].data.push(parseFloat(this.eParas.voltA));
             this.voltInfo.series[1].data.push(parseFloat(this.eParas.voltB));
             this.voltInfo.series[2].data.push(parseFloat(this.eParas.voltC));
 
             //电流：截取时间存到x轴，舍弃日期
-            this.currInfo.xAxis.data.push(this.eParas.createTime.slice(11));
+            //同上
+            if(this.currInfo.xAxis.data.at(-1)!==this.eParas.createTime.slice(11)){
+              this.currInfo.xAxis.data.push(this.eParas.createTime.slice(11));
+            }
             console.log(parseFloat(this.eParas.currA).toFixed(2));
             this.currInfo.series[0].data.push(parseFloat(this.eParas.currA));
             this.currInfo.series[1].data.push(parseFloat(this.eParas.currB));

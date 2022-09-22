@@ -1,6 +1,7 @@
 package com.asurplus.gateway.service;
 
 import com.asurplus.gateway.entity.GatewayInfo;
+import com.asurplus.system.vo.TableInfo;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
@@ -9,5 +10,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 
 public interface GatewayService extends IService<GatewayInfo> {
-
+    /**
+     * 分页查询
+     */
+    TableInfo list(GatewayInfo gatewayInfo);
 }

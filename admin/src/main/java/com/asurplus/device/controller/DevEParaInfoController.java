@@ -53,7 +53,7 @@ public class DevEParaInfoController {
     @SaCheckPermission("system:role:list")
     @GetMapping("A01-01")
     public DevEParaInfo getNow() {
-        DevEParaInfo info = new DevEParaInfo();
+        DevEParaInfo info;
         //构造查询条件
         QueryWrapper<DevEParaInfo> wrapper = new QueryWrapper<>();
         wrapper.orderByDesc("create_time");
