@@ -154,17 +154,17 @@
       @pagination="getList"
     />
 
-    <!-- 添加或修改参数配置对话框 -->
+    <!-- 二级弹窗-添加或修改参数配置对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="90px">
         <el-form-item label="网关名称" prop="name">
           <el-input v-model="form.name" placeholder="请输入新网关名称"/>
         </el-form-item>
         <el-form-item label="网关ip地址" prop="ip">
-          <el-input v-model="form.paramKey" placeholder="请输入新ip地址"/>
+          <el-input v-model="form.ip" placeholder="请输入新ip地址"/>
         </el-form-item>
         <el-form-item label="网关端口号" prop="port">
-          <el-input v-model="form.paramValue" placeholder="请输入新端口号"/>
+          <el-input v-model="form.port" placeholder="请输入新端口号"/>
         </el-form-item>
         <el-form-item label="系统内置" prop="type">
           <el-radio-group v-model="form.type">
@@ -185,6 +185,7 @@
         <el-button @click="cancel">取 消</el-button>
       </div>
     </el-dialog>
+
   </div>
 </template>
 
@@ -222,7 +223,8 @@
         gatewayList: [],
         // 弹出层标题
         title: "",
-        // 是否显示弹出层
+
+        // 是否显示弹出层,默认不弹出
         open: false,
         // 类型数据字典
         typeOptions: [],
@@ -236,22 +238,22 @@
           name: undefined,
           //网关ip
           ip: undefined,
+          type: undefined,
+          paramKey: undefined
 
-          paramKey: undefined,
-          type: undefined
         },
         // 表单参数
         form: {},
         // 表单校验
         rules: {
           name: [
-            {required: true, message: "参数名称不能为空", trigger: "blur"}
+            {required: true, message: "网关名称不能为空", trigger: "blur"}
           ],
-          paramKey: [
-            {required: true, message: "参数键名不能为空", trigger: "blur"}
+          ip: [
+            {required: true, message: "网关ip不能为空", trigger: "blur"}
           ],
-          paramValue: [
-            {required: true, message: "参数键值不能为空", trigger: "blur"}
+          port: [
+            {required: true, message: "网关端口号不能为空", trigger: "blur"}
           ]
         }
       };
@@ -294,12 +296,14 @@
         this.form = {
           id: undefined,
           name: undefined,
-          paramKey: undefined,
-          paramValue: undefined,
+          ip: undefined,
           type: 0,
-          remark: undefined
+          remark: undefined,
+          // paramKey: undefined,
+          // paramValue: undefined
+
         };
-        this.resetForm("form");
+        this.resetForm("form");//resetForm()来自main.js定义的全局变量，来自asurplus.js
       },
       /** 搜索按钮操作 */
       handleQuery() {
@@ -312,12 +316,17 @@
         this.resetForm("queryForm");
         this.handleQuery();
       },
+
       /** 新增按钮操作 */
       handleAdd() {
+        //1、重置表单
         this.reset();
+        //2、弹窗打开
         this.open = true;
-        this.title = "添加参数";
+        //3、弹窗标题
+        this.title = "增加网关";
       },
+
       // 多选框选中数据
       handleSelectionChange(selection) {
         this.ids = selection.map(item => item.id)

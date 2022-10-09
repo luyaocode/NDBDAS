@@ -194,6 +194,12 @@ class Communication_MBTCP:
             addr645, ctrl, di_data, di_num, write_data_all, data_register = mbtcp2dlt645.convert()  # 协议转换，将这些全局变量给赋值
             print(f"协议转换成功 addr645:{addr645},ctrl:{hex(ctrl)},di_data:{di_data},write_data_all:{write_data_all}")
 
+            # 模拟循环发送响应帧
+            # print(mbtcp2dlt645.rand)
+            resp_data=mbtcp2dlt645.rand+' 0000'+''
+            resp_data = b'0000 0000 0000 220.4 0000'
+            self.con.send(recv_data)
+
 
 if __name__ == '__main__':
     # 实例初始化

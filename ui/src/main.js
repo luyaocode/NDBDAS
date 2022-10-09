@@ -35,7 +35,6 @@ import DictTag from '@/components/DictTag'
 import VueMeta from 'vue-meta'
 
 
-
 // 全局方法挂载
 Vue.prototype.getDicts = getDicts
 Vue.prototype.getParamValue = getParamValue

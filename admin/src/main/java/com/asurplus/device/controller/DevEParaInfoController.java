@@ -111,8 +111,8 @@ public class DevEParaInfoController {
         info.setDevName("第一台测试设备，自动生成数据");
         info.setCreateTime(new Date());
         boolean save = devEParaInfoService.save(info);
-        System.out.println(save ? "插入成功！" : "插入失败！");
-        return (save ? "插入成功！" : "插入失败！");
+        System.out.println(save ? "记录增加成功！" : "记录增加失败！");
+        return (save ? "记录增加成功！" : "记录增加失败！");
     }
 
     /**

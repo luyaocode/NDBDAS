@@ -13,6 +13,7 @@ def getflag(n):
         return "0102030405060708090A"
     return errno_str
 
+
 class MBTCP:
     # tcp请求帧格式
     #   MBAP:事务处理标识（rand,2字节）+协议标识（prot,2字节）+长度（taillen,2字节）+设备标识（slaveid,1字节）
@@ -25,13 +26,13 @@ class MBTCP:
         self.requ_cache = []  # 向下提供请求帧关键数据：funcode,slaveid,addr,num,val，要求int数组形式
         self.resp_cache = []  # 向上提供响应帧完整数据
         # MBAP
-        self.rand = ''        
+        self.rand = ''
         self.port = "0000"
         self.taillen = ''
         self.slaveid = ''
         # PDU
-        self.funcode = ''     # 必须
-        self.regaddr = ''     # 必须
+        self.funcode = ''  # 必须
+        self.regaddr = ''  # 必须
         self.num = ''
         self.val = ''
         self.vallen = ''
@@ -52,28 +53,28 @@ class MBTCP:
         self.funcode = ss[4]
         funcode_int = int(self.funcode, 16)
         self.regaddr = ss[5]
-        if funcode_int in (1, 2, 3, 4):     # 操作码1-4，帧的第7位为线圈或寄存器的数量
+        if funcode_int in (1, 2, 3, 4):  # 操作码1-4，帧的第7位为线圈或寄存器的数量
             self.num = ss[6]
-        elif funcode_int in (5, 6):         # 操作码5-6，帧的第7位为线圈或寄存器的值
+        elif funcode_int in (5, 6):  # 操作码5-6，帧的第7位为线圈或寄存器的值
             self.val = ss[6]
-        elif funcode_int in (15, 16):       # 操作码15-16，帧的第7位为线圈或寄存器的数量
+        elif funcode_int in (15, 16):  # 操作码15-16，帧的第7位为线圈或寄存器的数量
             self.num = ss[6]
-            self.vallen = ss[7]             # 帧的第8位为数据长度
-            self.val = ss[8]                # 帧的第9位为线圈或寄存器的值
+            self.vallen = ss[7]  # 帧的第8位为数据长度
+            self.val = ss[8]  # 帧的第9位为线圈或寄存器的值
         else:
             print("操作码错误！")
             return
-        self.requ_cache.append(self.funcode)        # 数据块中存放的全是645协议需要的属性存放在list中
+        self.requ_cache.append(self.funcode)  # 数据块中存放的全是645协议需要的属性存放在list中
         self.requ_cache.append(self.slaveid)
         self.requ_cache.append(self.regaddr)
         self.requ_cache.append(self.num)
         self.requ_cache.append(self.val)
         # return self.requ_cache
-    
+
     # 组发给modbus TCP的帧格式
-    def encode_resp(self,data):     # data为645解析出来的响应数据
+    def encode_resp(self, data):  # data为645解析出来的响应数据
         # 写一个645到tcp的转换函数，存到self.resp_cache
-        self.resp_cache.clear()     # list包含clean（）函数，将当前列表中的数据清空。
+        self.resp_cache.clear()  # list包含clean（）函数，将当前列表中的数据清空。
         if data != '':
 
             self.resp_cache.append(self.rand)
@@ -81,15 +82,15 @@ class MBTCP:
             self.resp_cache.append(self.slaveid)
             self.resp_cache.append(self.funcode)
             self.resp_cache.append(self.regaddr)
-            #self.resp_cache.append("000000000")
+            # self.resp_cache.append("000000000")
             print(type(self.funcode))
             print(self.funcode)
-            if self.funcode != '0F':    # 如果功能码不为写多线圈，那么响应的时候数据放在一起就可以了
+            if self.funcode != '0F':  # 如果功能码不为写多线圈，那么响应的时候数据放在一起就可以了
                 str_data = [str(hex(i))[2:].zfill(2) for i in data]
                 print("打印转换后的data")
                 print(str_data)
                 test_str = "".join(str_data)  # 拼接字符串，依照modbus TCP协议的帧格式组帧发送
-            else:       # 如果功能码为写多线圈，那么响应的时候数据要把寄存器数量与字节数分开返回
+            else:  # 如果功能码为写多线圈，那么响应的时候数据要把寄存器数量与字节数分开返回
                 str_data = [str(hex(i))[2:].zfill(2) for i in data]
                 print('str_data')
                 print(str_data)
@@ -104,9 +105,10 @@ class MBTCP:
             self.resp_cache.append(self.slaveid)
             self.resp_cache.append(self.funcode)
             self.resp_cache.append(self.regaddr)
-            #self.resp_cache.append("000000000")
+            # self.resp_cache.append("000000000")
         return self.resp_cache
 
+    # 暂时不用
     def response(self, ss):
         # 缓冲区预处理
         self.requ_cache.clear()

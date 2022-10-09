@@ -47,6 +47,7 @@ export function parseTime(time, pattern) {
 
 // 表单重置
 export function resetForm(refName) {
+  //this.$refs返回的是对象
 	if (this.$refs[refName]) {
 		this.$refs[refName].resetFields();
 	}

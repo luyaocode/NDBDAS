@@ -215,56 +215,56 @@
               name:'A相电压',
               data: [],
               type: 'line',
-              areaStyle: {
-                normal: {
-                  // color: 'rgb(32, 160, 255)' // 改变区域颜色
-                }
-              },
-              itemStyle: {
-                normal: {
-                  // color: '#6fbae1',
-                  lineStyle: {
-                    // color: '#6fbae1' // 改变折线颜色
-                  }
-                }
-              }
+              // areaStyle: {
+              //   normal: {
+              //     // color: 'rgb(32, 160, 255)' // 改变区域颜色
+              //   }
+              // },
+              // itemStyle: {
+              //   normal: {
+              //     // color: '#6fbae1',
+              //     lineStyle: {
+              //       // color: '#6fbae1' // 改变折线颜色
+              //     }
+              //   }
+              // }
             },
             {
               name:'B相电压',
               data: [],
               type: 'line',
-              areaStyle: {
-                normal: {
-                  // color: 'rgb(32, 160, 255)' // 改变区域颜色
-                }
-              },
-              itemStyle: {
-                normal: {
-                  // color: '#6fbae1',
-                  lineStyle: {
-                    // color: '#6fbae1' // 改变折线颜色
-                  }
-                }
-              }
+              // areaStyle: {
+              //   normal: {
+              //     // color: 'rgb(32, 160, 255)' // 改变区域颜色
+              //   }
+              // },
+              // itemStyle: {
+              //   normal: {
+              //     // color: '#6fbae1',
+              //     lineStyle: {
+              //       // color: '#6fbae1' // 改变折线颜色
+              //     }
+              //   }
+              // }
             },
 
             {
               name:'C相电压',
               data: [],
               type: 'line',
-              areaStyle: {
-                normal: {
-                  color: 'rgb(32, 160, 255)' // 改变区域颜色
-                }
-              },
-              itemStyle: {
-                normal: {
-                  // color: '#6fbae1',
-                  lineStyle: {
-                    // color: '#6fbae1' // 改变折线颜色
-                  }
-                }
-              }
+              // areaStyle: {
+              //   normal: {
+              //     color: 'rgb(32, 160, 255)' // 改变区域颜色
+              //   }
+              // },
+              // itemStyle: {
+              //   normal: {
+              //     // color: '#6fbae1',
+              //     lineStyle: {
+              //       // color: '#6fbae1' // 改变折线颜色
+              //     }
+              //   }
+              // }
             },
 
           ]
@@ -291,57 +291,57 @@
               name: 'A相电流',
               data: [],
               type: 'line',
-              areaStyle: {
-                normal: {
-                  // color: 'rgb(32, 160, 255)' // 改变区域颜色
-                }
-              },
-              itemStyle: {
-                normal: {
-                  // color: '#6fbae1',
-                  lineStyle: {
-                    // color: '#6fbae1' // 改变折线颜色
-                  }
-                }
-              }
+              // areaStyle: {
+              //   normal: {
+              //     // color: 'rgb(32, 160, 255)' // 改变区域颜色
+              //   }
+              // },
+              // itemStyle: {
+              //   normal: {
+              //     // color: '#6fbae1',
+              //     lineStyle: {
+              //       // color: '#6fbae1' // 改变折线颜色
+              //     }
+              //   }
+              // }
             },
 
             {
               name: 'B相电流',
               data: [],
               type: 'line',
-              areaStyle: {
-                normal: {
-                  // color: 'rgb(32, 160, 255)' // 改变区域颜色
-                }
-              },
-              itemStyle: {
-                normal: {
-                  // color: '#6fbae1',
-                  lineStyle: {
-                    // color: '#6fbae1' // 改变折线颜色
-                  }
-                }
-              }
+              // areaStyle: {
+              //   normal: {
+              //     // color: 'rgb(32, 160, 255)' // 改变区域颜色
+              //   }
+              // },
+              // itemStyle: {
+              //   normal: {
+              //     // color: '#6fbae1',
+              //     lineStyle: {
+              //       // color: '#6fbae1' // 改变折线颜色
+              //     }
+              //   }
+              // }
             },
 
             {
               name: 'C相电流',
               data: [],
               type: 'line',
-              areaStyle: {
-                normal: {
-                  color: 'rgb(32, 160, 255)' // 改变区域颜色
-                }
-              },
-              itemStyle: {
-                normal: {
-                  // color: '#6fbae1',
-                  lineStyle: {
-                    // color: '#6fbae1' // 改变折线颜色
-                  }
-                }
-              }
+              // areaStyle: {
+              //   normal: {
+              //     color: 'rgb(32, 160, 255)' // 改变区域颜色
+              //   }
+              // },
+              // itemStyle: {
+              //   normal: {
+              //     // color: '#6fbae1',
+              //     lineStyle: {
+              //       // color: '#6fbae1' // 改变折线颜色
+              //     }
+              //   }
+              // }
             },
 
           ]
