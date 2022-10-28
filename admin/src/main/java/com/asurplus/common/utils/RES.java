@@ -8,6 +8,13 @@ import java.util.HashMap;
 
 /**
  * 接口统一返回数据
+ * 实际上是一个HashMap
+ * 键（左边的相当于宏，等同于右边的字符串）
+ * CODE_TAG = "code"， 状态码
+ * MSG_TAG = "msg"，提示信息
+ * DATA_TAG = "data"，从数据库查到的数据
+ * 如果查到的是一个List对象，那么set方法就是将该对象put到map里面。打印List直接输出属性信息
+ *
  *
  * @Author Lizhou
  */

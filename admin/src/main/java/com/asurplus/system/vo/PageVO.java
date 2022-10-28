@@ -2,6 +2,16 @@ package com.asurplus.system.vo;
 
 import org.apache.commons.lang3.StringUtils;
 
+/**
+ * PageVO是一个包含6个属性的对象
+ * 1、pageNum-页序号, Integer
+ * 2、pageSize-每页记录条数, Integer
+ * 3、field-排序字段, String
+ * 4、isAsc-排序方式（是否正序）, boolean
+ * 5、beginTime-开始时间, String
+ * 6、endTime-结束时间, String
+ * 剩下的就是一些get和set方法，还有toString方法
+ */
 public class PageVO {
 
     /**
@@ -90,5 +100,17 @@ public class PageVO {
 
     public void setEndTime(String endTime) {
         this.endTime = endTime;
+    }
+
+    @Override
+    public String toString() {
+        return "PageVO{" +
+                "pageNum=" + pageNum +
+                ", pageSize=" + pageSize +
+                ", field='" + field + '\'' +
+                ", isAsc=" + isAsc +
+                ", beginTime='" + beginTime + '\'' +
+                ", endTime='" + endTime + '\'' +
+                '}';
     }
 }

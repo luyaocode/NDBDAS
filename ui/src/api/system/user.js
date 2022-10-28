@@ -8,7 +8,7 @@ export function listUser(query) {
   return request({
     url: baseUrl + 'list',
     method: 'get',
-    params: query
+    params: query,
   })
 }
 

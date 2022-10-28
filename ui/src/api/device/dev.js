@@ -3,9 +3,9 @@ import request from '@/utils/request'
 const baseUrl = '/device/dev-epara-info/';
 
 // 查询当前电参数
-export function getEParas() {
+export function getEParas(devId) {
   return request({
-    url: baseUrl + 'A01-01',
+    url: baseUrl + devId,
     method: 'get',
     // params: query
   })
@@ -36,9 +36,9 @@ export function readHoldingRegister(data) {
  * 测试用
  */
 //插入一条电参量记录
-export function testAddEPara(){
+export function testAddEPara(devId) {
   return request({
-    url:baseUrl+"A01-01-add",
-    method:'get',
+    url: baseUrl + "testAdd/"+devId,
+    method: 'get',
   })
 }

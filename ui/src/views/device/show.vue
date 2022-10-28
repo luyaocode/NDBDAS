@@ -69,8 +69,10 @@
         <el-button type="primary" size="mini" @click="handleRefresh">刷新</el-button>
         <div class="footer">设备编号：{{eParas.devId}}</div>
         <div class="footer">时间：{{eParas.createTime}}</div>
-        <div class="footer">总功率：{{eParas.totalPow}}</div>
-        <div class="footer">频率：{{eParas.freq}}</div>
+        <div class="footer">频率：{{eParas.freq}}Hz</div>
+        <div class="footer">总有功功率：{{eParas.actiPowTotal}}</div>
+        <div class="footer">总无功功率：{{eParas.wattPowTotal}}</div>
+        <div class="footer">总视在功率：{{eParas.apprPowTotal}}</div>
 
       </el-col>
       <el-col :xs="24" :sm="24" :md="6" :lg="6" :xl="6" style="margin-bottom: 10px">
@@ -80,8 +82,7 @@
         <div class="footer">有功功率： {{eParas.actiPowA}}</div>
         <div class="footer">无功功率： {{eParas.wattPowA}}</div>
         <div class="footer">视在功率： {{eParas.apprPowA}}</div>
-        <div class="footer">电压相角：{{eParas.voltPhaA}}</div>
-        <div class="footer">电流相角：{{eParas.currPhaA}}</div>
+        <div class="footer">功率因数：{{eParas.powFacA}}</div>
       </el-col>
       <el-col :xs="24" :sm="24" :md="6" :lg="6" :xl="6" style="margin-bottom: 10px">
         <div class="title">B相</div>
@@ -90,8 +91,7 @@
         <div class="footer">有功功率： {{eParas.actiPowB}}</div>
         <div class="footer">无功功率： {{eParas.wattPowB}}</div>
         <div class="footer">视在功率： {{eParas.apprPowB}}</div>
-        <div class="footer">电压相角：{{eParas.voltPhaB}}</div>
-        <div class="footer">电流相角：{{eParas.currPhaB}}</div>
+        <div class="footer">功率因数：{{eParas.powFacB}}</div>
       </el-col>
 
       <el-col :xs="24" :sm="24" :md="6" :lg="6" :xl="6" style="margin-bottom: 10px">
@@ -101,10 +101,10 @@
         <div class="footer">有功功率： {{eParas.actiPowC}}</div>
         <div class="footer">无功功率： {{eParas.wattPowC}}</div>
         <div class="footer">视在功率： {{eParas.apprPowC}}</div>
-        <div class="footer">电压相角：{{eParas.voltPhaC}}</div>
-        <div class="footer">电流相角：{{eParas.currPhaC}}</div>
+        <div class="footer">功率因数：{{eParas.powFacC}}</div>
       </el-col>
     </el-card>
+
     <el-button type="primary" size="mini" @click="handleCommand">控制按钮测试</el-button>
     <!--    折线图显示-->
     <div>
@@ -165,6 +165,8 @@
     },
     data() {
       return {
+        //获取/device/show/:id中的id，也就是devId
+        devId:this.$route.params.id,
         //定时器
         alarm: null,
         //控制指令
@@ -283,7 +285,7 @@
           yAxis: {
             type: 'value',
             min: 0,
-            max: 100,
+            max: 50,
             interval: 10
           },
           series: [
@@ -352,7 +354,7 @@
     created() {
 
       //查询当前电参量,给eParas赋值
-      this.getEParas();
+      this.getEParas(this.devId);
       // this.getDicts("status").then(response => {
       //   this.statusOptions = response.data;
       // });
@@ -366,7 +368,7 @@
        */
       this.alarm = window.setInterval(() => {
         setTimeout(() => {
-          this.getEParas();
+          this.getEParas(this.devId);
         }, 500)
       }, 5000);
 
@@ -381,10 +383,10 @@
     },
     methods: {
       /** 获取当前电参量 */
-      getEParas() {
+      getEParas(devId) {
         //开始加载
         // this.loading = true;
-        console.log("开始加载");
+        console.log("开始加载,"+devId);
         /**
          * addDateRange():传入查询参数和日期范围，输出查询参数
          */
@@ -404,7 +406,7 @@
           })
         }
          */
-        getEParas().then(
+        getEParas(devId).then(
           response => {
             //查看后端返回的是什么东西:
             // console.log(response);
@@ -432,7 +434,7 @@
               this.voltInfo.xAxis.data.push(this.eParas.createTime.slice(11));
             }
 
-            console.log(parseFloat(this.eParas.voltA).toFixed(2));
+            // console.log(parseFloat(this.eParas.voltA).toFixed(2));
             this.voltInfo.series[0].data.push(parseFloat(this.eParas.voltA));
             this.voltInfo.series[1].data.push(parseFloat(this.eParas.voltB));
             this.voltInfo.series[2].data.push(parseFloat(this.eParas.voltC));
@@ -442,7 +444,7 @@
             if(this.currInfo.xAxis.data.at(-1)!==this.eParas.createTime.slice(11)){
               this.currInfo.xAxis.data.push(this.eParas.createTime.slice(11));
             }
-            console.log(parseFloat(this.eParas.currA).toFixed(2));
+            // console.log(parseFloat(this.eParas.currA).toFixed(2));
             this.currInfo.series[0].data.push(parseFloat(this.eParas.currA));
             this.currInfo.series[1].data.push(parseFloat(this.eParas.currB));
             this.currInfo.series[2].data.push(parseFloat(this.eParas.currC));
@@ -476,12 +478,13 @@
       // },
 
       testAdd() {
-        testAddEPara();
+        testAddEPara(this.devId);
+        console.log(this.devId);
       },
       /** 搜索按钮操作 */
       handleQuery() {
         this.queryParams.pageNum = 1;
-        this.getEParas();
+        this.getEParas(this.devId);
       },
 
       //控制按钮
@@ -500,7 +503,7 @@
 
       //刷新数据按钮
       handleRefresh() {
-        this.getEParas();
+        this.getEParas(this.devId);
       },
 
       // 多选框选中数据

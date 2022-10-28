@@ -37,7 +37,7 @@ import java.util.Date;
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-@TableName("dev_epara_info_t1")
+@TableName("dev_epara_info_temp")
 @ApiModel(value = "DevEParaInfo对象", description = "电参量信息表")
 public class DevEParaInfo extends Model<DevEParaInfo> {
     @ApiModelProperty(value = "数据项标识id")
@@ -60,21 +60,9 @@ public class DevEParaInfo extends Model<DevEParaInfo> {
     @TableField("create_time")
     private Date createTime;
 
-    @ApiModelProperty(value = "数据销毁时间")
-    @TableField("del_time")
-    private Date delTime;
-
-    @ApiModelProperty(value = "数据销毁标识")
-    @TableField("del_flag")
-    private boolean delFlag;
-
     @ApiModelProperty(value = "频率")
     @TableField("freq")
     private float freq;
-
-    @ApiModelProperty(value = "总功率")
-    @TableField("total_pow")
-    private float totalPow;
 
     @ApiModelProperty(value = "A相电压")
     @TableField("volt_a")
@@ -112,6 +100,10 @@ public class DevEParaInfo extends Model<DevEParaInfo> {
     @TableField("acti_pow_c")
     private float actiPowC;
 
+    @ApiModelProperty(value = "总有功功率")
+    @TableField("acti_pow_total")
+    private float actiPowTotal;
+
     @ApiModelProperty(value = "A相无功功率")
     @TableField("watt_pow_a")
     private float wattPowA;
@@ -123,6 +115,10 @@ public class DevEParaInfo extends Model<DevEParaInfo> {
     @ApiModelProperty(value = "C相无功功率")
     @TableField("watt_pow_c")
     private float wattPowC;
+
+    @ApiModelProperty(value = "总无功功率")
+    @TableField("watt_pow_total")
+    private float wattPowTotal;
 
     @ApiModelProperty(value = "A相视在功率")
     @TableField("appr_pow_a")
@@ -136,29 +132,21 @@ public class DevEParaInfo extends Model<DevEParaInfo> {
     @TableField("appr_pow_c")
     private float apprPowC;
 
-    @ApiModelProperty(value = "A相电压相角")
-    @TableField("volt_pha_a")
-    private float voltPhaA;
+    @ApiModelProperty(value = "总视在功率")
+    @TableField("appr_pow_total")
+    private float apprPowTotal;
 
-    @ApiModelProperty(value = "B相电压相角")
-    @TableField("volt_pha_b")
-    private float voltPhaB;
+    @ApiModelProperty(value = "A相功率因数")
+    @TableField("pow_fac_a")
+    private float powFacA;
 
-    @ApiModelProperty(value = "C相电压相角")
-    @TableField("volt_pha_c")
-    private float voltPhaC;
+    @ApiModelProperty(value = "B相功率因数")
+    @TableField("pow_fac_b")
+    private float powFacB;
 
-    @ApiModelProperty(value = "A相电流相角")
-    @TableField("curr_pha_a")
-    private float currPhaA;
-
-    @ApiModelProperty(value = "B相电流相角")
-    @TableField("curr_pha_b")
-    private float currPhaB;
-
-    @ApiModelProperty(value = "C相电流相角")
-    @TableField("curr_pha_c")
-    private float currPhaC;
+    @ApiModelProperty(value = "C相功率因数")
+    @TableField("pow_fac_c")
+    private float powFacC;
 
 
 

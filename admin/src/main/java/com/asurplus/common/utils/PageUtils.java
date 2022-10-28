@@ -2,6 +2,15 @@ package com.asurplus.common.utils;
 
 import com.asurplus.system.vo.PageVO;
 
+/**
+ * PageUtils工具类
+ * PAGE_NUM="pageNum", String
+ * PAGE_SIZE="pageSize", String
+ * FIELD="orderByColumn", String
+ * ISASC = "isAsc"
+ * BEGINTIME = "beginTime"
+ * ENDTIME = "endTime"
+ */
 public class PageUtils {
 
     /**

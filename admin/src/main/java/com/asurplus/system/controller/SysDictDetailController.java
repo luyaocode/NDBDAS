@@ -61,9 +61,13 @@ public class SysDictDetailController {
 
     /**
      * 根据字典类型查询字典数据信息
+     * 例如根据status查询
      */
     @GetMapping(value = "/listDetail/{dictCode}")
     public RES listDetail(@PathVariable String dictCode) {
-        return RES.ok(sysDictDetailService.listSysDictDetailByDictCode(dictCode));
+        RES res = RES.ok(sysDictDetailService.listSysDictDetailByDictCode(dictCode));//ok里面是List对象
+//        Object data = res.getData();
+//        System.out.println("statusData=="+data);
+        return res;
     }
 }

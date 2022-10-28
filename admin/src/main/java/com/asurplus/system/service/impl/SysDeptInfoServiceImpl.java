@@ -183,10 +183,17 @@ public class SysDeptInfoServiceImpl extends ServiceImpl<SysDeptInfoMapper, SysDe
         return RES.ok();
     }
 
+    /**
+     * SysDeptInfo::getId
+     *      实例化对象SysDeptInfo,调用其方法getId()
+     */
     @Override
     public RES treeSelect(SysDeptInfo sysDeptInfo) {
         LambdaQueryWrapper<SysDeptInfo> queryWrapper = new LambdaQueryWrapper<>();
+
         queryWrapper.select(SysDeptInfo::getId, SysDeptInfo::getPid, SysDeptInfo::getName, SysDeptInfo::getSort);
+
+//        ==》sysDeptInfo.getStatus=0，表示可用状态
         queryWrapper.eq(SysDeptInfo::getStatus, 0);
         if (StringUtils.isNotBlank(sysDeptInfo.getName())) {
             queryWrapper.like(SysDeptInfo::getName, sysDeptInfo.getName());
@@ -197,6 +204,19 @@ public class SysDeptInfoServiceImpl extends ServiceImpl<SysDeptInfoMapper, SysDe
             return RES.no();
         }
         // 构建node列表
+        /**
+         * public class TreeNode<T> implements Node<T> {
+         *     private T id;                        --结点id
+         *     private T parentId;                  --结点pid
+         *     private CharSequence name;           --结点名称
+         *     private Comparable<?> weight = 0;
+         *     private Map<String, Object> extra;
+         *
+         *     public TreeNode() {
+         *     }
+         *     ...
+         * }
+         */
         List<TreeNode<String>> nodeList = CollUtil.newArrayList();
         for (SysDeptInfo item : list) {
             nodeList.add(new TreeNode<>(String.valueOf(item.getId()), String.valueOf(item.getPid()), item.getName(), String.valueOf(item.getSort())).setExtra(Dict.create()

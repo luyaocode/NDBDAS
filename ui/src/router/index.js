@@ -102,6 +102,7 @@ export const constantRoutes = [
     hidden: true,
     children: [
       {
+        //:id写法
         path: 'show/:id',
         component: (resolve) => require(['@/views/device/show.vue'], resolve),
         name: 'DeviceInfo',
@@ -110,6 +111,23 @@ export const constantRoutes = [
     ]
 
   },
+
+  //设备管理
+  {
+    path: '/devmanage',
+    component: Layout,
+    hidden: true,
+    children: [
+      {
+        path: '',
+        component: (resolve) => require(['@/views/devmanage/index.vue'], resolve),
+        name: 'DeviceManagement',
+        meta: {title: '设备管理'},
+      }
+    ]
+  },
+
+
 
   {
     path: '/redirect',

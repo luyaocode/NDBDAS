@@ -440,7 +440,9 @@ export default {
     getList() {
       this.loading = true;
       listUser(this.addDateRange(this.queryParams, this.dateRange)).then(response => {
+          // console.log("userList:"+response);
           this.userList = response.rows;
+          // console.log("rows"+response.rows);
           this.total = response.total;
           this.loading = false;
         }
@@ -460,6 +462,7 @@ export default {
     // 节点单击事件
     handleNodeClick(data) {
       this.queryParams.deptId = data.id;
+      console.log("deptId=="+this.queryParams.deptId);
       this.getList();
     },
     // 用户状态修改
@@ -584,6 +587,10 @@ export default {
     handleAuthRole: function(row) {
       this.$router.push("/auth/role/" + row.id);
     },
+    //测试
+    sysout(str){
+      console.log(str);
+    },
     /** 提交按钮 */
     submitForm: function() {
       this.$refs["form"].validate(valid => {
@@ -591,12 +598,14 @@ export default {
           this.form.roleIds = this.roleIds;
           if (this.form.id != undefined) {
             updateUser(this.form).then(response => {
+              this.sysout(response.msg);
               this.msgSuccess("修改成功");
               this.open = false;
               this.getList();
             });
           } else {
             addUser(this.form).then(response => {
+              this.console.log("resp="+response);
               this.msgSuccess("新增成功");
               this.open = false;
               this.getList();

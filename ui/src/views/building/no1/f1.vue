@@ -1,10 +1,12 @@
 <template>
   <div class="floor">
     <svg id="图层_2" data-name="图层 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080">
-      <router-link to="/device/show/A01-01">
+      <router-link to="/device/show/01">
       <rect id="A01-01" class="cls-1" x="513.5" y="379.5" width="178" height="122"/>
       </router-link>
+      <router-link to="/device/show/02">
       <rect id="A01-02" class="cls-1" x="513.5" y="510.5" width="167" height="108"/>
+      </router-link>
     </svg>
   </div>
 </template>

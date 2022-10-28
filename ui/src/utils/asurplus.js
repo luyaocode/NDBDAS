@@ -55,8 +55,13 @@ export function resetForm(refName) {
 
 // 添加日期范围
 export function addDateRange(params, dateRange, propName) {
+  /**
+   * 相当于给传进来的params对象添加了一个params属性，而params属性是一个包含多个属性
+   * （默认是beginTime和endTime两个属性）的对象
+   * 最后将入参抛出去
+   */
 	var search = params;
-	search.params = {};
+	search.params = {};//可省略
 	if (null != dateRange && '' != dateRange) {
 		if (typeof (propName) === "undefined") {
 			search.params["beginTime"] = dateRange[0];

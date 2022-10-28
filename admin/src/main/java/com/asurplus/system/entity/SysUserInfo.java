@@ -25,7 +25,6 @@ import java.util.Date;
 @ApiModel(value = "SysUserInfo对象", description = "用户信息表")
 public class SysUserInfo extends Model<SysUserInfo> {
 
-
     @ApiModelProperty(value = "ID")
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
@@ -94,6 +93,27 @@ public class SysUserInfo extends Model<SysUserInfo> {
     @TableLogic
     private Integer delFlag;
 
+
+    @Override
+    public String toString() {
+        return "SysUserInfo{" +
+                "id=" + id +
+                ", deptId=" + deptId +
+                ", account='" + account + '\'' +
+                ", password='" + password + '\'' +
+                ", name='" + name + '\'' +
+                ", phone='" + phone + '\'' +
+                ", avatar='" + avatar + '\'' +
+                ", sex=" + sex +
+                ", email='" + email + '\'' +
+                ", status=" + status +
+                ", createUser=" + createUser +
+                ", createTime=" + createTime +
+                ", updateUser=" + updateUser +
+                ", updateTime=" + updateTime +
+                ", delFlag=" + delFlag +
+                '}';
+    }
 
     @Override
     protected Serializable pkVal() {

@@ -34,6 +34,13 @@ public class SysUserInfoController {
     @SaCheckPermission("system:user:list")
     @GetMapping("list")
     public TableInfo list(SysUserInfo sysUserInfo) {
+//        System.out.println("=======前端参数=====");
+//        String req=sysUserInfo.toString();
+        //前端参数对应字段和接收对象中的属性重名时自动赋值
+        // 由于入参queryParams的时间属性是一个对象而
+        //sysUserInfo对象并没有该属性所以看不到传入的时间信息
+        //若依框架使用了PageVO，使用自己写的ServletUtils来接收时间等其他信息，存入PageVo实例
+//        System.out.println(req);
         return sysUserInfoService.list(sysUserInfo, false);
     }
 
