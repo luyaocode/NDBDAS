@@ -32,6 +32,8 @@ module.exports = {
     host: '0.0.0.0',
     port: port,
     open: true,
+    //可以看到若依框架在对前端url 的/dev-api进行了拦截，定向到了后端8080端口，从而解决跨域问题
+    //开发环境dev-api；生产环境prod-api
     proxy: {
       // detail: https://cli.vuejs.org/config/#devserver-proxy
       [process.env.VUE_APP_BASE_API]: {

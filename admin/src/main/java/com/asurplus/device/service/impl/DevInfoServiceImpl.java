@@ -8,20 +8,23 @@ import com.asurplus.device.entity.DevLocInfo;
 import com.asurplus.device.mapper.DevInfoMapper;
 import com.asurplus.device.mapper.DevLocInfoMapper;
 import com.asurplus.device.service.DevInfoService;
+import com.asurplus.myutil.ExcelUpload;
+import com.asurplus.myutil.ExcelUtils;
 import com.asurplus.system.vo.PageVO;
 import com.asurplus.system.vo.TableInfo;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import lombok.SneakyThrows;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * (DevInfo)表服务实现类
@@ -50,7 +53,7 @@ public class DevInfoServiceImpl extends ServiceImpl<DevInfoMapper, DevInfo> impl
         PageVO pageVO = PageUtils.getPageVO();
 
 //      获取要查询的初始locId
-        String locId = devInfo.getLocId();
+        Integer locId = devInfo.getLocId();
 //        System.out.println("locId=="+locId);
 
 //        去楼层表查询locIds，条件pid=locId
@@ -75,7 +78,7 @@ public class DevInfoServiceImpl extends ServiceImpl<DevInfoMapper, DevInfo> impl
                 }
             } else {
                 //            如果没有子结点，就将自身存到list2，直接结束
-                list2.add(Integer.valueOf(locId));//list1: [13]
+                list2.add(locId);//list1: [13]
             }
 //        遍历list1
 //            System.out.println("第一次遍历list=======");
@@ -98,7 +101,7 @@ public class DevInfoServiceImpl extends ServiceImpl<DevInfoMapper, DevInfo> impl
                         }
                     }
                 }
-                list2.add(Integer.valueOf(locId));//最后将原locId加入list。list2: [6,7,8,9,10, 11,12,13,14,15, 1]
+                list2.add(locId);//最后将原locId加入list。list2: [6,7,8,9,10, 11,12,13,14,15, 1]
             }
             //        遍历list2
 //            System.out.println("第二次遍历list=======");
@@ -150,16 +153,101 @@ public class DevInfoServiceImpl extends ServiceImpl<DevInfoMapper, DevInfo> impl
         queryWrapper.eq("del_flag", 0);
         return TableInfo.ok(devInfoMapper.selectPage(new Page<>(pageVO.getPageNum(), pageVO.getPageSize()), queryWrapper));
 
-
     }
 
     @Override
     public TableInfo binList() {
         PageVO pageVO = PageUtils.getPageVO();
-        System.out.println("查询回收站参数"+pageVO.getPageNum()+","+pageVO.getPageSize());
         QueryWrapper<DevInfo> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("del_flag", 1);
         return TableInfo.ok(devInfoMapper.selectPage(new Page<>(pageVO.getPageNum(), pageVO.getPageSize()), queryWrapper));
+    }
+
+    @SneakyThrows
+    @Override
+    public RES importExcel(MultipartFile file, boolean updateSupport) {
+        if (null == file) {
+            return RES.no("文件上传错误！");
+        }
+        Date date=new Date();
+//        System.out.println("接收到前端请求updateSupport==" + updateSupport);
+//        接收MultipartFile file,保存到本地，并返回文件路径
+        String fileName = ExcelUpload.uploadFile(file);
+//        System.out.println("fileName==" + fileName);
+        // 创建Excel文件
+        File excelFile = new File(fileName);
+
+//读取单页excel，获取List<HashMap<String, Object>>格式，list里面的每个元素是map对象,形如[{k11=v11,k12=v12,...},{k21=v21,k22=v22,...},...]
+        List<HashMap<String, Object>> list = ExcelUtils.parseSingleExcelToMap(excelFile);
+//        System.out.println("list==" + list);
+        List<DevInfo> devList = new ArrayList<>();//        设备list
+
+        //将excel信息变成DevInfo类对象
+//        List<String> devIds = new ArrayList<>();//        设备编号list
+        for (HashMap<String, Object> m : list) {
+//            设置默认值
+            DevInfo devInfo = new DevInfo();
+            devInfo.setCreateUser("1");
+            devInfo.setCreateTime(date);
+            devInfo.setUpdateUser("1");
+            devInfo.setUpdateTime(date);
+            devInfo.setDelFlag(0);
+            devInfo.setStatus(0);
+            for (String k : m.keySet()) {
+                if (k.contains("设备编号")) {
+                    devInfo.setDevId((String) m.get(k));
+//                    devIds.add((String) m.get(k));
+                } else if (k.contains("设备楼层编号")) {
+                    devInfo.setLocId(Integer.parseInt((String) m.get(k)));
+                } else if (k.contains("设备名称")) {
+                    devInfo.setDevName((String) m.get(k));
+                } else if (k.contains("设备状态")) {
+                    devInfo.setStatus(Integer.parseInt((String) m.get(k)));
+                } else if (k.contains("删除标记")) {
+                    devInfo.setDelFlag(Integer.parseInt((String) m.get(k)));
+                } else if (k.contains("备注")) {
+                    devInfo.setRemark((String) m.get(k));
+                } else if (k.contains("创建者")) {
+                    devInfo.setCreateUser(((String) m.get(k)));
+                } else if (k.contains("创建时间")) {
+                    devInfo.setCreateTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse((String) m.get(k)));
+                } else if (k.contains("修改者")) {
+                    devInfo.setUpdateUser(((String) m.get(k)));
+                } else if (k.contains("修改时间")) {
+                    devInfo.setUpdateTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse((String) m.get(k)));
+                }
+            }
+            devList.add(devInfo);
+        }
+//        for (DevInfo d : devList) {
+//            System.out.println(d.toString());
+//        }
+        System.out.println(devList);
+//        System.out.println(devIds);
+
+        QueryWrapper<DevInfo> queryWrapper = new QueryWrapper<>();
+        List<DevInfo> devInfos = devInfoMapper.selectList(queryWrapper);
+        List<String> devs = new ArrayList<>();
+        for (DevInfo e : devInfos) {
+            devs.add(e.getDevId());
+        }
+        for (DevInfo devInfo : devList) {
+//            如果原设备不存在，直接插入。
+//            如果原设备存在，且要求覆盖旧数据，就直接更新。
+//            如果原设备存在，不要求覆盖旧数据，不做任何处理。
+            if (!devs.contains(devInfo.getDevId())) {
+                devInfoMapper.insert(devInfo);
+            } else if (updateSupport) {
+                queryWrapper.eq("dev_id",devInfo.getDevId());
+                devInfoMapper.update(devInfo,queryWrapper);
+//                记得清除查询条件
+                queryWrapper.clear();
+            }
+            System.out.println("设备已存在！");
+        }
+        return RES.ok();
+		/*//读取多页excel，获取List<HashMap<String, Object>>格式
+		List<List<HashMap<String, Object>>> lists =ExcelUtils.parseComplexExcel(excelFile);*/
     }
 
     @Override
@@ -170,6 +258,10 @@ public class DevInfoServiceImpl extends ServiceImpl<DevInfoMapper, DevInfo> impl
         }
         if (StringUtils.isBlank(devInfo.getDevId())) {
             return RES.no("请输入设备编号！");
+        }
+//        未分配位置的设备的locId默认是0
+        if (null == devInfo.getLocId()) {
+            devInfo.setLocId(0);
         }
         // 查重
         LambdaQueryWrapper<DevInfo> queryWrapper = new LambdaQueryWrapper<>();
@@ -220,14 +312,14 @@ public class DevInfoServiceImpl extends ServiceImpl<DevInfoMapper, DevInfo> impl
 
     @Override
     public RES update(Integer[] ids) {
-        System.out.println("binIds=="+ Arrays.toString(ids));
-        if(null==ids){
+        System.out.println("binIds==" + Arrays.toString(ids));
+        if (null == ids) {
             return RES.no("输入数据错误！");
         }
-        DevInfo devInfo=new DevInfo();
+        DevInfo devInfo = new DevInfo();
         devInfo.setUpdateTime(new Date());
         devInfo.setDelFlag(0);
-        for(Integer id:ids){
+        for (Integer id : ids) {
             devInfo.setId(id);
             devInfoMapper.updateById(devInfo);
         }
@@ -262,4 +354,6 @@ public class DevInfoServiceImpl extends ServiceImpl<DevInfoMapper, DevInfo> impl
         devInfoMapper.deleteBatchIds(Arrays.asList(ids));
         return RES.ok();
     }
+
+
 }

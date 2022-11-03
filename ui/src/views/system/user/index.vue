@@ -596,16 +596,15 @@ export default {
       this.$refs["form"].validate(valid => {
         if (valid) {
           this.form.roleIds = this.roleIds;
-          if (this.form.id != undefined) {
+          if (this.form.id !== undefined) {
             updateUser(this.form).then(response => {
-              this.sysout(response.msg);
+              // this.sysout(response.msg);
               this.msgSuccess("修改成功");
               this.open = false;
               this.getList();
             });
           } else {
             addUser(this.form).then(response => {
-              this.console.log("resp="+response);
               this.msgSuccess("新增成功");
               this.open = false;
               this.getList();

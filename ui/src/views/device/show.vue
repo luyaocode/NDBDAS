@@ -386,7 +386,7 @@
       getEParas(devId) {
         //开始加载
         // this.loading = true;
-        console.log("开始加载,"+devId);
+        // console.log("开始加载,"+devId);
         /**
          * addDateRange():传入查询参数和日期范围，输出查询参数
          */

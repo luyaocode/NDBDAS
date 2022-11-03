@@ -47,6 +47,7 @@ export function delUser(userId) {
 }
 
 // 导出用户
+// 注：user/index.vue页面中并未使用该接口，使用的是zipdownload.js里面的exportExcel
 export function exportUser(query) {
   return request({
     url: baseUrl + 'export',

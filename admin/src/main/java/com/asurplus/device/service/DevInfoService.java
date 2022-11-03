@@ -4,6 +4,7 @@ import com.asurplus.common.utils.RES;
 import com.asurplus.device.entity.DevInfo;
 import com.asurplus.system.vo.TableInfo;
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * (DevInfo)表服务接口
@@ -12,10 +13,14 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @since 2022-10-19 14:27:18
  */
 public interface DevInfoService extends IService<DevInfo> {
-//    回收站外设备列表
-    TableInfo list(DevInfo devInfo,boolean isExport);
-//    回收站设备列表
+    //    回收站外设备列表
+    TableInfo list(DevInfo devInfo, boolean isExport);
+
+    //    回收站设备列表
     TableInfo binList();
+
+    //    设备导入
+    RES importExcel(MultipartFile file, boolean updateSupport);
 
     RES add(DevInfo devInfo);
 
@@ -24,10 +29,11 @@ public interface DevInfoService extends IService<DevInfo> {
     RES update(DevInfo devInfo);
 
     RES update(Integer[] ids);
-//    假删除
+
+    //    假删除
     RES delete(Integer[] ids);
 
-//    彻底删除
+    //    彻底删除
     RES remove(Integer[] ids);
 
 

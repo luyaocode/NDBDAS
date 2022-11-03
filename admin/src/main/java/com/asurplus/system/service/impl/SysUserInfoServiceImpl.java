@@ -52,7 +52,7 @@ public class SysUserInfoServiceImpl extends ServiceImpl<SysUserInfoMapper, SysUs
         // 获取分页对象
 //        PageUtils做了什么：通过ServletUtils获取前端传入的参数，赋值给pageVO。关键属性：beginTime和endTime
         PageVO pageVO = PageUtils.getPageVO();
-        System.out.println("pageVo是什么："+pageVO);
+//        System.out.println("pageVo是什么："+pageVO);
 //        例如：pageVo是什么：PageVO{pageNum=1, pageSize=10, field='null', isAsc=true, beginTime='2022-10-03', endTime='2022-10-12'}
         if (isExport) {
             pageVO.setPageSize(Integer.MAX_VALUE);

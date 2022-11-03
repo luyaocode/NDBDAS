@@ -4,12 +4,15 @@ import {getToken} from '@/utils/auth'
 const mimeMap = {
   xlsx: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
   zip: 'application/zip'
-}
+};
 
-const baseUrl = process.env.VUE_APP_BASE_API
+const baseUrl = process.env.VUE_APP_BASE_API;
+
+//打印发现process.env.VUE_APP_BASE_API='dev-api'，在vue.config.js发现
+// 对process.env.VUE_APP_BASE_API进行了代理，target指向后端的8080端口
 
 export function downLoadZip(str, filename) {
-  var url = baseUrl + str
+  const url = baseUrl + str;
   axios({
     method: 'get',
     url: url,
@@ -21,7 +24,23 @@ export function downLoadZip(str, filename) {
 }
 
 export function exportExcel(url, params) {
-  url = baseUrl + splicingParam(url, params);
+  /**url: '/system/sys-user-info/export'
+   params: {
+      pageNum: 1,
+      pageSize: 10,
+      name: undefined,
+      phone: undefined,
+      status: undefined,
+      deptId: undefined
+    }
+   **/
+  if (params != null) {
+    url = baseUrl + splicingParam(url, params);
+  }else{
+    url = baseUrl + url;
+  }
+  console.log("url==" + url);
+  //url='dev-api'+'/system/sys-user-info/export?pageNum=1&pageSize=10'（导出全部数据）
   axios({
     method: 'get',
     url: url,

@@ -25,6 +25,7 @@
             default-expand-all
             @node-click="handleNodeClick"
             highlight-current
+            node-key="id"
             style="color: #2D2E36 ; font-family: KaiTi,monospace; font-size: large; font-weight: bolder"
           />
         </div>
@@ -179,7 +180,7 @@
             </el-button>
           </el-col>
           <!--          显示隐藏搜索框的小组件-->
-          <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
+          <right-toolbar :showSearch.sync="showSearch" @queryTable="getList" />
         </el-row>
 
         <!--        设备信息显示区域
@@ -187,9 +188,10 @@
 
                       -->
         <el-table v-loading="loading" :data="devList" @selection-change="handleSelectionChange"
-                  :default-sort="defaultSort" @sort-change="handleSortChange">
+                  :default-sort="defaultSort" @sort-change="handleSortChange" @row-click="handleOpenDevEPara">
           <el-table-column type="selection" width="50" align="center"/>
-          <el-table-column label="设备编号" align="center" prop="devId"/>
+          <el-table-column label="设备编号" align="center" prop="devId">
+          </el-table-column>
           <el-table-column label="设备名称" align="center" prop="devName"/>
           <el-table-column label="设备状态" align="center" prop="status">
             <!--            <template slot-scope="scope">-->
@@ -235,7 +237,7 @@
                 size="mini"
                 type="text"
                 icon="el-icon-edit"
-                @click="handleUpdate(scope.row)"
+                @click.stop="handleUpdate(scope.row)"
                 v-hasPermi="['system:user:edit']"
               >修改
               </el-button>
@@ -243,20 +245,20 @@
                 size="mini"
                 type="text"
                 icon="el-icon-delete"
-                @click="handleDelete(scope.row)"
+                @click.stop="handleDelete(scope.row)"
                 v-hasPermi="['system:user:del']"
               >删除
               </el-button>
               <el-dropdown size="mini" @command="(command) => handleCommand(command, scope.row)">
                 <span class="el-dropdown-link">
-                  <i class="el-icon-d-arrow-right el-icon--right"></i>更多
+                  <i class="el-icon-d-arrow-right el-icon--right" @click.stop>更多</i>
                 </span>
                 <el-dropdown-menu slot="dropdown">
-                  <el-dropdown-item command="handleResetPwd" icon="el-icon-key"
-                                    v-hasPermi="['system:user:reset']">重置密码
+                  <el-dropdown-item command="handleOpenDevEPara" icon="el-icon-data-line"
+                  >设备详情
                   </el-dropdown-item>
-                  <el-dropdown-item command="handleAuthRole" icon="el-icon-circle-check"
-                                    v-hasPermi="['system:user:edit']">分配角色
+                  <el-dropdown-item command="handleOpenDevConf" icon="el-icon-set-up"
+                  >设备配置
                   </el-dropdown-item>
                 </el-dropdown-menu>
               </el-dropdown>
@@ -308,7 +310,49 @@
       </div>
     </el-dialog>
 
-    <!-- 3、回收站对话框 -->
+    <!-- 3 用户导入对话框 -->
+    <el-dialog :title="upload.title" :visible.sync="upload.open" width="400px" append-to-body>
+      <!--      <el-upload>
+            :action表示给后端的url
+            示例：/device/management/importData?updateSupport=false,不更新
+            -->
+      <el-upload
+        ref="upload"
+        :limit="1"
+        accept=".xlsx, .xls"
+        :headers="upload.headers"
+        :action="upload.url + '?updateSupport=' + upload.updateSupport"
+        :disabled="upload.isUploading"
+        :on-progress="handleFileUploadProgress"
+        :on-success="handleFileSuccess"
+        :auto-upload="false"
+        drag
+      >
+        <i class="el-icon-upload"/>
+        <div class="el-upload__text">
+          将文件拖到此处，或
+          <em>点击上传</em>
+        </div>
+        <div class="el-upload__tip" slot="tip">
+          <el-checkbox v-model="upload.updateSupport"/>
+          是否更新已经存在的设备信息<br>
+          <el-link type="info" style="font-size:15px;color: #2c3e50" @click="importTemplate">设备导入模板</el-link>
+          <br>
+          <el-link type="info" style="font-size:15px;color: #2c3e50" @click="handleExportLocInfo">楼层信息表</el-link>
+
+        </div>
+        <div class="el-upload__tip" style="color:red" slot="tip">
+          提示：仅允许导入“xls”或“xlsx”格式文件！<br>
+        </div>
+
+      </el-upload>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="submitFileForm">确 定</el-button>
+        <el-button @click="upload.open = false">取 消</el-button>
+      </div>
+    </el-dialog>
+
+    <!-- 4、回收站对话框 -->
     <el-dialog :title="title" :visible.sync="openRecycleBin" width="996px" append-to-body>
       <el-table v-loading="loadingBin" :data="binList" @selection-change="handleBinSelectionChange"
                 :default-sort="defaultSort" @sort-change="handleSortChange">
@@ -350,38 +394,6 @@
         <el-button type="danger" @click="handleCompleteDelete" :disabled="binMultiple">彻底删除</el-button>
         <el-button type="primary" @click="handleRestore" :disabled="binMultiple">恢 复</el-button>
         <el-button @click="cancelBin">取 消</el-button>
-      </div>
-    </el-dialog>
-
-    <!-- 3 用户导入对话框 -->
-    <el-dialog :title="upload.title" :visible.sync="upload.open" width="400px" append-to-body>
-      <el-upload
-        ref="upload"
-        :limit="1"
-        accept=".xlsx, .xls"
-        :headers="upload.headers"
-        :action="upload.url + '?updateSupport=' + upload.updateSupport"
-        :disabled="upload.isUploading"
-        :on-progress="handleFileUploadProgress"
-        :on-success="handleFileSuccess"
-        :auto-upload="false"
-        drag
-      >
-        <i class="el-icon-upload"></i>
-        <div class="el-upload__text">
-          将文件拖到此处，或
-          <em>点击上传</em>
-        </div>
-        <div class="el-upload__tip" slot="tip">
-          <el-checkbox v-model="upload.updateSupport"/>
-          是否更新已经存在的用户数据
-          <el-link type="info" style="font-size:12px" @click="importTemplate">下载模板</el-link>
-        </div>
-        <div class="el-upload__tip" style="color:red" slot="tip">提示：仅允许导入“xls”或“xlsx”格式文件！</div>
-      </el-upload>
-      <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="submitFileForm">确 定</el-button>
-        <el-button @click="upload.open = false">取 消</el-button>
       </div>
     </el-dialog>
   </div>
@@ -452,20 +464,21 @@
           children: "children",
           label: "label"
         },
-        // 用户导入参数
+        // 设备导入参数
         upload: {
-          // 是否显示弹出层（用户导入）
+          // 是否显示弹出层（设备导入）
           open: false,
-          // 弹出层标题（用户导入）
+          // 弹出层标题（设备导入）
           title: "",
           // 是否禁用上传
           isUploading: false,
-          // 是否更新已经存在的用户数据
-          updateSupport: 0,
+          // 是否更新已经存在的设备数据
+          //是：true,否：false
+          updateSupport: false,
           // 设置上传的请求头部
           headers: {Authorization: "Bearer " + getToken()},
           // 上传的地址
-          url: process.env.VUE_APP_BASE_API + "/system/user/importData"
+          url: process.env.VUE_APP_BASE_API + "/device/management/importData"
         },
         // *查询参数
         queryParams: {
@@ -580,6 +593,7 @@
         this.open = false;
         this.reset();
       },
+      //回收站取消框选
       cancelBin() {
         this.openRecycleBin = false;
         this.binIds = [];
@@ -611,7 +625,9 @@
         this.queryParams.status = undefined;
         this.queryParams.locId = undefined;
         this.dateRange = [];
-        //
+        this.$nextTick(() => {
+          this.$refs.tree.setCurrentKey(null);
+        });
         this.resetForm("queryForm");
         this.handleQuery();
       },
@@ -642,18 +658,30 @@
       },
 
       // 更多操作触发
+      //case1:设备配置
+      //case2:设备详情
       handleCommand(command, row) {
         switch (command) {
-          case "handleResetPwd":
-            this.handleResetPwd(row);
+          case "handleOpenDevEPara":
+            this.handleOpenDevEPara(row);
             break;
-          case "handleAuthRole":
-            this.handleAuthRole(row);
+          case "handleOpenDevConf":
+            this.handleOpenDevConf(row);
             break;
           default:
             break;
         }
       },
+
+      /**路由跳转到'设备实时电参量'**/
+      handleOpenDevEPara(row) {
+        this.$router.push({path: '/device/show/' + row.devId});
+      },
+      /**路由跳转到'设备配置'**/
+      handleOpenDevConf(row) {
+        this.$router.push({path: '/device/conf/' + row.devId});
+      },
+
       /** 新增按钮操作 */
       handleAdd() {
         this.reset();
@@ -666,7 +694,7 @@
       handleUpdate(row) {
         this.reset();
         this.getTreeSelect();
-        const id = row.id || this.ids;
+        const id = row.id;
         getDev(id).then(response => {
           this.form = response.data;//使用form对象接收后端返回的devInfo对象
           // console.log("返回的status=="+this.form.status);
@@ -681,7 +709,7 @@
         this.openRecycleBin = true;
         this.title = "回收站";
       },
-      /**彻底删除**/
+      /**彻底删除回收站的设备**/
       handleCompleteDelete() {
         const binIds = this.binIds;
         this.$confirm('是否彻底删除编号为"' + binIds + '"的数据项?', "警告", {
@@ -691,58 +719,31 @@
         }).then(function () {
           return rmvDev(binIds);
         }).then(() => {
-          this.msgSuccess("删除成功");
+          this.msgSuccess("清除成功");
           this.getBinList();
         });
 
       },
+      /**恢复已经删除的设备**/
       handleRestore() {
         const binIds = this.binIds;
         if (binIds.length > 0) {
           restoreDev(binIds).then(response => {
             this.msgSuccess("恢复成功");
             this.getBinList();
+            this.getList();
           }).catch(() => {
           });
         }
       },
-      /** 重置密码按钮操作 */
-      handleResetPwd(row) {
-        let that = this;
-        this.$prompt('请输入"' + row.name + '"的新密码', "提示", {
-          inputValue: that.initPassword || '123456',
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          closeOnClickModal: false,
-          inputPattern: /^.{5,20}$/,
-          inputErrorMessage: "用户密码长度必须介于 5 和 20 之间",
-        }).then(({value}) => {
-          resetUserPwd({
-            id: row.id,
-            password: value
-          }).then(response => {
-            this.msgSuccess("修改成功，新密码是：" + value);
-          });
-        }).catch(() => {
-        });
-      },
-      /** 分配角色操作 */
-      handleAuthRole: function (row) {
-        this.$router.push("/auth/role/" + row.id);
-      },
 
-      //打印函数（仅供测试）
-      sout(str) {
-        console.log(str);
-      },
       /** 提交按钮 */
       submitForm: function () {
         this.$refs["form"].validate(valid => {
           if (valid) {
             //修改
-            if (this.form.id != undefined) {
+            if (this.form.id !== undefined) {
               updateDev(this.form).then(response => {
-                this.sout(response.msg + response.code + response.data);
                 this.msgSuccess("修改成功");
                 this.open = false;
                 this.getList();
@@ -781,28 +782,48 @@
       /** 导出按钮操作 */
       handleExport() {
         const queryParams = this.queryParams;
-        this.$confirm('是否确认导出所有用户数据项?', "警告", {
+        this.$confirm('是否确认导出所有设备数据项?', "警告", {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
           type: "warning"
         }).then(() => {
           this.exportLoading = true;
           // 开始导出
-          exportExcel("/system/sys-user-info/export", this.queryParams);
+          exportExcel("/device/management/export", this.keepPageNum(this.queryParams));
           this.exportLoading = false;
         }).catch(() => {
         });
       },
+      /**保持当前pageNum不变，使用浅拷贝**/
+      keepPageNum(a) {
+        let queryParams = Object.assign({}, a);
+        queryParams.pageNum = 1;
+        return queryParams;
+      },
+      /**导出楼层信息表**/
+      handleExportLocInfo() {
+        // 开始导出楼层信息
+        exportExcel("/device/location/export", undefined);
+      },
+
       /** 导入按钮操作 */
       handleImport() {
-        this.upload.title = "用户导入";
+        this.upload.title = "设备导入";
         this.upload.open = true;
       },
       /** 下载模板操作 */
       importTemplate() {
-        importTemplate().then(response => {
-          this.download(response.msg);
-        });
+        // importTemplate().then(response => {
+        //   this.download(response.msg);
+        // });
+        //  这种模板类的，不需要数据库的静态资源一般由前端直接在静态资源文件夹中下载下来
+        var a = document.createElement("a"); //创建一个<a></a>标签
+        a.href = "/static/device-info-template.xls"; // 给a标签的href属性值加上地址，注意，这里是绝对路径，不用加 点.
+        a.download = "设备导入模板-测试.xls"; //设置下载文件文件名，这里加上.xlsx指定文件类型，pdf文件就指定.fpd即可
+        a.style.display = "none"; // 障眼法藏起来a标签
+        document.body.appendChild(a); // 将a标签追加到文档对象中
+        a.click(); // 模拟点击了a标签，会触发a标签的href的读取，浏览器就会自动下载了
+        a.remove(); // 一次性的，用完就删除a标签
       },
       // 文件上传中处理
       handleFileUploadProgress(event, file, fileList) {
@@ -818,8 +839,16 @@
       },
       // 提交上传文件
       submitFileForm() {
+        console.log("updateSupport=="+this.upload.updateSupport);
         this.$refs.upload.submit();
-      }
+      },
+
+      //打印函数（仅供测试）
+      sout(str) {
+        console.log(str);
+      },
+
+
     }
   };
 </script>

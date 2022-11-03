@@ -37,7 +37,8 @@ public class DevLocInfoServiceImpl extends ServiceImpl<DevLocInfoMapper,DevLocIn
         LambdaQueryWrapper<DevLocInfo> queryWrapper = new LambdaQueryWrapper<>();
         return this.baseMapper.selectList(queryWrapper);
     }
-//主要
+
+    //主要
     @Override
     public RES treeSelect(DevLocInfo devLocInfo) {
         LambdaQueryWrapper<DevLocInfo> queryWrapper = new LambdaQueryWrapper<>();

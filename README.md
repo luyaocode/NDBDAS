@@ -9,6 +9,12 @@
 7. npm 8.11.0
 8. Node.js 16.16.0  
 
+前端：  
+设备配置：el-icon-set-up /device/conf/{devId}  
+设备电参量显示：el-icon-data-line device/show/{devId}  
+设备管理："tree" /devmanage  
+ 
+
 ##二、日志  
 <el-card> 加页面模块  
 asurplus-ui/src/layout/components/Sidebar/Logo.vue      侧边栏的系统名称  
@@ -113,16 +119,39 @@ mysql对于datetime类型的字段都是直接将字符串转换成时间进行�
 是新增还是修改。设备编号devId为必选项，需要将其prop添加到rules进行限制。新增功能使用post方式与
 后端交互,api接口将前端form对象使用data传参方式传给controller，后者使用@RequestBody接收data。
 在impl类里面需要对设备编号是否为空进行二次校验，并对是否与已存在的设备重复进行校验。最后使用ruoyi
-框架统一的接口将新增结果传回前端。前端在submitForm函数里对回传的数据的code进行判断以显示操作结果  
+框架统一的接口将新增结果传回前端。前端在submitForm函数里对回传的数据的code进行判断以显示操作结果    
 
 ###2022.10.28
-1. 新增功能：修改设备。修改设备有两个入口（会议上要求改为一个入口），框选和点选。框选根据ids数组拿到选中的id，点选根据button
+1. 新增功能：修改设备。修改设备有两个入口（会议要求改为一个入口），框选和点选。框选根据ids数组拿到选中的id，点选根据button
 拿到id。const id=row.id || this.ids 前面的表示点选，后面的是框选。在js里面，逻辑或（||）运算符
 的运行规则是：前面的为true就返回前面的值，后面的就不再判断；否则判断后面的，若后面的为true就返回
 后面的值。要求点选的优先级比框选的高，所以row.id应该放在||前面。删除设备：删除同样有两个入口，
 框选和点选。与修改不同，删除支持框选删除。
 2. 新增功能：设备回收站。
-3. 后续方向：1、导入导出，2、楼层信息自动挂载，3、设备配置，4、帧解析
+3. 后续方向：1、导入导出，2、楼层信息自动挂载，3、设备配置，4、帧解析  
+
+###2022.11.1
+1. 功能增加：点击table每一栏跳转路由到显示设备实时电参量。具体实现：给el-table属性@row-click加一个点击函数，在函数里面用
+this.$router.push()函数。函数直接以row为形参的话，可以直接调用table每一行数据的属性，而不必在@row-click函数中写明形参。
+问题1： <el-table> 点击行时，会跳转到一个详细信息页面， 但是同时这一行也有编辑和删除按钮,在点击按钮时，@row-click事件也被触发了，而我并不想触发 row-click 事件。
+解决办法： 写按钮的 @click 事件时添加 .stop，表示禁止其他事件，只响应.stop后面跟着的时间。问题2：重置搜索框时，el-tree选中高亮没有取消，解决办法:
+this.$refs.tree.setCurrentKey(null);获取当前ref名称为"tree"的结点设置选中的key为null  
+2. 下载模板：模板不涉及数据库交互，由前端完成，放在前端静态资源文件夹里面，通过点击a标签超链接的形式下载下来    
+
+###2022-11-2
+1. 设备导出：问题1：url拼接的是/VUE_APP_BASE_API/device/management/export?pageNum=1&pageSize=10，VUE_APP_BASE_API = '/dev-api'表示开发环境，定义于
+.env.development文件；VUE_APP_BASE_API = '/prod-api'表示生产环境，定义于.env.production文件。在前端页面打印process.env.VUE_APP_BASE_API，发现
+VUE_APP_BASE_API = '/dev-api'。前端端口是81，在vue.config.js文件中，对process.env.VUE_APP_BASE_API进行了拦截，定向到http://localhost:8080，也就是后端。
+问题2：在不同的页面点击导出，会携带当前页面的参数pageNum到后端，sql语句LIMIT n,size表示从序号n开始往后查size条记录。已知pageNum=1,pageSize=10时，LIMIT 0,500
+表示查询序号从0开始的500条记录，第二页参数，pageNum=2,pageSize=10，对应LIMIT 500,500，表示查询序号从500开始的500条记录。要求不管在第几页点击
+导出携带参数都是pageNum=1，pageSize=10,不变，所以前端传递查询参数queryParams时，需要浅拷贝对象并设置queryParams.pageNum=1，再将新对象传入导出excel的接口函数
+exportExcel  
+2. 楼层编号对照表导出：方法同设备导出。 
+3. 设备导入：文件上传，前端使用el-upload发送文件，后端使用使用MultipartFile类接收文件，并将excel文件保存到本地。
+
+###2022-11-3
+1. 设备导入：如果原设备不存在，直接导入记录，如果原设备存在，且要求覆盖旧数据，就直接更新，如果原设备存在，不要求覆盖旧数据，不做任何处理。
+
 
 
 

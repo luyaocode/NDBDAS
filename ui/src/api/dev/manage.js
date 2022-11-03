@@ -7,7 +7,7 @@ const baseUrl = '/device/management/';
  * 1、查询设备列表
  * url: /device/management/list
  * method: get
- * params传参-传递查询参数对象，controller不需要加注解,属性名称一致就赋值
+ * params传参-传递查询参数对象
  */
 
 export function listDev(query) {
@@ -51,7 +51,7 @@ export function getDev(id) {
  * 4、修改设备信息
  * url:/device/management/
  * method:put
- * data传参
+ * data传参，后端使用@RequestBody接收
  */
 export function updateDev(data) {
   return request({
@@ -91,7 +91,7 @@ export function listBin(query) {
 
 /**
  * 7、彻底删除回收站的设备
- * url:/device/management/bin/{ids}
+ * url: /device/management/bin/{ids}
  * method:delete
  */
 export function rmvDev(binIds){
@@ -112,4 +112,7 @@ export function restoreDev(binIds){
     method:'get',
   })
 }
+
+
+
 

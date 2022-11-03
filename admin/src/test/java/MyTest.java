@@ -10,6 +10,7 @@ import com.asurplus.device.entity.DevLocInfo;
 import com.asurplus.device.mapper.DevEParaInfoMapper;
 import com.asurplus.device.mapper.DevLocInfoMapper;
 import com.asurplus.gateway.mapper.GatewayMapper;
+import com.asurplus.myutil.DownloadExcelTemplateUtils;
 import com.asurplus.myutil.SqlUtil;
 import com.asurplus.system.entity.SysDeptInfo;
 import com.asurplus.system.entity.SysUserRole;
@@ -23,6 +24,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.io.IOException;
 import java.util.List;
 
 import static java.lang.Thread.sleep;
@@ -175,6 +177,21 @@ public class MyTest {
 
         }
 
+    }
+
+    /**
+     * 10、测试下载excel模板工具类
+     */
+    @Test
+    public void test10() throws IOException {
+        DownloadExcelTemplateUtils.downloadFromUrl("https://blog.csdn.net/qq_44182284/article/details/107765912","no10","D:\\sprintboot\\new");
+    }
+
+    /**
+     * 11、测试ExcelUpload工具类，前端上传的文件到底存放在哪里
+     */
+    @Test
+    public void test11() {
     }
 
 }
