@@ -1,9 +1,7 @@
 package com.asurplus.gateway.service.impl;
 
-<<<<<<< HEAD
 import com.asurplus.common.utils.DateUtils;
 import com.asurplus.common.utils.PageUtils;
-=======
 
 import com.asurplus.common.utils.DateUtils;
 import com.asurplus.common.utils.PageUtils;
@@ -15,28 +13,19 @@ import com.asurplus.common.utils.PageUtils;
 import com.asurplus.common.utils.RES;
 import com.asurplus.config.entity.SysParam;
 
->>>>>>> 058a504b4d2ff63c27516f5c0fe07b2352bc82f5
 import com.asurplus.gateway.entity.GatewayInfo;
 import com.asurplus.gateway.mapper.GatewayMapper;
 import com.asurplus.gateway.service.GatewayService;
 import com.asurplus.system.vo.PageVO;
 import com.asurplus.system.vo.TableInfo;
-<<<<<<< HEAD
-=======
-
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 
->>>>>>> 058a504b4d2ff63c27516f5c0fe07b2352bc82f5
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.apache.commons.lang3.StringUtils;
-<<<<<<< HEAD
 import org.springframework.stereotype.Service;
-
-=======
-
 import org.springframework.stereotype.Service;
 
 
@@ -45,8 +34,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 
-
->>>>>>> 058a504b4d2ff63c27516f5c0fe07b2352bc82f5
 @Service
 public class GatewayServiceImpl extends ServiceImpl<GatewayMapper, GatewayInfo> implements GatewayService {
     @Override
@@ -86,8 +73,6 @@ public class GatewayServiceImpl extends ServiceImpl<GatewayMapper, GatewayInfo> 
         }
         return TableInfo.ok(this.baseMapper.selectPage(new Page<>(pageVO.getPageNum(), pageVO.getPageSize()), queryWrapper));
     }
-<<<<<<< HEAD
-=======
     @Override
     public RES getById(Integer id) {
         //        入参检验
@@ -157,8 +142,4 @@ public class GatewayServiceImpl extends ServiceImpl<GatewayMapper, GatewayInfo> 
         this.baseMapper.updateById(gatewayInfo);
         return RES.ok();
     }
-
->>>>>>> 058a504b4d2ff63c27516f5c0fe07b2352bc82f5
-
-
 }

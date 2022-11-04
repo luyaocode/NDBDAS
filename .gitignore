@@ -1,3 +1,9 @@
 # Default ignored files
-asurplus-ui/node_modules/
-/.idea
+#忽略ui/node_modules文件夹
+#忽略ui/dist文件夹
+#忽略.idea文件夹
+#忽略modbus文件夹
+ui/node_modules/
+ui/dist/
+.idea/
+modbus/

@@ -8,9 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-<<<<<<< HEAD
-=======
 import com.asurplus.common.annotation.SysLog;
 import com.asurplus.common.enums.BusinessType;
 import com.asurplus.gateway.entity.GatewayInfo;
@@ -21,7 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.asurplus.common.utils.RES;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
->>>>>>> 058a504b4d2ff63c27516f5c0fe07b2352bc82f5
+
 @RestController
 @RequestMapping("/config/gateway")
 public class GatewayInfoController {
@@ -34,11 +31,8 @@ public class GatewayInfoController {
      * @param gatewayInfo
      * @return
      */
-<<<<<<< HEAD
+
     @SaCheckPermission("system:role:list")
-=======
-    @SaCheckPermission("system:config:list")
->>>>>>> 058a504b4d2ff63c27516f5c0fe07b2352bc82f5
     @GetMapping("list")
     public TableInfo list(GatewayInfo gatewayInfo){
         TableInfo list;
@@ -46,10 +40,6 @@ public class GatewayInfoController {
         System.out.println("返回数据："+list);
         return list;
     }
-<<<<<<< HEAD
-
-}
-=======
     @SaCheckPermission("system:config:list")
     @GetMapping("{id}")
     public RES getById(@PathVariable Integer id){
@@ -80,4 +70,3 @@ public class GatewayInfoController {
     }
 }
 
->>>>>>> 058a504b4d2ff63c27516f5c0fe07b2352bc82f5
