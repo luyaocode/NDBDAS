@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.asurplus.device.mapper.DevLocInfoMapper">
+
+    <resultMap type="com.asurplus.device.entity.DevLocInfo" id="DevLocInfoMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="pid" column="pid" jdbcType="VARCHAR"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="buId" column="bu_id" jdbcType="INTEGER"/>
+        <result property="flId" column="fl_id" jdbcType="INTEGER"/>
+        <result property="roId" column="ro_id" jdbcType="INTEGER"/>
+        <result property="linkDevId" column="link_dev_id" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="DevLocInfoMap">
+        select
+          id, pid, name, bu_id, fl_id, ro_id, link_dev_id
+        from dev_loc_info
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="DevLocInfoMap">
+        select
+          id, pid, name, bu_id, fl_id, ro_id, link_dev_id
+        from dev_loc_info
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="pid != null and pid != ''">
+                and pid = #{pid}
+            </if>
+            <if test="name != null and name != ''">
+                and name = #{name}
+            </if>
+            <if test="buId != null">
+                and bu_id = #{buId}
+            </if>
+            <if test="flId != null">
+                and fl_id = #{flId}
+            </if>
+            <if test="roId != null">
+                and ro_id = #{roId}
+            </if>
+            <if test="linkDevId != null and linkDevId != ''">
+                and link_dev_id = #{linkDevId}
+            </if>
+        </where>
+        limit #{pageable.offset}, #{pageable.pageSize}
+    </select>
+
+    <!--统计总行数-->
+    <select id="count" resultType="java.lang.Long">
+        select count(1)
+        from dev_loc_info
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="pid != null and pid != ''">
+                and pid = #{pid}
+            </if>
+            <if test="name != null and name != ''">
+                and name = #{name}
+            </if>
+            <if test="buId != null">
+                and bu_id = #{buId}
+            </if>
+            <if test="flId != null">
+                and fl_id = #{flId}
+            </if>
+            <if test="roId != null">
+                and ro_id = #{roId}
+            </if>
+            <if test="linkDevId != null and linkDevId != ''">
+                and link_dev_id = #{linkDevId}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into dev_loc_info(pid, name, bu_id, fl_id, ro_id, link_dev_id)
+        values (#{pid}, #{name}, #{buId}, #{flId}, #{roId}, #{linkDevId})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into dev_loc_info(pid, name, bu_id, fl_id, ro_id, link_dev_id)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+        (#{entity.pid}, #{entity.name}, #{entity.buId}, #{entity.flId}, #{entity.roId}, #{entity.linkDevId})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into dev_loc_info(pid, name, bu_id, fl_id, ro_id, link_dev_id)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.pid}, #{entity.name}, #{entity.buId}, #{entity.flId}, #{entity.roId}, #{entity.linkDevId})
+        </foreach>
+        on duplicate key update
+        pid = values(pid),
+        name = values(name),
+        bu_id = values(bu_id),
+        fl_id = values(fl_id),
+        ro_id = values(ro_id),
+        link_dev_id = values(link_dev_id)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update dev_loc_info
+        <set>
+            <if test="pid != null and pid != ''">
+                pid = #{pid},
+            </if>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="buId != null">
+                bu_id = #{buId},
+            </if>
+            <if test="flId != null">
+                fl_id = #{flId},
+            </if>
+            <if test="roId != null">
+                ro_id = #{roId},
+            </if>
+            <if test="linkDevId != null and linkDevId != ''">
+                link_dev_id = #{linkDevId},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from dev_loc_info where id = #{id}
+    </delete>
+
+</mapper>
+
