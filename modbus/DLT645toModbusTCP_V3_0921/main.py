@@ -1,6 +1,6 @@
 from asyncore import write
 from distutils.fancy_getopt import wrap_text
-import serial
+import serialc
 import socket
 import sys
 import time

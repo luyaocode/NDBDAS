@@ -31,6 +31,9 @@ import java.util.*;
  *
  * @author makejava
  * @since 2022-10-19 14:27:19
+ * <p>
+ * updateById(devInfo)---根据devInfo的id找到数据库对应的记录，将devInfo的其他信息到原记录上
+ * update(devInfo,qw)---根据qw找到数据库对应的记录，将devInfo的信息更新到原记录上
  */
 @Service
 public class DevInfoServiceImpl extends ServiceImpl<DevInfoMapper, DevInfo> implements DevInfoService {
@@ -40,12 +43,17 @@ public class DevInfoServiceImpl extends ServiceImpl<DevInfoMapper, DevInfo> impl
     @Autowired
     private DevLocInfoMapper devLocInfoMapper;
 
-    @Override
     /**
+     * 查询回收站外的设备--
      * devInfo包含了locId，支持根据locId查询设备
      * 包含了devId，支持根据devId查询设备
      * 包含了status，支持根据设备状态查询设备
+     *
+     * @param devInfo  设备参数
+     * @param isExport 是否导出
+     * @return TableInfo
      */
+    @Override
     public TableInfo list(DevInfo devInfo, boolean isExport) {
 //        System.out.println("接收到的devInfo是："+devInfo.toString());
         // 获取分页对象，前端时间信息存入到pageVO的beginTime和endTime属性
@@ -155,6 +163,11 @@ public class DevInfoServiceImpl extends ServiceImpl<DevInfoMapper, DevInfo> impl
 
     }
 
+    /**
+     * 查询回收站设备
+     *
+     * @return TableInfo
+     */
     @Override
     public TableInfo binList() {
         PageVO pageVO = PageUtils.getPageVO();
@@ -163,13 +176,20 @@ public class DevInfoServiceImpl extends ServiceImpl<DevInfoMapper, DevInfo> impl
         return TableInfo.ok(devInfoMapper.selectPage(new Page<>(pageVO.getPageNum(), pageVO.getPageSize()), queryWrapper));
     }
 
+    /**
+     * 设备导入
+     *
+     * @param file          前端excel文件
+     * @param updateSupport 是否覆盖原设备
+     * @return RES
+     */
     @SneakyThrows
     @Override
     public RES importExcel(MultipartFile file, boolean updateSupport) {
         if (null == file) {
             return RES.no("文件上传错误！");
         }
-        Date date=new Date();
+        Date date = new Date();
 //        System.out.println("接收到前端请求updateSupport==" + updateSupport);
 //        接收MultipartFile file,保存到本地，并返回文件路径
         String fileName = ExcelUpload.uploadFile(file);
@@ -193,20 +213,29 @@ public class DevInfoServiceImpl extends ServiceImpl<DevInfoMapper, DevInfo> impl
             devInfo.setUpdateTime(date);
             devInfo.setDelFlag(0);
             devInfo.setStatus(0);
+            devInfo.setRemark("");
             for (String k : m.keySet()) {
                 if (k.contains("设备编号")) {
-                    devInfo.setDevId((String) m.get(k));
+                    if (m.get(k) != null) {
+                        devInfo.setDevId((String) m.get(k));
+                    }
 //                    devIds.add((String) m.get(k));
                 } else if (k.contains("设备楼层编号")) {
-                    devInfo.setLocId(Integer.parseInt((String) m.get(k)));
+                    if (m.get(k) != null) {
+                        devInfo.setLocId(Integer.parseInt((String) m.get(k)));
+                    }
                 } else if (k.contains("设备名称")) {
-                    devInfo.setDevName((String) m.get(k));
+                    if (m.get(k) != null) {
+                        devInfo.setDevName((String) m.get(k));
+                    }
                 } else if (k.contains("设备状态")) {
                     devInfo.setStatus(Integer.parseInt((String) m.get(k)));
                 } else if (k.contains("删除标记")) {
                     devInfo.setDelFlag(Integer.parseInt((String) m.get(k)));
                 } else if (k.contains("备注")) {
-                    devInfo.setRemark((String) m.get(k));
+                    if (m.get(k) != null) {
+                        devInfo.setRemark((String) m.get(k));
+                    }
                 } else if (k.contains("创建者")) {
                     devInfo.setCreateUser(((String) m.get(k)));
                 } else if (k.contains("创建时间")) {
@@ -222,34 +251,68 @@ public class DevInfoServiceImpl extends ServiceImpl<DevInfoMapper, DevInfo> impl
 //        for (DevInfo d : devList) {
 //            System.out.println(d.toString());
 //        }
-        System.out.println(devList);
+//        System.out.println(devList);
 //        System.out.println(devIds);
 
         QueryWrapper<DevInfo> queryWrapper = new QueryWrapper<>();
-        List<DevInfo> devInfos = devInfoMapper.selectList(queryWrapper);
-        List<String> devs = new ArrayList<>();
+        List<DevInfo> devInfos = devInfoMapper.selectList(queryWrapper);//原设备
+        List<String> devs = new ArrayList<>();//原设备id
         for (DevInfo e : devInfos) {
             devs.add(e.getDevId());
         }
         for (DevInfo devInfo : devList) {
-//            如果原设备不存在，直接插入。
+//            如果原设备不存在，不要求覆盖旧数据，直接插入。
+//            如果原设备不存在，且要求覆盖旧数据，就假删除旧数据
 //            如果原设备存在，且要求覆盖旧数据，就直接更新。
 //            如果原设备存在，不要求覆盖旧数据，不做任何处理。
-            if (!devs.contains(devInfo.getDevId())) {
-                devInfoMapper.insert(devInfo);
-            } else if (updateSupport) {
-                queryWrapper.eq("dev_id",devInfo.getDevId());
-                devInfoMapper.update(devInfo,queryWrapper);
-//                记得清除查询条件
-                queryWrapper.clear();
+            if (null == devInfo.getDevId()) {
+                continue;//待插入的设备编号为空就不处理
             }
-            System.out.println("设备已存在！");
+            if (!devs.contains(devInfo.getDevId())) {
+//                检测是否和已有设备冲突
+                LambdaQueryWrapper<DevInfo> qw = new LambdaQueryWrapper<>();
+                qw.eq(DevInfo::getDevId, devInfo.getDevId());
+                if (devInfoMapper.selectCount(qw) < 1) {
+                    devInfoMapper.insert(devInfo);
+                }
+                System.out.println("设备已存在！");
+            } else {
+                devs.remove(devInfo.getDevId());
+                if (updateSupport) {
+                    queryWrapper.eq("dev_id", devInfo.getDevId());
+                    devInfoMapper.update(devInfo, queryWrapper);
+                    //                记得清除查询条件
+                    queryWrapper.clear();
+                }
+            }
+        }
+        if (updateSupport) {
+//            回收旧设备
+            DevInfo devInfo = new DevInfo();
+            devInfo.setDelFlag(1);
+            devInfo.setStatus(1);
+            devInfo.setUpdateTime(date);
+
+            for (String s : devs) {
+                devInfo.setDevId(s);
+                queryWrapper.eq("dev_id", s);
+                devInfoMapper.update(devInfo, queryWrapper);
+                queryWrapper.clear();
+//                System.out.println("回收旧设备=="+s);
+
+            }
         }
         return RES.ok();
 		/*//读取多页excel，获取List<HashMap<String, Object>>格式
 		List<List<HashMap<String, Object>>> lists =ExcelUtils.parseComplexExcel(excelFile);*/
     }
 
+    /**
+     * 新增设备
+     *
+     * @param devInfo 设备参数
+     * @return RES
+     */
     @Override
     public RES add(DevInfo devInfo) {
 //        入参检验
@@ -280,6 +343,12 @@ public class DevInfoServiceImpl extends ServiceImpl<DevInfoMapper, DevInfo> impl
         return RES.ok();//成功直接返回：{code=200,msg="操作成功"}
     }
 
+    /**
+     * 根据主键查询
+     *
+     * @param id 主键键值
+     * @return RES
+     */
     @Override
     public RES getById(Integer id) {
         //        入参检验
@@ -289,6 +358,12 @@ public class DevInfoServiceImpl extends ServiceImpl<DevInfoMapper, DevInfo> impl
         return RES.ok(devInfoMapper.selectById(id));
     }
 
+    /**
+     * 修改设备
+     *
+     * @param devInfo 设备参数
+     * @return RES
+     */
     @Override
     public RES update(DevInfo devInfo) {
 //        入参检验
@@ -310,9 +385,15 @@ public class DevInfoServiceImpl extends ServiceImpl<DevInfoMapper, DevInfo> impl
         return RES.ok();
     }
 
+    /**
+     * 恢复设备
+     *
+     * @param ids 设备键值数组
+     * @return RES
+     */
     @Override
     public RES update(Integer[] ids) {
-        System.out.println("binIds==" + Arrays.toString(ids));
+//        System.out.println("binIds==" + Arrays.toString(ids));
         if (null == ids) {
             return RES.no("输入数据错误！");
         }
@@ -326,6 +407,12 @@ public class DevInfoServiceImpl extends ServiceImpl<DevInfoMapper, DevInfo> impl
         return RES.ok();
     }
 
+    /**
+     * 回收设备
+     *
+     * @param ids 设备键值数组
+     * @return RES
+     */
     @Override
     public RES delete(Integer[] ids) {
 //        入参检验
@@ -346,6 +433,12 @@ public class DevInfoServiceImpl extends ServiceImpl<DevInfoMapper, DevInfo> impl
         return RES.ok();
     }
 
+    /**
+     * 清除设备
+     *
+     * @param ids 设备键值数组
+     * @return RES
+     */
     @Override
     public RES remove(Integer[] ids) {
         if (null == ids) {
@@ -354,6 +447,5 @@ public class DevInfoServiceImpl extends ServiceImpl<DevInfoMapper, DevInfo> impl
         devInfoMapper.deleteBatchIds(Arrays.asList(ids));
         return RES.ok();
     }
-
 
 }

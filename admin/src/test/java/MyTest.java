@@ -25,6 +25,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import static java.lang.Thread.sleep;
@@ -192,6 +193,21 @@ public class MyTest {
      */
     @Test
     public void test11() {
+    }
+
+    /**
+     * 12、测试list的remove方法
+     */
+    @Test
+    public void test12(){
+        List<String> list=new ArrayList<>();
+        list.add("happy");
+        list.add("sun");
+        list.add("pico");
+        System.out.println(list);
+        list.remove("birthday");
+        System.out.println(list);
+
     }
 
 }
