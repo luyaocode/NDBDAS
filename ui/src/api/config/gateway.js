@@ -11,6 +11,10 @@ export function listConfig(query) {
   })
 }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 058a504b4d2ff63c27516f5c0fe07b2352bc82f5
 // 查询参数详细
 export function getConfig(configId) {
   return request({
@@ -36,7 +40,14 @@ export function addConfig(data) {
   })
 }
 
+<<<<<<< HEAD
 // 修改参数配置
+=======
+
+
+// 修改网关参数配置
+
+>>>>>>> 058a504b4d2ff63c27516f5c0fe07b2352bc82f5
 export function updateConfig(data) {
   return request({
     url: baseUrl,

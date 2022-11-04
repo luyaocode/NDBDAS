@@ -17,7 +17,11 @@ spring:
     port: 3306
     url: jdbc:mysql://${server.host}:${spring.datasource.port}/${spring.datasource.database}?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=Asia/Shanghai&useSSL=true&characterEncoding=UTF-8
     username: root
+<<<<<<< HEAD
     password: 6666
+=======
+    password: 123456
+>>>>>>> 058a504b4d2ff63c27516f5c0fe07b2352bc82f5
     # druid相关配置
     druid:
       # 初始化时建立物理连接的个数

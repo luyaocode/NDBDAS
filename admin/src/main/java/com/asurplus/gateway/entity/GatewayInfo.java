@@ -7,6 +7,10 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+<<<<<<< HEAD
+=======
+import io.swagger.models.auth.In;
+>>>>>>> 058a504b4d2ff63c27516f5c0fe07b2352bc82f5
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -45,7 +49,11 @@ public class GatewayInfo extends Model<GatewayInfo> {
 
     @ApiModelProperty(value = "创建者")
     @TableField("create_user")
+<<<<<<< HEAD
     private String createUser;
+=======
+    private Integer createUser;
+>>>>>>> 058a504b4d2ff63c27516f5c0fe07b2352bc82f5
 
     @ApiModelProperty(value = "创建时间")
     @TableField("create_time")
