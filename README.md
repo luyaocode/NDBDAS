@@ -1,5 +1,5 @@
-#NDBDAS项目记录
-##一、版本情况
+# NDBDAS项目记录
+## 一、版本情况
 1. IDE：ideaIU-2019.3.1    
 2. 项目管理工具：apache-maven-3.3.9  
 3. jdk	1.8.0_333  
@@ -14,7 +14,7 @@
 设备电参量显示：el-icon-data-line device/show/{devId}  
 设备管理："tree" /devmanage  
 
-##二、日志  
+## 二、日志  
 <el-card> 加页面模块  
 asurplus-ui/src/layout/components/Sidebar/Logo.vue      侧边栏的系统名称  
 侧边栏加模块，直接改数据库  
@@ -38,7 +38,7 @@ mysql
 	sys_permission_info		侧边栏主菜单  
 首页      
 设备管理(device)       
-###2022.9.13
+### 2022.9.13
 数据库设计  
 dev_epara_info  
 电压voltage---volt_a/b/c  
@@ -52,93 +52,89 @@ dev_epara_info
 电压相角---volt_pha_a/b/c  
 电流相角---curr_pha_a/b/c  
 
-###2022.9.14 
+### 2022.9.14 
 前后端，数据库串联   
-###2022.9.16
+### 2022.9.16
 1. 新建网关数据库表，使项目启动时自动查网关表并建立socket连接  
-2. 使用多线程接收多个网关的响应：使用全局静态数组存放每个Socket对象，使用@Async注解开启异步方法connect()和receive()  
-connect()用于与网关建立socket连接并返回socket对象，使用Future< Socket >接收异步方法的返回参数。在项目入口函数进行调用    
-static send(Socket socket)用于向网关传送数据，该方法在controller层进行调用  
-receive(Socket socket)用于接收网关响应帧  
+2. 使用多线程接收多个网关的响应：使用全局静态数组存放每个Socket对象，使用@Async注解开启异步方法connect()和receive(),connect()用于与网关建立socket连接并返回socket对象，使用Future< Socket >接收异步方法的返回参数。在项目入口函数进行调用static send(Socket socket)用于向网关传送数据，该方法在controller层进行调用。receive(Socket socket)用于接收网关响应帧  
 3. 前端show.vue加入一个控制按钮，编写前后端交互接口 dev.js，新增03读寄存器函数，使得网页点击“控制按钮”，前端携带命令帧字符串通过api传递给后端的controller层。后端读取全局静态数组socket，以其为参数调用静态方法send()向网关发送命令  
 4. 接收到网关响应帧之后进行帧格式校验、解析（待完成），编写sql工具类将关键数据更新到对应的数据库表  
-###2022.9.19
+### 2022.9.19
 1. 新增任务：网关管理页面（网关列表查询、新增、删除、修改，网关手动连接，单个连接，全部连接）  
-###2022.9.22
-1. 电压电流实时监控、命令帧测试
+### 2022.9.22
+1. 电压电流实时监控、命令帧测试  
 2. 网关配置：查询  
-###2022.9.27
-1. 读电压测试帧：
-0x7534=>30004=>电压数据块，大小2*3字节
+### 2022.9.27
+1. 读电压测试帧：  
+0x7534=>30004=>电压数据块，大小2*3字节  
 发送：0808 0000 0006 01 03 7534 0001  
-响应：0808 0000 0006 01 03 数据长度 199.99 209.99 219.99
+响应：0808 0000 0006 01 03 数据长度 199.99 209.99 219.99  
 2. 读电流测试帧
-0x7538=>30008=>电流数据块
+0x7538=>30008=>电流数据块  
 0808 0000 0006 01 03 7538 0001  
-3. 读有功
+3. 读有功  
 0808 0000 0006 01 03 753d 0001 
 4. 读无功
 0808 0000 0006 01 03 7542 0001  
 5. 读视在
 0808 0000 0006 01 03 7547 0001  
 6. 读功率因数  
-###2022.10.9
-后期工作内容：  
+### 2022.10.9
+后期工作内容   
 1. 与网关调通。具体命令帧分类（表cmd_dict）  
-2. 新增子模块：系统配置/设备配置+网关配置。以系统配置/参数配置为模板  
-3. 新增子模块：系统管理/设备管理。以树的形式展示所有设备。状态。左右两个模块  
+2. 新增子模块：系统配置/设备配置+网关配置。以系统配置/参数配置为模板    
+3. 新增子模块：系统管理/设备管理。以树的形式展示所有设备。状态。左右两个模块   
 4. 新增功能：响应帧解析（支持多协议）、校验、存入数据库  
-5. 动态表名（x）  
-6. 优化：先在前端显示响应的电参量，再存入数据库  
+5. 动态表名（x）    
+6. 优化：先在前端显示响应的电参量，再存入数据库   
 7. 如何使用redis缓存数据库减轻Mysql压力？  
-8. 设备电参量表结构优化
-    实时表
-9. 设备配置
-10. 告警信息-等级和时间排序、后续处理、阈值  
-###2022.10.20
-1. 重构了实时电参量表(dev_epara_info_t1 ==>dev_epara_info_temp)，所有设备的实时电参量都放在这张表。新建设备信息表(dev_info)、设备楼层位置信息表(dev_loc_info)
-2. 更新：现在点击不同配电柜会显示正确的电参量信息
+8. 设备电参量表结构优化  
+    实时表  
+9. 设备配置  
+10. 告警信息-等级和时间排序、后续处理、阈值    
+### 2022.10.20
+1. 重构了实时电参量表(dev_epara_info_t1 ==>dev_epara_info_temp)，所有设备的实时电参量都放在这张表。新建设备信息表(dev_info)、设备楼层位置信息表(dev_loc_info)  
+2. 更新：现在点击不同配电柜会显示正确的电参量信息  
 3. 新增：设备管理模块，点击具体楼层房间可以查看该楼层的设备情况  
-###2022.10.27
-1. mybatis-plus: (a or b) and c实现的方式：使用QueryWrapper的nested方法将所用or语句括起来
-2. el-table: 根据设备不同状态（0和1）显示不同内容（启用、禁用）
+### 2022.10.27
+1. mybatis-plus: (a or b) and c实现的方式：使用QueryWrapper的nested方法将所用or语句括起来  
+2. el-table: 根据设备不同状态（0和1）显示不同内容（启用、禁用）  
 3. 功能增加：按照设备创建时间搜索设备。细节描述：前端queryParams对象经过addDateRange的js函数后
 扩充了一个params属性，该属性是一个包含beginTime和endTime两个属性的对象，不能被DevInfo对象接收（
 因为DevInfo对象没有这个params属性），ruoyi框架使用PageUtils里面的ServletUtils来获取时间参数并
 赋值给PageVO对象的时间属性，从而在impl类中可以使用QueryWrapper结合时间参数来拼接sql进行查询。
-mysql对于datetime类型的字段都是直接将字符串转换成时间进行大小比较的，不需要格式转换。
+mysql对于datetime类型的字段都是直接将字符串转换成时间进行大小比较的，不需要格式转换。  
 4. 功能增加：新增设备。新增设备和修改设备共用一个对话窗<el-dialog>，根据form.id的不同决定显示的
 是新增还是修改。设备编号devId为必选项，需要将其prop添加到rules进行限制。新增功能使用post方式与
 后端交互,api接口将前端form对象使用data传参方式传给controller，后者使用@RequestBody接收data。
 在impl类里面需要对设备编号是否为空进行二次校验，并对是否与已存在的设备重复进行校验。最后使用ruoyi
 框架统一的接口将新增结果传回前端。前端在submitForm函数里对回传的数据的code进行判断以显示操作结果    
-###2022.10.28
+### 2022.10.28
 1. 新增功能：修改设备。修改设备有两个入口（会议要求改为一个入口），框选和点选。框选根据ids数组拿到选中的id，点选根据button
 拿到id。const id=row.id || this.ids 前面的表示点选，后面的是框选。在js里面，逻辑或（||）运算符
 的运行规则是：前面的为true就返回前面的值，后面的就不再判断；否则判断后面的，若后面的为true就返回
 后面的值。要求点选的优先级比框选的高，所以row.id应该放在||前面。删除设备：删除同样有两个入口，
-框选和点选。与修改不同，删除支持框选删除。
-2. 新增功能：设备回收站。
-3. 后续方向：1、导入导出，2、楼层信息自动挂载，3、设备配置，4、帧解析  
-###2022.11.1
-1. 功能增加：点击table每一栏跳转路由到显示设备实时电参量。具体实现：给el-table属性@row-click加一个点击函数，在函数里面用
-this.$router.push()函数。函数直接以row为形参的话，可以直接调用table每一行数据的属性，而不必在@row-click函数中写明形参。
-问题1： <el-table> 点击行时，会跳转到一个详细信息页面， 但是同时这一行也有编辑和删除按钮,在点击按钮时，@row-click事件也被触发了，而我并不想触发 row-click 事件。
+框选和点选。与修改不同，删除支持框选删除。  
+2. 新增功能：设备回收站。  
+3. 后续方向：1、导入导出，2、楼层信息自动挂载，3、设备配置，4、帧解析   
+### 2022.11.1
+1. 功能增加：点击table每一栏跳转路由到显示设备实时电参量。具体实现：给el-table属性@row-click加一个点击函数，在函数里面用this.$router.push()函数。函数直接以row为形参的话，可以直接调用table每一行数据的属性，而不必在@row-click函数中写明形参。  
+问题1： <el-table> 点击行时，会跳转到一个详细信息页面， 但是同时这一行也有编辑和删除按钮,在点击按钮时，@row-click事件也被触发了，而我并不想触发 row-click 事件。  
 解决办法： 写按钮的 @click 事件时添加 .stop，表示禁止其他事件，只响应.stop后面跟着的时间。问题2：重置搜索框时，el-tree选中高亮没有取消，解决办法:
 this.$refs.tree.setCurrentKey(null);获取当前ref名称为"tree"的结点设置选中的key为null  
-2. 下载模板：模板不涉及数据库交互，由前端完成，放在前端静态资源文件夹里面，通过点击a标签超链接的形式下载下来    
-###2022-11-2
+2. 下载模板：模板不涉及数据库交互，由前端完成，放在前端静态资源文件夹里面，通过点击a标签超链接的形式下载下来  
+### 2022-11-2
 1. 设备导出：问题1：url拼接的是/VUE_APP_BASE_API/device/management/export?pageNum=1&pageSize=10，VUE_APP_BASE_API = '/dev-api'表示开发环境，定义于
 .env.development文件；VUE_APP_BASE_API = '/prod-api'表示生产环境，定义于.env.production文件。在前端页面打印process.env.VUE_APP_BASE_API，发现
 VUE_APP_BASE_API = '/dev-api'。前端端口是81，在vue.config.js文件中，对process.env.VUE_APP_BASE_API进行了拦截，定向到http://localhost:8080，也就是后端。
-问题2：在不同的页面点击导出，会携带当前页面的参数pageNum到后端，sql语句LIMIT n,size表示从序号n开始往后查size条记录。已知pageNum=1,pageSize=10时，LIMIT 0,500
-表示查询序号从0开始的500条记录，第二页参数，pageNum=2,pageSize=10，对应LIMIT 500,500，表示查询序号从500开始的500条记录。要求不管在第几页点击
+问题2：在不同的页面点击导出，会携带当前页面的参数pageNum到后端，sql语句LIMIT n,size表示从序号n开始往后查size条记录。已知pageNum=1,pageSize=10时，LIMIT 0,500表示查询序号从0开始的500条记录，第二页参数，pageNum=2,pageSize=10，对应LIMIT 500,500，表示查询序号从500开始的500条记录。要求不管在第几页点击
 导出携带参数都是pageNum=1，pageSize=10,不变，所以前端传递查询参数queryParams时，需要浅拷贝对象并设置queryParams.pageNum=1，再将新对象传入导出excel的接口函数
 exportExcel  
-2. 楼层编号对照表导出：方法同设备导出。 
+2. 楼层编号对照表导出：方法同设备导出。  
 3. 设备导入：文件上传，前端使用el-upload发送文件，后端使用使用MultipartFile类接收文件，并将excel文件保存到本地。  
-###2022-11-3
-1. 设备导入：如果原设备不存在，直接导入记录，如果原设备存在，且要求覆盖旧数据，就直接更新，如果原设备存在，不要求覆盖旧数据，不做任何处理。
+### 2022-11-3
+1. 设备导入：如果原设备不存在，直接导入记录，如果原设备存在，且要求覆盖旧数据，就直接更新，如果原设备存在，不要求覆盖旧数据，不做任何处理。  
+
 
 
 
@@ -152,9 +148,6 @@ exportExcel
 
 #### 介绍
 本项目本着避免重复造轮子的原则，建立一套快速开发JavaWEB项目（asurplus-vue），能满足大部分后台管理系统基础开发功能，使得开发人员直接可从业务模块开始，减少大量的重复开发工作。前端框架使用 ruoyi-vue：https://gitee.com/y_project/RuoYi-Vue?_from=gitee_search
-
-#### 演示环境
-加入QQ群后查看群公告：916226778
 
 #### 软件架构
 
@@ -305,57 +298,3 @@ location /prod-api/ {
 }
 ```
 
-#### 页面展示
-
-<table>
-    <tr>
-        <td><img src="https://img-blog.csdnimg.cn/544b9d95e54b43e2bb04f124c817b9f9.png"/></td>
-        <td><img src="https://img-blog.csdnimg.cn/0d51b692e92948f3b743c7c1f945dab4.png"/></td>
-    </tr>
-    <tr>
-        <td><img src="https://img-blog.csdnimg.cn/13336fcf2aea41de855023304f3e5f17.png"/></td>
-        <td><img src="https://img-blog.csdnimg.cn/642eb137282f4e3f858ce8cd660b87b3.png"/></td>
-    </tr>
-    <tr>
-        <td><img src="https://img-blog.csdnimg.cn/f8e01dd9a9d745c4942998740c6b6cac.png"/></td>
-        <td><img src="https://img-blog.csdnimg.cn/e89b816177474aa6b004da30ae055f37.png"/></td>
-    </tr>
-	<tr>
-        <td><img src="https://img-blog.csdnimg.cn/a393646f954f44979a409d19c1c1411e.png"/></td>
-        <td><img src="https://img-blog.csdnimg.cn/928a3a684914449aabc80e044d014179.png"/></td>
-    </tr>
-    <tr>
-        <td><img src="https://img-blog.csdnimg.cn/0440b58e8064454187e963e6d56899cd.png"/></td>
-        <td><img src="https://img-blog.csdnimg.cn/efe9dad92969485db0af3ad7554bd3ff.png"/></td>
-    </tr>
-</table>
-
-#### Asurplus
-
-[![李洲/asurplus-vue](https://gitee.com/asurplus/asurplus-vue/widgets/widget_card.svg?colors=eae9d7,2e2f29,272822,484a45,eae9d7,747571)](https://gitee.com/asurplus/asurplus-vue)
-
-#### 捐赠
-
-如果觉得还不错，请作者喝杯咖啡吧 ☺
-
-<table>
-    <tr>
-        <td style="text-align: center">微信扫一扫</td>
-        <td style="text-align: center">支付宝扫一扫</td>
-    </tr>
-    <tr>
-        <td><img src="https://img-blog.csdnimg.cn/20210221195740916.png"/></td>
-        <td><img src="https://img-blog.csdnimg.cn/20210221195829103.jpg"/></td>
-    </tr>
-</table>
-
-#### 交流QQ群
-群号：<b>916226778</b>
-
-<img src="https://img-blog.csdnimg.cn/20210427105454901.jpg" alt="微信公众号" />
-
-#### 关注
-
-欢迎关注我的微信公众号
-
-<img src="https://img-blog.csdnimg.cn/20210221200018475.jpg" alt="微信公众号" />
