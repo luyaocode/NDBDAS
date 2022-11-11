@@ -4,8 +4,10 @@
 #忽略.idea文件夹
 #忽略modbus文件夹
 #忽略所有模块信息文件.iml
+#忽略admin/src/main/resource下所有yml文件
 ui/node_modules/
 ui/dist/
 .idea/
 modbus/
 *.iml
+admin/src/main/resource/*.yml
