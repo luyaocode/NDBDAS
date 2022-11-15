@@ -1,13 +1,10 @@
-from asyncore import write
-from distutils.fancy_getopt import wrap_text
-import serialc
 import socket
 import sys
-import time
 import threading
-from DLT645 import *
-from dlt645di import *
-from MBTCP import *
+from time import sleep
+
+import serial
+
 from convert import *
 
 #####################工作模式####################
@@ -196,9 +193,12 @@ class Communication_MBTCP:
 
             # 模拟循环发送响应帧
             # print(mbtcp2dlt645.rand)
-            resp_data=mbtcp2dlt645.rand+' 0000'+''
-            resp_data = b'0000 0000 0000 220.4 0000'
-            self.con.send(recv_data)
+            resp_data = mbtcp2dlt645.rand + ' 0000' + ''
+            resp_data = b'0000 0000 0000 2204 2204 2204 2022-11-03 13:03:43'
+            # while True:
+            #     self.con.send(resp_data)
+            #     sleep(1)
+            self.con.send(resp_data)
 
 
 if __name__ == '__main__':
@@ -208,15 +208,18 @@ if __name__ == '__main__':
 
     # 开启引擎-
     # modbus_tcp_engine = Communication_MBTCP('127.0.0.1',9090,5)
-    modbus_tcp_engine = Communication_MBTCP('localhost', 9090, 5)
+    modbus_tcp_engine = Communication_MBTCP('localhost', 10000, 5)
+    modbus_tcp_engine2 = Communication_MBTCP('localhost', 40000, 5)
 
     # serial_engine = Communication_645("COM7", 115200, 0.5)
 
     # 开启线程
     tcp_recv_thread = threading.Thread(target=modbus_tcp_engine.tcplink)
+    tcp_recv_thread2 = threading.Thread(target=modbus_tcp_engine.tcplink)
     # serial_send_thread = threading.Thread(target = serial_engine.Send645Data)   #运行线程内容的前提条件是接收到下行传输且转化好的指令
     # serial_recv_thread = threading.Thread(target = serial_engine.Recive645Data)
 
     tcp_recv_thread.start()  # 程序运行结束，线程结束，不用join()也可以
+    tcp_recv_thread2.start()
     # serial_send_thread.start()
     # serial_recv_thread.start()

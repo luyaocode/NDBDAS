@@ -7,7 +7,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import io.swagger.models.auth.In;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import java.io.Serializable;
@@ -62,6 +62,10 @@ public class GatewayInfo extends Model<GatewayInfo> {
     @ApiModelProperty(value = "删除状态")
     @TableField("del_flag")
     private Integer delFlag;
+
+    @ApiModelProperty(value = "状态")
+    @TableField("status")
+    private Integer status;
 
 
     //    序列化

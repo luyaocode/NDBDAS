@@ -70,3 +70,28 @@ export function exportConfig(query) {
     params: query
   })
 }
+
+// 连接网关
+export function connect(id) {
+  return request({
+    url: baseUrl + 'connect/' + id,
+    method: 'get',
+  })
+}
+
+//查找字典
+export function listDict(dictType) {
+  return request({
+    url: baseUrl + 'dictList/' + dictType,
+    method: 'get',
+  })
+}
+
+//网关切换到状态
+export function updateStatus(data) {
+  return request({
+    url: baseUrl + "updateStatus",
+    method: 'put',
+    data: data,
+  })
+}

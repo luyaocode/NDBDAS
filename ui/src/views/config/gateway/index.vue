@@ -113,8 +113,19 @@
       <el-table-column label="网关名称" align="center" prop="name" :show-overflow-tooltip="true"/>
       <el-table-column label="网关ip地址" align="center" prop="ip" :show-overflow-tooltip="true"/>
       <el-table-column label="网关端口号" align="center" prop="port"/>
+      <el-table-column label="网关状态" align="center" prop="status">
+        <template slot-scope="scope">
+          <template v-for="item in statusOptions">
+            <span v-if="item.code==scope.row.status" :class="item.code==0?'status0':(item.code==1?'status1':'status2')">{{item.remark}}</span>
+          </template>
+        </template>
+      </el-table-column>
       <el-table-column label="系统内置" align="center" prop="type">
         <template slot-scope="scope">
+          <!--          dict-tag是ruoyi自定义组件
+                        选项options是包含字典对象数组
+                        value是本行的值
+                        显示的是字典中的name属性-->
           <dict-tag :options="typeOptions" :value="scope.row.type + ''"/>
         </template>
       </el-table-column>
@@ -124,8 +135,16 @@
           <span>{{ parseTime(scope.row.createTime) }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" width="180">
         <template slot-scope="scope">
+          <el-button
+            size="mini"
+            type="text"
+            icon="el-icon-link"
+            @click="handleConnect(scope.row)"
+            v-hasPermi="['system:config:connect']"
+          >连接
+          </el-button>
           <el-button
             size="mini"
             type="text"
@@ -145,6 +164,10 @@
         </template>
       </el-table-column>
     </el-table>
+    <!--    <div>-->
+    <!--      <el-button @click="handleConnect(1)">测试连接网关1</el-button>-->
+    <!--      <el-button @click="handleConnect(2)">测试连接网关2</el-button>-->
+    <!--    </div>-->
 
     <pagination
       v-show="total>0"
@@ -197,7 +220,10 @@
     addConfig,
     updateConfig,
     exportConfig,
-    refreshCache
+    refreshCache,
+    connect,
+    listDict,
+    updateStatus,
   } from "@/api/config/gateway";
   import {exportExcel} from "@/utils/zipdownload";
 
@@ -205,6 +231,10 @@
     name: "Config",
     data() {
       return {
+        gatewayInfo: {
+          id: undefined,
+          status: undefined,
+        },
         // 遮罩层
         loading: true,
         // 导出遮罩层
@@ -223,11 +253,12 @@
         gatewayList: [],
         // 弹出层标题
         title: "",
-
         // 是否显示弹出层,默认不弹出
         open: false,
-        // 类型数据字典
+        // 类型数据字典(字典本身是一个对象的数组)
         typeOptions: [],
+        //状态数据字典
+        statusOptions: [],
         // 日期范围
         dateRange: [],
         // 查询参数
@@ -259,11 +290,16 @@
       };
     },
     created() {
-      console.log("开始获取list");
       this.getList();
+      //网关字典
+      listDict("status").then(response => {
+        this.statusOptions = response.data;
+      });
       this.getDicts("is_builtIn").then(response => {
         this.typeOptions = response.data;
+
       });
+
     },
     methods: {
       /** 查询参数列表 */
@@ -398,6 +434,55 @@
           this.msgSuccess("刷新成功");
         });
       },
+
+      /**
+       * 连接网关
+       * @param row
+       */
+      handleConnect(row) {
+        this.gatewayInfo.id = row.id;
+        this.gatewayInfo.status = row.status;
+        connect(row.id).then(response => {
+          if (response != undefined) {
+            this.msgSuccess("连接成功");
+            console.log("连接成功");
+            this.gatewayInfo.status = 0;
+          } else {
+            console.log("连接失败");
+            this.gatewayInfo.status = 1;
+          }
+          //  修改网关状态
+          updateStatus(this.gatewayInfo).then(response =>{
+            console.log("开始刷新状态");
+            this.getList();
+          });
+        });
+      },
     }
   }
 </script>
+<style>
+  .status0 {
+    color: #2BAE85;
+    background-color: antiquewhite;
+    font-family: KaiTi, monospace;
+    font-size: large;
+    font-weight: bolder
+  }
+
+  .status1 {
+    color: #ED556A;
+    background-color: antiquewhite;
+    font-family: KaiTi, monospace;
+    font-size: large;
+    font-weight: bolder
+  }
+
+  .status2 {
+    color: #8c939d;
+    background-color: antiquewhite;
+    font-family: KaiTi, monospace;
+    font-size: large;
+    font-weight: bolder
+  }
+</style>

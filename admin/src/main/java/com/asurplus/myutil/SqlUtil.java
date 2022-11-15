@@ -1,9 +1,9 @@
 package com.asurplus.myutil;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.sql.*;
 
 public class SqlUtil {
     private static String driver = "com.mysql.cj.jdbc.Driver";
@@ -12,22 +12,22 @@ public class SqlUtil {
     private static String pwd = "6666";
 
     private static Connection conn = null;
-    private static Statement stmt = null;
+    private static PreparedStatement stmt = null;
+    private static ResultSet res = null;
+
+    private static final Logger log = LoggerFactory.getLogger(SqlUtil.class);
 
 
-    public static int insertUtil(String sql) {
-        int count = 0;
+    public static void executeUpdate(String sql) {
+        int count;
         try {
 
             Class.forName(driver);
             conn = DriverManager.getConnection(url, user, pwd);
-            stmt = conn.createStatement();
-            count = stmt.executeUpdate(sql);
-            System.out.println("更新记录条数：" + count);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-            return 0;
-        } catch (SQLException e) {
+            stmt = conn.prepareStatement(sql);
+            count = stmt.executeUpdate();
+            log.info("更新记录条数：" + count);
+        } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         } finally {
             if (stmt != null) {
@@ -45,6 +45,37 @@ public class SqlUtil {
                 }
             }
         }
-        return count;
+    }
+
+    public static int executeQuery(String sql) {
+        int num = 0;
+        try {
+            Class.forName(driver);
+            conn = DriverManager.getConnection(url, user, pwd);
+            stmt = conn.prepareStatement(sql);
+            res = stmt.executeQuery();
+            if (res.next()) {
+                num = res.getInt("status");
+                return num;
+            }
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return num;
     }
 }

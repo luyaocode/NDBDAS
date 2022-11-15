@@ -1,14 +1,13 @@
 package com.asurplus.gateway.util;
 
 import com.asurplus.gateway.entity.GatewayInfo;
-import com.asurplus.gateway.service.GatewayService;
+import com.asurplus.gateway.service.GatewayInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 项目启动时查询网关信息
@@ -17,21 +16,21 @@ import java.util.Map;
  */
 @Component
 public class RunnerLoadOne implements CommandLineRunner {
-    static Map<String,Integer> urlMap=new HashMap<>();
+    private static List<String> addrList=new ArrayList<>();
 
     @Autowired
-    private GatewayService gatewayService;
+    private GatewayInfoService gatewayInfoService;
 
     @Override
     public void run(String... args) throws Exception {
-        List<GatewayInfo> list = gatewayService.list();
+        List<GatewayInfo> list = gatewayInfoService.list();
         for(GatewayInfo info:list){
-            urlMap.put(info.getIp(),info.getPort());
+            addrList.add(info.getIp()+":"+info.getPort());
         }
     }
 
-    public static Map<String,Integer> getUrlMap(){
-        return urlMap;
+    public static List<String> getAddrList(){
+        return addrList;
     }
 
 }

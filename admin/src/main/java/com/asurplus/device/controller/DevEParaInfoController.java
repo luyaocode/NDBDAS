@@ -14,7 +14,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
-import static com.asurplus.App.socks;
+import static com.asurplus.App.socketMap;
+
 
 /**
  * 电参量信息表 前端控制器
@@ -165,7 +166,7 @@ public class DevEParaInfoController {
     @PostMapping("A01-01/0x03")
     public String sendCommand(@RequestBody String command) {
 //        取第一个socket
-        Socket sock = socks[0];
+        Socket sock = socketMap.get("localhost:9090");
         String sendStr = "0808 0000 0006 01 03 9c41 0001";
         System.out.println("[0x03] " + command);
 //        System.out.println(sock);

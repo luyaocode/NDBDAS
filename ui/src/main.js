@@ -21,6 +21,7 @@ import { parseTime, resetForm, addDateRange, selectDictLabel, selectDictLabels, 
 import Pagination from "@/components/Pagination";
 
 
+//组件导入
 // 自定义表格工具组件
 import RightToolbar from "@/components/RightToolbar"
 // 富文本组件
@@ -59,6 +60,7 @@ Vue.prototype.msgInfo = function (msg) {
 }
 
 // 全局组件挂载
+//要使用的话，在<template>里面引入组件<dict-tag>
 Vue.component('DictTag', DictTag)
 Vue.component('Pagination', Pagination)
 Vue.component('RightToolbar', RightToolbar)

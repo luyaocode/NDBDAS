@@ -1,6 +1,5 @@
 package com.asurplus.mytcp;
 
-import com.asurplus.myutil.SqlUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
@@ -9,20 +8,22 @@ import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.concurrent.Future;
 
+/**
+ * @author chenluyao
+ * @description 网关连接和发送数据
+ */
 @Component
-//@Scope("prototype")可以将springboot默认的单例模式改为多例模式
+/*@Scope("prototype")可以将springboot默认的单例模式改为多例模式**/
 @Scope("prototype")
 public class TcpConnection {
     private  Socket socket = null;
     private static final Logger log = LoggerFactory.getLogger(TcpConnection.class);
 
-    //@SneakyThrows是lombok携带的异常处理机制
     @Async
     public Future<Socket> connect(String ip, Integer port) {
         String url = "[" + ip + ":" + String.valueOf(port) + "]";
@@ -33,60 +34,55 @@ public class TcpConnection {
             return new AsyncResult<>(socket);
 
         } catch (IOException | NullPointerException e) {
-//            e.printStackTrace();
             log.info("连接失败！");
             return new AsyncResult<>(socket);
-        } finally {
-
         }
     }
 
     /**
      * 接收数据
      */
-    @Async
-    public void receive(Socket socket) {
-        try {
-//            System.out.println("[receive]"+socket);
-            InputStream is = socket.getInputStream();
-            byte[] bytes = new byte[1024];
-            StringBuilder recvStr = new StringBuilder();
-            int len;
-//            String recvStr; //收到的字符串
-//            String[] ss;    //字节码转字符串的数组
-            while (true) {
-                len = is.read(bytes);
-                if (len == -1)
-                    continue;
-//                System.out.println(len);
-//                ASCII转字符
-                for (int i = 0; i < len; i++) {
-                    char ch = (char) bytes[i];
-                    recvStr.append(ch);
-//                    System.out.print(ch);
-//                    System.out.print(bytes[i]+" ");
-                }
-                System.out.println(socket + "响应帧：" + recvStr.toString());
-//                提取响应参数，组成合适的sql语句
-                String sql=null;
-                sql="insert into test_table(resp_data) values('" + recvStr + "')";
-                //                这里调用一个将字符串携带的信息写进数据库的工具类
-                SqlUtil.insertUtil(sql);
-                recvStr.delete(0, recvStr.length());
-//                recvStr=new String(bytes,0,len);
-//                System.out.println(recvStr);
-//                ss = FrameUtil.FrameSplit(bytes, len);
-//                System.out.println("\n服务端："+recvStr);
-//                recvStr解析
-//                for (String str : ss) {
-//                    System.out.println(str);
+
+//    @Async
+//    public void receive(Socket socket) {
+//        try {
+//            InputStream is = socket.getInputStream();
+//            byte[] bytes = new byte[1024];
+//            StringBuilder recvStr = new StringBuilder();
+//            int len;
+////            String recvStr; //收到的字符串
+////            String[] ss;    //字节码转字符串的数组
+//            while (true) {
+//                len = is.read(bytes);
+//                if (len == -1) {
+//                    continue;
 //                }
-            }
-        } catch (IOException e) {
-//            e.printStackTrace();
-            log.info("接收响应失败！");
-        }
-    }
+////                System.out.println(len);
+////                ASCII转字符
+//                for (int i = 0; i < len; i++) {
+//                    char ch = (char) bytes[i];
+//                    recvStr.append(ch);
+//                }
+//                System.out.println(socket + "响应帧：" + recvStr.toString());
+////                提取响应参数，组成合适的sql语句
+//                String sql=null;
+//                sql="insert into test_table(resp_data) values('" + recvStr + "')";
+//                //                这里调用一个将字符串携带的信息写进数据库的工具类
+//                SqlUtil.insertUtil(sql);
+//                recvStr.delete(0, recvStr.length());
+////                recvStr=new String(bytes,0,len);
+////                System.out.println(recvStr);
+////                ss = FrameUtil.FrameSplit(bytes, len);
+////                System.out.println("\n服务端："+recvStr);
+////                recvStr解析
+////                for (String str : ss) {
+////                    System.out.println(str);
+////                }
+//            }
+//        } catch (IOException e) {
+//            log.info("接收响应异常！");
+//        }
+//    }
 
     /**
      * 发送数据
@@ -200,16 +196,38 @@ public class TcpConnection {
 //                    break;
 //                }
 //            }
-        } catch (IOException | NullPointerException e) {
-            log.info("请求发送失败！");
+        } catch (IOException ex) {
+            log.info("请求发送异常！");
 //            e.printStackTrace();
         } finally {
-//            pw.close();
+            if (pw != null) {
+                pw.close();
+            }
 //            System.out.println("pw关闭");
-            //                os.close();
+            if (os != null) {
+                try {
+                    os.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
 //                System.out.println("os关闭");
-            //                socket.close();
+//            socket.close();
 //                System.out.println("socket关闭");
+        }
+    }
+
+    /**
+     * 判断服务端是否断开连接
+     */
+    public static boolean isServerClose(Socket socket){
+        try{
+            //发送1个字节的紧急数据，默认情况下，服务器端没有开启紧急数据处理，不影响正常通信
+            socket.sendUrgentData(0xFF);
+            return false;
+        }catch(Exception se){
+            log.info("网关断开连接");
+            return true;
         }
     }
 }

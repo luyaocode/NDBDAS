@@ -212,7 +212,7 @@ public class DevInfoServiceImpl extends ServiceImpl<DevInfoMapper, DevInfo> impl
             devInfo.setUpdateUser("1");
             devInfo.setUpdateTime(date);
             devInfo.setDelFlag(0);
-            devInfo.setStatus(0);
+            devInfo.setStatus(1);
             devInfo.setRemark("");
             for (String k : m.keySet()) {
                 if (k.contains("设备编号")) {
@@ -339,6 +339,7 @@ public class DevInfoServiceImpl extends ServiceImpl<DevInfoMapper, DevInfo> impl
         devInfo.setCreateTime(date);
         devInfo.setUpdateTime(date);
         devInfo.setDelFlag(0);
+        devInfo.setStatus(1);
         devInfoMapper.insert(devInfo);
         return RES.ok();//成功直接返回：{code=200,msg="操作成功"}
     }

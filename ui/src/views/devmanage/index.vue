@@ -206,10 +206,10 @@
                             使用span的style属性单独给字体加颜色-->
             <template slot-scope="scope">
               <span v-if="scope.row.status=== 0"
-                    style="color: #2BAE85;background-color: antiquewhite ; font-family: KaiTi,monospace; font-size: large; font-weight: bolder">正常</span>
+                    style="color: #2BAE85;background-color: antiquewhite ; font-family: KaiTi,monospace; font-size: large; font-weight: bolder">在线</span>
               <!--#1BA784 铜绿 -->
               <span v-if="scope.row.status === 1"
-                    style="color: #ED556A; background-color: antiquewhite; font-family: KaiTi,monospace; font-size: large; font-weight: bolder">停用</span>
+                    style="color: #ED556A; background-color: antiquewhite; font-family: KaiTi,monospace; font-size: large; font-weight: bolder">离线</span>
               <!--#ED556A 山茶花红 -->
             </template>
           </el-table-column>
@@ -362,10 +362,10 @@
         <el-table-column label="设备状态" align="center" prop="status">
           <template slot-scope="scope">
               <span v-if="scope.row.status=== 0"
-                    style="color: #2BAE85;background-color: antiquewhite ; font-family: KaiTi,monospace; font-size: large; font-weight: bolder">正常</span>
+                    style="color: #2BAE85;background-color: antiquewhite ; font-family: KaiTi,monospace; font-size: large; font-weight: bolder">在线</span>
             <!--#1BA784 铜绿 -->
             <span v-if="scope.row.status === 1"
-                  style="color: #ED556A; background-color: antiquewhite; font-family: KaiTi,monospace; font-size: large; font-weight: bolder">停用</span>
+                  style="color: #ED556A; background-color: antiquewhite; font-family: KaiTi,monospace; font-size: large; font-weight: bolder">离线</span>
             <!--#ED556A 山茶花红 -->
           </template>
         </el-table-column>
@@ -645,7 +645,6 @@
         /**要求：
          * 单选时可以修改，：disabled="single"="false"
          * 不选或多选不能修改，：disabled="single"="true"
-         *
          * @type {boolean}
          */
         this.multiple = !selection.length;//单选或多选时，multiple为false，表示可以删除。不选时，multiple为true，表示不能删除。
@@ -677,6 +676,7 @@
       handleOpenDevEPara(row) {
         this.$router.push({path: '/device/show/' + row.devId});
       },
+
       /**路由跳转到'设备配置'**/
       handleOpenDevConf(row) {
         this.$router.push({path: '/device/conf/' + row.devId});
@@ -690,6 +690,7 @@
         this.open = true;
         this.title = "添加设备";
       },
+
       /** 修改按钮操作：包含两种方式，一种是上面的、一种是右边的 */
       handleUpdate(row) {
         this.reset();
@@ -852,7 +853,6 @@
     }
   };
 </script>
-
 <!--给el-tree设置标签-->
 <style scoped>
   /*  点击时的样式 */
