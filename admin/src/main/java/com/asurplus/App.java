@@ -78,6 +78,9 @@ public class App {
 //             开启数据接收线程
 //                tcpConnection.receive(socket);//弃用
                 new ThreadReceive(socket).start();
+            }else{
+                socketMap.put(addr, null);
+                SqlUtil.executeUpdate("UPDATE gateway_info SET status='1' WHERE ip='"+desIp+"' AND port='"+desPort+"'");
             }
         }
 

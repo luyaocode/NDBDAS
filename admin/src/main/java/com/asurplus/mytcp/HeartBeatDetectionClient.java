@@ -19,11 +19,11 @@ public class HeartBeatDetectionClient extends Thread {
     @SneakyThrows
     @Override
     public void run() {
-        int count;
+        int count, connectedNum;
         Thread.sleep(20000);
         log.info("开启客户端心跳检测线程");
         while (true) {
-            log.info("当前网关个数为:" + socketMap.size());
+            connectedNum = 0;
             if (socketMap.size() > 0) {
                 for (String addr : socketMap.keySet()) {
                     count = 3;
@@ -35,18 +35,22 @@ public class HeartBeatDetectionClient extends Thread {
                     int status = SqlUtil.executeQuery(querySql);
 //                    log.info("查到status=="+status);
                     if (socket != null) {
+                        connectedNum++;
                         //                    检测发送数据是否异常
                         while (count-- >= 0) {
                             if (TcpConnection.isServerClose(socket) || socket.isClosed() || !socket.isConnected()) {
-                                Thread.sleep(10000);
+                                log.info("网关状态异常，请等一会儿" + socket);
+                                Thread.sleep(5000);
+
                             } else {
+                                log.info("太好了，网关状态正常" + socket);
                                 break;
                             }
                         }
                         if (count < 0) {
                             if (status == 0) {
                                 //                    更新网关状态,并将相应的socket置为null
-                                log.info("网关状态设置为未连接" + socket);
+                                log.info("当前网关状态为已连接，需要设置为未连接" + socket);
                                 String sql = "UPDATE gateway_info SET status='1' WHERE ip='" + desIp + "' AND port='" + desPort + "'";
                                 SqlUtil.executeUpdate(sql);
                                 socket.close();
@@ -55,7 +59,7 @@ public class HeartBeatDetectionClient extends Thread {
                         } else {
                             if (status == 1) {
                                 //                    更新网关状态
-                                log.info("网关状态设置为已连接" + socket);
+                                log.info("当前网关状态为未连接，需要设置为已连接" + socket);
                                 String sql = "UPDATE gateway_info SET status='0' WHERE ip='" + desIp + "' AND port='" + desPort + "'";
                                 SqlUtil.executeUpdate(sql);
                             }
@@ -63,7 +67,8 @@ public class HeartBeatDetectionClient extends Thread {
                     }
                 }
             }
-            Thread.sleep(20000);
+            log.info("当前已连接的网关个数为:" + connectedNum);
+            Thread.sleep(10000);
         }
     }
 }

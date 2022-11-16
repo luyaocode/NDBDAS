@@ -61,6 +61,13 @@ public class SqlUtil {
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         } finally {
+            if(res!=null){
+                try {
+                    res.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
             if (stmt != null) {
                 try {
                     stmt.close();

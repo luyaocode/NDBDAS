@@ -37,18 +37,18 @@
         </el-select>
       </el-form-item>
       <!--      时间搜索框-->
-      <el-form-item label="创建时间">
-        <el-date-picker
-          v-model="dateRange"
-          size="small"
-          style="width: 240px"
-          value-format="yyyy-MM-dd"
-          type="daterange"
-          range-separator="-"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
-        />
-      </el-form-item>
+<!--      <el-form-item label="创建时间">-->
+<!--        <el-date-picker-->
+<!--          v-model="dateRange"-->
+<!--          size="small"-->
+<!--          style="width: 240px"-->
+<!--          value-format="yyyy-MM-dd"-->
+<!--          type="daterange"-->
+<!--          range-separator="-"-->
+<!--          start-placeholder="开始日期"-->
+<!--          end-placeholder="结束日期"-->
+<!--        />-->
+<!--      </el-form-item>-->
       <!--      -->
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
@@ -68,18 +68,18 @@
         >新增
         </el-button>
       </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="success"
-          plain
-          icon="el-icon-edit"
-          size="mini"
-          :disabled="single"
-          @click="handleUpdate"
-          v-hasPermi="['system:config:edit']"
-        >修改
-        </el-button>
-      </el-col>
+<!--      <el-col :span="1.5">-->
+<!--        <el-button-->
+<!--          type="success"-->
+<!--          plain-->
+<!--          icon="el-icon-edit"-->
+<!--          size="mini"-->
+<!--          :disabled="single"-->
+<!--          @click="handleUpdate"-->
+<!--          v-hasPermi="['system:config:edit']"-->
+<!--        >修改-->
+<!--        </el-button>-->
+<!--      </el-col>-->
       <el-col :span="1.5">
         <el-button
           type="danger"
@@ -89,9 +89,10 @@
           :disabled="multiple"
           @click="handleDelete"
           v-hasPermi="['system:config:remove']"
-        >删除
+        >批量删除
         </el-button>
       </el-col>
+
       <el-col :span="1.5">
         <el-button
           type="warning"
@@ -104,12 +105,34 @@
         >导出
         </el-button>
       </el-col>
+      <el-col :span="1.5">
+        <el-button
+          type="success"
+          plain
+          icon="el-icon-link"
+          size="mini"
+          @click="handleConnect"
+          v-hasPermi="['system:config:remove']"
+        >一键连接
+        </el-button>
+      </el-col>
+      <el-col :span="1.5">
+        <el-button
+          type="danger"
+          plain
+          icon="el-icon-link"
+          size="mini"
+          @click="handleDisconnect"
+          v-hasPermi="['system:config:remove']"
+        >一键断开
+        </el-button>
+      </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
     <el-table v-loading="loading" :data="gatewayList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center"/>
-      <el-table-column label="网关主键" align="center" prop="id"/>
+      <el-table-column label="网关编号" align="center" prop="id"/>
       <el-table-column label="网关名称" align="center" prop="name" :show-overflow-tooltip="true"/>
       <el-table-column label="网关ip地址" align="center" prop="ip" :show-overflow-tooltip="true"/>
       <el-table-column label="网关端口号" align="center" prop="port"/>
@@ -135,7 +158,7 @@
           <span>{{ parseTime(scope.row.createTime) }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" width="180">
+      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" width="240">
         <template slot-scope="scope">
           <el-button
             size="mini"
@@ -144,6 +167,14 @@
             @click="handleConnect(scope.row)"
             v-hasPermi="['system:config:connect']"
           >连接
+          </el-button>
+          <el-button
+            size="mini"
+            type="text"
+            icon="el-icon-close"
+            @click="handleDisconnect(scope.row)"
+            v-hasPermi="['system:config:connect']"
+          >断开
           </el-button>
           <el-button
             size="mini"
@@ -441,7 +472,6 @@
        */
       handleConnect(row) {
         this.gatewayInfo.id = row.id;
-        this.gatewayInfo.status = row.status;
         connect(row.id).then(response => {
           if (response != undefined) {
             this.msgSuccess("连接成功");
@@ -458,6 +488,11 @@
           });
         });
       },
+
+      //仿照（批量）删除，先给一个警示弹窗
+      handleDisconnect(row){
+
+      }
     }
   }
 </script>
