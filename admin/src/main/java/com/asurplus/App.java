@@ -1,14 +1,12 @@
 package com.asurplus;
 
-import com.asurplus.gateway.util.RunnerLoadOne;
 import com.asurplus.mytcp.HeartBeatDetectionClient;
-import com.asurplus.mytcp.TcpConnection;
-import com.asurplus.mytcp.ThreadReceive;
-import com.asurplus.myutil.SqlUtil;
+import com.asurplus.mytcp.TcpServer;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.env.Environment;
 import org.springframework.scheduling.annotation.EnableAsync;
@@ -16,9 +14,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.concurrent.Future;
 
 /**
  * 项目启动类
@@ -26,7 +22,7 @@ import java.util.concurrent.Future;
  * @Author Luyao
  */
 @Slf4j
-@SpringBootApplication
+@SpringBootApplication(exclude = DataSourceAutoConfiguration.class)
 //不配置@MapperScan也能运行
 //@MapperScan("com.asurplus.device.mapper")
 //@MapperScan("com.asurplus.system.mapper")
@@ -58,31 +54,36 @@ public class App {
          * 启动写数据库线程
          * 接收tcp协议数据-写数据库
          */
-        application.getBean(RunnerLoadOne.class);
-        List<String> addrList = RunnerLoadOne.getAddrList();
-        log.info("数据库网关个数为"+addrList.size());
-        new HeartBeatDetectionClient().start();
-        for (String addr : addrList) {
-            String[] split = addr.split(":");
-            String desIp = split[0];
-            Integer desPort = Integer.valueOf(split[1]);
-            TcpConnection tcpConnection = new TcpConnection();
-            Future<Socket> futureSocket = tcpConnection.connect(desIp, desPort);
-            //get()方法阻塞等待异步线程返回结果
-            Socket socket = futureSocket.get();
-            if (socket != null) {
-//                将socket放到哈希表
-                socketMap.put(addr, socket);
-//                更新网关状态
-                SqlUtil.executeUpdate("UPDATE gateway_info SET status='0' WHERE ip='"+desIp+"' AND port='"+desPort+"'");
-//             开启数据接收线程
-//                tcpConnection.receive(socket);//弃用
-                new ThreadReceive(socket).start();
-            }else{
-                socketMap.put(addr, null);
-                SqlUtil.executeUpdate("UPDATE gateway_info SET status='1' WHERE ip='"+desIp+"' AND port='"+desPort+"'");
-            }
-        }
-
+//        application.getBean(RunnerLoadOne.class);
+//        List<String> addrList = RunnerLoadOne.getAddrList();
+//        log.info("数据库网关个数为"+addrList.size());
+//        new HeartBeatDetectionClient().start();
+//        for (String addr : addrList) {
+//            String[] split = addr.split(":");
+//            String desIp = split[0];
+//            Integer desPort = Integer.valueOf(split[1]);
+//            TcpConnection tcpConnection = new TcpConnection();
+//            Future<Socket> futureSocket = tcpConnection.connect(desIp, desPort);
+//            //get()方法阻塞等待异步线程返回结果
+//            Socket socket = futureSocket.get();
+//            if (socket != null) {
+////                将socket放到哈希表
+//                socketMap.put(addr, socket);
+////                更新网关状态
+//                SqlUtil.executeUpdate("UPDATE gateway_info SET status='0' WHERE ip='"+desIp+"' AND port='"+desPort+"'");
+////             开启数据接收线程
+////                tcpConnection.receive(socket);//弃用
+//                new ThreadReceive(socket).start();
+//            }else{
+//                socketMap.put(addr, null);
+//                SqlUtil.executeUpdate("UPDATE gateway_info SET status='1' WHERE ip='"+desIp+"' AND port='"+desPort+"'");
+//            }
+//        }
+//        一个线程负责连接网关；N个线程负责开启receive
+        TcpServer tcpServer = application.getBean(TcpServer.class);
+        tcpServer.accept();
+//        开启心跳检测线程
+        HeartBeatDetectionClient heartBeatDetectionClient=application.getBean(HeartBeatDetectionClient.class);
+        heartBeatDetectionClient.heartBeat();
     }
 }

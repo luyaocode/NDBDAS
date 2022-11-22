@@ -1,7 +1,7 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : mysql
+Source Server         : 本地
 Source Server Version : 80029
 Source Host           : localhost:3306
 Source Database       : asurplus-vue
@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80029
 File Encoding         : 65001
 
-Date: 2022-11-16 09:40:09
+Date: 2022-11-16 20:36:31
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -21,11 +21,11 @@ SET FOREIGN_KEY_CHECKS=0;
 DROP TABLE IF EXISTS `cmd_dict`;
 CREATE TABLE `cmd_dict` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `cmd` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `resp_form` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `desc` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `cmd` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `resp_form` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `desc` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- ----------------------------
 -- Records of cmd_dict
@@ -54,8 +54,8 @@ DROP TABLE IF EXISTS `dev_epara_info_t1`;
 CREATE TABLE `dev_epara_info_t1` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   `dev_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '设备编号',
-  `dev_name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '设备名称',
-  `remark` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '备注',
+  `dev_name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '设备名称',
+  `remark` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '备注',
   `create_time` datetime DEFAULT CURRENT_TIMESTAMP,
   `del_flag` tinyint DEFAULT '0',
   `del_time` datetime DEFAULT CURRENT_TIMESTAMP,
@@ -83,7 +83,7 @@ CREATE TABLE `dev_epara_info_t1` (
   `curr_pha_b` float DEFAULT NULL,
   `curr_pha_c` float DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4734 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4734 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- ----------------------------
 -- Records of dev_epara_info_t1
@@ -122,7 +122,7 @@ CREATE TABLE `dev_epara_info_temp` (
   `pow_fac_b` float DEFAULT NULL,
   `pow_fac_c` float DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- ----------------------------
 -- Records of dev_epara_info_temp
@@ -134,7 +134,7 @@ CREATE TABLE `dev_epara_info_temp` (
 DROP TABLE IF EXISTS `dev_info`;
 CREATE TABLE `dev_info` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `dev_id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '',
+  `dev_id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '',
   `loc_id` int NOT NULL DEFAULT '0',
   `dev_name` varchar(255) DEFAULT NULL,
   `status` tinyint NOT NULL DEFAULT '0',
@@ -145,26 +145,26 @@ CREATE TABLE `dev_info` (
   `update_user` varchar(64) DEFAULT NULL,
   `update_time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=113 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=113 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- ----------------------------
 -- Records of dev_info
 -- ----------------------------
-INSERT INTO `dev_info` VALUES ('91', '0x11', '11', 'test', '1', '0', 'test', '1', '2022-11-14 22:25:38', '1', '2022-11-14 22:25:38');
-INSERT INTO `dev_info` VALUES ('93', '0x13', '12', 'test', '1', '0', 'test', '1', '2022-11-14 22:25:38', '1', '2022-11-14 22:25:38');
-INSERT INTO `dev_info` VALUES ('94', '0x14', '12', 'test', '1', '0', 'test', '1', '2022-11-14 22:25:38', '1', '2022-11-14 22:25:38');
-INSERT INTO `dev_info` VALUES ('95', '0x15', '12', 'test', '1', '0', 'test', '1', '2022-11-14 22:25:38', '1', '2022-11-14 22:25:38');
-INSERT INTO `dev_info` VALUES ('96', '0x16', '13', 'test', '1', '0', 'test', '1', '2022-11-14 22:25:38', '1', '2022-11-14 22:25:38');
-INSERT INTO `dev_info` VALUES ('97', '0x17', '13', 'test', '1', '0', 'test', '1', '2022-11-14 22:25:38', '1', '2022-11-14 22:25:38');
-INSERT INTO `dev_info` VALUES ('98', '0x18', '13', 'test', '1', '0', 'test', '1', '2022-11-14 22:25:38', '1', '2022-11-14 22:25:38');
-INSERT INTO `dev_info` VALUES ('99', '0x19', '14', 'test', '1', '0', 'test', '1', '2022-11-14 22:25:38', '1', '2022-11-14 22:25:38');
-INSERT INTO `dev_info` VALUES ('100', '0x1A', '14', 'test', '1', '0', 'test', '1', '2022-11-14 22:25:38', '1', '2022-11-14 22:25:38');
-INSERT INTO `dev_info` VALUES ('101', '0x1B', '14', 'test', '1', '0', 'test', '1', '2022-11-14 22:25:38', '1', '2022-11-14 22:25:38');
-INSERT INTO `dev_info` VALUES ('108', '0x10', '11', 'test', '1', '0', 'test', '1', '2022-11-14 22:25:38', '1', '2022-11-14 22:25:38');
-INSERT INTO `dev_info` VALUES ('109', '0x12', '11', 'test', '1', '0', 'test', '1', '2022-11-14 22:25:38', '1', '2022-11-14 22:25:38');
-INSERT INTO `dev_info` VALUES ('110', '0x1C', '1', 'test', '1', '0', 'test', '1', '2022-11-14 22:25:38', '1', '2022-11-14 22:25:38');
-INSERT INTO `dev_info` VALUES ('111', '0x1D', '2', 'test', '1', '0', 'test', '1', '2022-11-14 22:25:38', '1', '2022-11-14 22:25:38');
-INSERT INTO `dev_info` VALUES ('112', '0x1E', '3', 'test', '1', '0', 'test', '1', '2022-11-14 22:25:38', '1', '2022-11-14 22:25:38');
+INSERT INTO `dev_info` VALUES ('91', '0x11', '11', 'test', '1', '1', 'test', '1', '2022-11-14 22:25:38', '1', '2022-11-16 18:40:39');
+INSERT INTO `dev_info` VALUES ('93', '0x13', '12', 'test', '1', '1', 'test', '1', '2022-11-14 22:25:38', '1', '2022-11-16 18:40:39');
+INSERT INTO `dev_info` VALUES ('94', '0x14', '12', 'test', '1', '1', 'test', '1', '2022-11-14 22:25:38', '1', '2022-11-16 18:40:39');
+INSERT INTO `dev_info` VALUES ('95', '0x15', '12', 'test', '1', '1', 'test', '1', '2022-11-14 22:25:38', '1', '2022-11-16 18:40:39');
+INSERT INTO `dev_info` VALUES ('96', '0x16', '13', 'test', '1', '1', 'test', '1', '2022-11-14 22:25:38', '1', '2022-11-16 18:40:39');
+INSERT INTO `dev_info` VALUES ('97', '0x17', '13', 'test', '1', '1', 'test', '1', '2022-11-14 22:25:38', '1', '2022-11-16 18:40:39');
+INSERT INTO `dev_info` VALUES ('98', '0x18', '13', 'test', '1', '1', 'test', '1', '2022-11-14 22:25:38', '1', '2022-11-16 18:40:39');
+INSERT INTO `dev_info` VALUES ('99', '0x19', '14', 'test', '1', '1', 'test', '1', '2022-11-14 22:25:38', '1', '2022-11-16 18:40:39');
+INSERT INTO `dev_info` VALUES ('100', '0x1A', '14', 'test', '1', '1', 'test', '1', '2022-11-14 22:25:38', '1', '2022-11-16 18:40:39');
+INSERT INTO `dev_info` VALUES ('101', '0x1B', '14', 'test', '1', '1', 'test', '1', '2022-11-14 22:25:38', '1', '2022-11-16 18:40:39');
+INSERT INTO `dev_info` VALUES ('108', '0x10', '11', 'test', '1', '1', 'test', '1', '2022-11-14 22:25:38', '1', '2022-11-16 18:40:39');
+INSERT INTO `dev_info` VALUES ('109', '0x12', '11', 'test', '1', '1', 'test', '1', '2022-11-14 22:25:38', '1', '2022-11-16 18:40:39');
+INSERT INTO `dev_info` VALUES ('110', '0x1C', '1', 'test', '1', '1', 'test', '1', '2022-11-14 22:25:38', '1', '2022-11-16 18:40:39');
+INSERT INTO `dev_info` VALUES ('111', '0x1D', '2', 'test', '1', '1', 'test', '1', '2022-11-14 22:25:38', '1', '2022-11-16 18:40:39');
+INSERT INTO `dev_info` VALUES ('112', '0x1E', '3', 'test', '1', '1', 'test', '1', '2022-11-14 22:25:38', '1', '2022-11-16 18:40:39');
 
 -- ----------------------------
 -- Table structure for dev_loc_info
@@ -173,10 +173,10 @@ DROP TABLE IF EXISTS `dev_loc_info`;
 CREATE TABLE `dev_loc_info` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   `pid` varchar(16) DEFAULT NULL,
-  `name` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `name` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `sort` int DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- ----------------------------
 -- Records of dev_loc_info
@@ -204,11 +204,11 @@ DROP TABLE IF EXISTS `gateway_dict_info`;
 CREATE TABLE `gateway_dict_info` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   `item` varchar(16) DEFAULT NULL,
-  `name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `code` int DEFAULT NULL,
   `remark` varchar(32) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- ----------------------------
 -- Records of gateway_dict_info
@@ -223,8 +223,8 @@ INSERT INTO `gateway_dict_info` VALUES ('3', 'status', '状态码', '2', '未知
 DROP TABLE IF EXISTS `gateway_info`;
 CREATE TABLE `gateway_info` (
   `id` int unsigned NOT NULL AUTO_INCREMENT COMMENT '网关主键',
-  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '网关名称',
-  `ip` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '网关网络地址',
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '网关名称',
+  `ip` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '网关网络地址',
   `port` int DEFAULT NULL COMMENT '网关端口号',
   `type` tinyint DEFAULT '0' COMMENT '系统内置（0-是 1-否）',
   `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '备注',
@@ -235,7 +235,7 @@ CREATE TABLE `gateway_info` (
   `del_flag` tinyint DEFAULT '0' COMMENT '删除状态（0-未删除 1-已删除）',
   `status` int DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- ----------------------------
 -- Records of gateway_info
@@ -467,11 +467,24 @@ CREATE TABLE `sys_login_log` (
   `status` tinyint DEFAULT '0' COMMENT '状态（0--成功1--失败）',
   `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=COMPACT COMMENT='登录日志';
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=COMPACT COMMENT='登录日志';
 
 -- ----------------------------
 -- Records of sys_login_log
 -- ----------------------------
+INSERT INTO `sys_login_log` VALUES ('1', 'admin', '127.0.0.1', '内网IP，无法获取位置', 'Chrome 10', 'Windows 10', 'PC', '退出登录', '0', '2022-11-16 13:33:41');
+INSERT INTO `sys_login_log` VALUES ('2', 'admin', '127.0.0.1', '内网IP，无法获取位置', 'Chrome 10', 'Windows 10', 'PC', '登录成功', '0', '2022-11-16 13:33:45');
+INSERT INTO `sys_login_log` VALUES ('3', 'admin', '127.0.0.1', '内网IP，无法获取位置', 'Chrome 10', 'Windows 10', 'PC', '退出登录', '0', '2022-11-16 13:33:46');
+INSERT INTO `sys_login_log` VALUES ('4', 'admin', '127.0.0.1', '内网IP，无法获取位置', 'Chrome 10', 'Windows 10', 'PC', '退出登录', '0', '2022-11-16 13:34:45');
+INSERT INTO `sys_login_log` VALUES ('5', 'admin', '127.0.0.1', '内网IP，无法获取位置', 'Chrome 10', 'Windows 10', 'PC', '登录成功', '0', '2022-11-16 13:36:42');
+INSERT INTO `sys_login_log` VALUES ('6', 'admin', '127.0.0.1', '内网IP，无法获取位置', 'Chrome 10', 'Windows 10', 'PC', '退出登录', '0', '2022-11-16 13:36:43');
+INSERT INTO `sys_login_log` VALUES ('7', 'admin', '127.0.0.1', '内网IP，无法获取位置', 'Chrome 10', 'Windows 10', 'PC', '退出登录', '0', '2022-11-16 13:38:59');
+INSERT INTO `sys_login_log` VALUES ('8', 'admin', '127.0.0.1', '内网IP，无法获取位置', 'Chrome 10', 'Windows 10', 'PC', '退出登录', '0', '2022-11-16 13:45:37');
+INSERT INTO `sys_login_log` VALUES ('9', 'admin', '127.0.0.1', '内网IP，无法获取位置', 'Chrome 10', 'Windows 10', 'PC', '退出登录', '0', '2022-11-16 13:51:44');
+INSERT INTO `sys_login_log` VALUES ('10', 'admin', '127.0.0.1', '内网IP，无法获取位置', 'Chrome 10', 'Windows 10', 'PC', '登录成功', '0', '2022-11-16 14:11:35');
+INSERT INTO `sys_login_log` VALUES ('11', 'admin', '127.0.0.1', '内网IP，无法获取位置', 'Chrome 10', 'Windows 10', 'PC', '被顶下线', '0', '2022-11-16 14:11:35');
+INSERT INTO `sys_login_log` VALUES ('12', 'admin', '127.0.0.1', '内网IP，无法获取位置', 'Chrome 10', 'Windows 10', 'PC', '被顶下线', '0', '2022-11-16 16:58:40');
+INSERT INTO `sys_login_log` VALUES ('13', 'admin', '127.0.0.1', '内网IP，无法获取位置', 'Chrome 10', 'Windows 10', 'PC', '被顶下线', '0', '2022-11-16 18:31:57');
 
 -- ----------------------------
 -- Table structure for sys_oper_log
@@ -494,12 +507,13 @@ CREATE TABLE `sys_oper_log` (
   `oper_name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT '' COMMENT '操作人员',
   `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '操作时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='操作日志记录';
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='操作日志记录';
 
 -- ----------------------------
 -- Records of sys_oper_log
 -- ----------------------------
 INSERT INTO `sys_oper_log` VALUES ('1', '操作日志', '9', 'com.asurplus.monitor.controller.SysOperLogController.deleteAll()', 'DELETE', '/monitor/sys-oper-log/clean', '127.0.0.1', '内网IP，无法获取位置', '{}', '{\"msg\":\"操作成功\",\"code\":200}', '0', '', '34', 'admin', '2022-11-16 09:31:40');
+INSERT INTO `sys_oper_log` VALUES ('2', '设备管理', '6', 'com.asurplus.device.controller.DevInfoController.importData()', 'POST', '/device/management/importData', '127.0.0.1', '内网IP，无法获取位置', '{}', '{\"msg\":\"操作成功\",\"code\":200}', '0', '', '766', 'admin', '2022-11-16 18:40:39');
 
 -- ----------------------------
 -- Table structure for sys_param
@@ -683,8 +697,9 @@ CREATE TABLE `sys_role_info` (
 -- ----------------------------
 -- Records of sys_role_info
 -- ----------------------------
-INSERT INTO `sys_role_info` VALUES ('1', '超级管理员', 'administrator', '超级管理员，拥有至高无上的权力', '0', '3', '0', '2020-09-06 19:40:31', '1', '2022-11-14 22:38:57', '0');
+INSERT INTO `sys_role_info` VALUES ('1', '超级管理员', 'administrator', '超级管理员，拥有至高无上的权力', '0', '3', '0', '2020-09-06 19:40:31', '0', '2022-09-09 17:22:35', '0');
 INSERT INTO `sys_role_info` VALUES ('2', '测试人员', 'test', '只有查看数据的权限，无CRUD权限', '0', '2', '0', '2020-09-06 19:40:31', '1', '2022-09-09 17:22:36', '0');
+INSERT INTO `sys_role_info` VALUES ('3', '超级赛亚人', 'super', '元气弹', '0', '1', '1', '2022-09-09 17:20:23', '0', '2022-09-09 17:22:39', '0');
 INSERT INTO `sys_role_info` VALUES ('4', '33', '33', null, '0', '1', '1', '2022-09-09 17:23:09', '0', '2022-09-09 17:23:09', '0');
 INSERT INTO `sys_role_info` VALUES ('5', '测试A', 'b', null, '0', '1', '1', '2022-09-09 17:26:47', '0', '2022-09-09 17:26:47', '0');
 INSERT INTO `sys_role_info` VALUES ('6', '测试3', 'r', null, '0', '1', '1', '2022-09-09 17:27:16', '0', '2022-09-09 17:27:16', '0');
@@ -746,7 +761,7 @@ INSERT INTO `sys_user_info` VALUES ('9', '4', '投入trewtr4te', '9abac21e4de637
 INSERT INTO `sys_user_info` VALUES ('10', '0', 'adminfrwetgfertg', '1ac1c272a85050427f2f8ba705bfdae6', 'fgewsrfwesr', null, null, '0', null, '0', '1', '2022-11-02 11:15:04', '0', '2022-11-02 11:15:04', '0');
 INSERT INTO `sys_user_info` VALUES ('11', '0', 'adminrfw4tre4tg', '26cc8fa569177972ba7f6d74a0662076', 'fdasefc', null, null, '0', null, '0', '1', '2022-11-02 11:16:54', '0', '2022-11-02 11:16:54', '0');
 INSERT INTO `sys_user_info` VALUES ('12', '0', 'wqrw4trwe4t', 'a83f779019700774cf48c69bb82ff7cf', 'fedsaf', '15567893456', '', '0', '', '0', '1', '2022-11-02 11:18:28', '1', '2022-11-02 11:18:28', '0');
-INSERT INTO `sys_user_info` VALUES ('13', '0', 'adminr3rw4er', '57d3ca97d565825bd89acccc458fecc7', 'wqrw4trwe4t', '', '', '0', '', '0', '1', '2022-11-02 11:19:56', '1', '2022-11-14 15:05:51', '1');
+INSERT INTO `sys_user_info` VALUES ('13', '0', 'adminr3rw4er', '57d3ca97d565825bd89acccc458fecc7', 'rwer', null, null, '0', null, '0', '1', '2022-11-02 11:19:56', '0', '2022-11-02 11:19:56', '0');
 
 -- ----------------------------
 -- Table structure for sys_user_role
@@ -773,7 +788,7 @@ CREATE TABLE `test_table` (
   `id` int NOT NULL AUTO_INCREMENT,
   `resp_data` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=78 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=78 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- ----------------------------
 -- Records of test_table

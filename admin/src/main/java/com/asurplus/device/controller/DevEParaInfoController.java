@@ -3,18 +3,17 @@ package com.asurplus.device.controller;
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.asurplus.device.entity.DevEParaInfo;
 import com.asurplus.device.service.DevEParaInfoService;
-import com.asurplus.mytcp.TcpConnection;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
-
-import static com.asurplus.App.socketMap;
 
 
 /**
@@ -158,22 +157,5 @@ public class DevEParaInfoController {
         System.out.println(save ? devId+"记录增加成功！" : devId+"记录增加失败！");
         return (save ? "记录增加成功！" : "记录增加失败！");
     }
-
-    /**
-     * 发送指令
-     */
-    @SaCheckPermission("system:role:list")
-    @PostMapping("A01-01/0x03")
-    public String sendCommand(@RequestBody String command) {
-//        取第一个socket
-        Socket sock = socketMap.get("localhost:9090");
-        String sendStr = "0808 0000 0006 01 03 9c41 0001";
-        System.out.println("[0x03] " + command);
-//        System.out.println(sock);
-        TcpConnection.send(sock, sendStr);
-        return sock + sendStr + "命令帧发送成功！";
-
-    }
-
 
 }

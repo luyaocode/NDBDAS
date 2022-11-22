@@ -160,8 +160,9 @@ public class DevInfoController {
     @SysLog(title = "设备管理", type = BusinessType.IMPORT)
     @SaCheckPermission("system:user:list")
     @PostMapping("/importData")
-    public RES importData(@RequestParam(name = "file", required = false) MultipartFile file, @RequestParam(name = "updateSupport") Boolean updateSupport) {
-        return devInfoService.importExcel(file,updateSupport);
+    public RES importData(@RequestParam(name = "file", required = false) MultipartFile file,
+                          @RequestParam(name = "updateSupport") Boolean updateSupport) {
+        return devInfoService.importExcel(file, updateSupport);
     }
 }
 

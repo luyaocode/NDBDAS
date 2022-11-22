@@ -11,8 +11,6 @@ import com.asurplus.system.vo.TableInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.concurrent.ExecutionException;
-
 @RestController
 @RequestMapping("/config/gateway")
 public class GatewayInfoController {
@@ -44,11 +42,11 @@ public class GatewayInfoController {
         return ok;
     }
 
-    @SaCheckPermission("system:config:list")
-    @GetMapping("/connect/{id}")
-    public RES connect(@PathVariable("id") Integer id) throws ExecutionException, InterruptedException {
-        return gatewayInfoService.connect(id);
-    }
+//    @SaCheckPermission("system:config:list")
+//    @GetMapping("/connect/{id}")
+//    public RES connect(@PathVariable("id") Integer id) throws ExecutionException, InterruptedException {
+//        return gatewayInfoService.connect(id);
+//    }
 
     @SaCheckPermission("system:config:list")
     @PutMapping("/updateStatus")

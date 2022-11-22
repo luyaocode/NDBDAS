@@ -146,7 +146,8 @@ public class ExportExcelUtil {
             response.reset();
             response.setCharacterEncoding(CommonConstants.UTF8);
             response.setHeader("Content-Type", "application/vnd.ms-excel");
-            response.setHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(fileName, CommonConstants.UTF8) + ".xls");
+            response.setHeader("Content-Disposition", "attachment;filename=" +
+                    URLEncoder.encode(fileName, CommonConstants.UTF8) + ".xls");
             workbook.write(response.getOutputStream());
         } catch (IOException e) {
             e.printStackTrace();

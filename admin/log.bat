@@ -1,0 +1,1 @@
+cmd /c "cd /d D:\sprintboot\asurplus-vue-master\admin\target&&java -jar admin-0.0.1-SNAPSHOT.jar >../1.log"

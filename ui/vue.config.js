@@ -9,8 +9,8 @@ function resolve(dir) {
 const name = process.env.VUE_APP_TITLE || '智能配电柜后台管理系统'
 
 // 端口
-const port = process.env.port || process.env.npm_config_port || 80
-
+// const port = process.env.port || process.env.npm_config_port || 80
+const port =82
 // vue.config.js 配置说明
 //官方vue.config.js 参考文档 https://cli.vuejs.org/zh/config/#css-loaderoptions
 // 这里只列一部分，具体配置参考文档

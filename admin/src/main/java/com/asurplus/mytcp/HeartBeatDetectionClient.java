@@ -4,6 +4,8 @@ import com.asurplus.myutil.SqlUtil;
 import lombok.SneakyThrows;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Component;
 
 import java.net.Socket;
 
@@ -13,12 +15,12 @@ import static com.asurplus.App.socketMap;
  * @author chenluyao
  * 使用心跳检测，管理网关的连接状态，并与前端显示数据同步
  */
-public class HeartBeatDetectionClient extends Thread {
+@Component
+public class HeartBeatDetectionClient {
     private static final Logger log = LoggerFactory.getLogger(HeartBeatDetectionClient.class);
-
     @SneakyThrows
-    @Override
-    public void run() {
+    @Async("taskExecutor")
+    public void heartBeat() {
         int count, connectedNum;
         Thread.sleep(20000);
         log.info("开启客户端心跳检测线程");
@@ -38,7 +40,7 @@ public class HeartBeatDetectionClient extends Thread {
                         connectedNum++;
                         //                    检测发送数据是否异常
                         while (count-- >= 0) {
-                            if (TcpConnection.isServerClose(socket) || socket.isClosed() || !socket.isConnected()) {
+                            if (TcpServer.isServerClose(socket) || socket.isClosed() || !socket.isConnected()) {
                                 log.info("网关状态异常，请等一会儿" + socket);
                                 Thread.sleep(5000);
 

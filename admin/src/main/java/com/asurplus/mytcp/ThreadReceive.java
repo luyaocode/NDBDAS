@@ -9,8 +9,11 @@ import java.io.InputStream;
 import java.net.Socket;
 
 /**
+ * 应使用线程池管理线程，所以这个线程类不用了。改用注解@Async形式
+ *
  * @author chenluyao
  */
+
 public class ThreadReceive extends Thread {
     private Socket socket;
     private static final Logger log = LoggerFactory.getLogger(ThreadReceive.class);
@@ -38,8 +41,8 @@ public class ThreadReceive extends Thread {
                 }
                 System.out.println(socket + "响应帧：" + recvStr.toString());
 //                提取响应参数，组成合适的sql语句
-                String sql=null;
-                sql="insert into test_table(resp_data) values('" + recvStr + "')";
+                String sql = null;
+                sql = "insert into test_table(resp_data) values('" + recvStr + "')";
                 //                这里调用一个将字符串携带的信息写进数据库的工具类
                 SqlUtil.executeUpdate(sql);
                 recvStr.delete(0, recvStr.length());

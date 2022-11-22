@@ -42,7 +42,9 @@ public class ExcelDataChecker {
         List<HashMap<String, Object>> data = new ArrayList<>();
 
         //判断文件是否存在
-        if (fileTypeCheck(excelFile)) return new ArrayList<>();
+        if (fileTypeCheck(excelFile)) {
+            return new ArrayList<>();
+        }
         //使用try-with-resources特性自动关闭资源
         try (FileInputStream inputStream = new FileInputStream(excelFile);
              Workbook workbook = WorkbookFactory.create(inputStream)) {

@@ -26,29 +26,29 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="系统内置" prop="type">
-        <el-select v-model="queryParams.type" placeholder="系统内置" clearable size="small">
+      <el-form-item label="网关状态" prop="type">
+        <el-select v-model="queryParams.status" placeholder="网关状态" clearable size="small">
           <el-option
-            v-for="dict in typeOptions"
+            v-for="dict in statusOptions"
             :key="dict.id"
-            :label="dict.name"
+            :label="dict.remark"
             :value="dict.code"
           />
         </el-select>
       </el-form-item>
       <!--      时间搜索框-->
-<!--      <el-form-item label="创建时间">-->
-<!--        <el-date-picker-->
-<!--          v-model="dateRange"-->
-<!--          size="small"-->
-<!--          style="width: 240px"-->
-<!--          value-format="yyyy-MM-dd"-->
-<!--          type="daterange"-->
-<!--          range-separator="-"-->
-<!--          start-placeholder="开始日期"-->
-<!--          end-placeholder="结束日期"-->
-<!--        />-->
-<!--      </el-form-item>-->
+      <!--      <el-form-item label="创建时间">-->
+      <!--        <el-date-picker-->
+      <!--          v-model="dateRange"-->
+      <!--          size="small"-->
+      <!--          style="width: 240px"-->
+      <!--          value-format="yyyy-MM-dd"-->
+      <!--          type="daterange"-->
+      <!--          range-separator="-"-->
+      <!--          start-placeholder="开始日期"-->
+      <!--          end-placeholder="结束日期"-->
+      <!--        />-->
+      <!--      </el-form-item>-->
       <!--      -->
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
@@ -56,79 +56,79 @@
       </el-form-item>
     </el-form>
 
-    <el-row :gutter="10" class="mb8">
-      <el-col :span="1.5">
-        <el-button
-          type="primary"
-          plain
-          icon="el-icon-plus"
-          size="mini"
-          @click="handleAdd"
-          v-hasPermi="['system:config:add']"
-        >新增
-        </el-button>
-      </el-col>
-<!--      <el-col :span="1.5">-->
-<!--        <el-button-->
-<!--          type="success"-->
-<!--          plain-->
-<!--          icon="el-icon-edit"-->
-<!--          size="mini"-->
-<!--          :disabled="single"-->
-<!--          @click="handleUpdate"-->
-<!--          v-hasPermi="['system:config:edit']"-->
-<!--        >修改-->
-<!--        </el-button>-->
-<!--      </el-col>-->
-      <el-col :span="1.5">
-        <el-button
-          type="danger"
-          plain
-          icon="el-icon-delete"
-          size="mini"
-          :disabled="multiple"
-          @click="handleDelete"
-          v-hasPermi="['system:config:remove']"
-        >批量删除
-        </el-button>
-      </el-col>
+    <!--    <el-row :gutter="10" class="mb8">-->
+    <!--      <el-col :span="1.5">-->
+    <!--        <el-button-->
+    <!--          type="primary"-->
+    <!--          plain-->
+    <!--          icon="el-icon-plus"-->
+    <!--          size="mini"-->
+    <!--          @click="handleAdd"-->
+    <!--          v-hasPermi="['system:config:add']"-->
+    <!--        >新增-->
+    <!--        </el-button>-->
+    <!--      </el-col>-->
+    <!--&lt;!&ndash;      <el-col :span="1.5">&ndash;&gt;-->
+    <!--&lt;!&ndash;        <el-button&ndash;&gt;-->
+    <!--&lt;!&ndash;          type="success"&ndash;&gt;-->
+    <!--&lt;!&ndash;          plain&ndash;&gt;-->
+    <!--&lt;!&ndash;          icon="el-icon-edit"&ndash;&gt;-->
+    <!--&lt;!&ndash;          size="mini"&ndash;&gt;-->
+    <!--&lt;!&ndash;          :disabled="single"&ndash;&gt;-->
+    <!--&lt;!&ndash;          @click="handleUpdate"&ndash;&gt;-->
+    <!--&lt;!&ndash;          v-hasPermi="['system:config:edit']"&ndash;&gt;-->
+    <!--&lt;!&ndash;        >修改&ndash;&gt;-->
+    <!--&lt;!&ndash;        </el-button>&ndash;&gt;-->
+    <!--&lt;!&ndash;      </el-col>&ndash;&gt;-->
+    <!--      <el-col :span="1.5">-->
+    <!--        <el-button-->
+    <!--          type="danger"-->
+    <!--          plain-->
+    <!--          icon="el-icon-delete"-->
+    <!--          size="mini"-->
+    <!--          :disabled="multiple"-->
+    <!--          @click="handleDelete"-->
+    <!--          v-hasPermi="['system:config:remove']"-->
+    <!--        >批量删除-->
+    <!--        </el-button>-->
+    <!--      </el-col>-->
 
-      <el-col :span="1.5">
-        <el-button
-          type="warning"
-          plain
-          icon="el-icon-download"
-          size="mini"
-          :loading="exportLoading"
-          @click="handleExport"
-          v-hasPermi="['system:config:export']"
-        >导出
-        </el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="success"
-          plain
-          icon="el-icon-link"
-          size="mini"
-          @click="handleConnect"
-          v-hasPermi="['system:config:remove']"
-        >一键连接
-        </el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="danger"
-          plain
-          icon="el-icon-link"
-          size="mini"
-          @click="handleDisconnect"
-          v-hasPermi="['system:config:remove']"
-        >一键断开
-        </el-button>
-      </el-col>
-      <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
-    </el-row>
+    <!--      <el-col :span="1.5">-->
+    <!--        <el-button-->
+    <!--          type="warning"-->
+    <!--          plain-->
+    <!--          icon="el-icon-download"-->
+    <!--          size="mini"-->
+    <!--          :loading="exportLoading"-->
+    <!--          @click="handleExport"-->
+    <!--          v-hasPermi="['system:config:export']"-->
+    <!--        >导出-->
+    <!--        </el-button>-->
+    <!--      </el-col>-->
+    <!--      <el-col :span="1.5">-->
+    <!--        <el-button-->
+    <!--          type="success"-->
+    <!--          plain-->
+    <!--          icon="el-icon-link"-->
+    <!--          size="mini"-->
+    <!--          @click="handleConnect"-->
+    <!--          v-hasPermi="['system:config:remove']"-->
+    <!--        >一键连接-->
+    <!--        </el-button>-->
+    <!--      </el-col>-->
+    <!--      <el-col :span="1.5">-->
+    <!--        <el-button-->
+    <!--          type="danger"-->
+    <!--          plain-->
+    <!--          icon="el-icon-link"-->
+    <!--          size="mini"-->
+    <!--          @click="handleDisconnect"-->
+    <!--          v-hasPermi="['system:config:remove']"-->
+    <!--        >一键断开-->
+    <!--        </el-button>-->
+    <!--      </el-col>-->
+    <!--      <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>-->
+    <!--    </el-row>-->
 
     <el-table v-loading="loading" :data="gatewayList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center"/>
@@ -143,7 +143,7 @@
           </template>
         </template>
       </el-table-column>
-      <el-table-column label="系统内置" align="center" prop="type">
+      <el-table-column label="是否内置" align="center" prop="type">
         <template slot-scope="scope">
           <!--          dict-tag是ruoyi自定义组件
                         选项options是包含字典对象数组
@@ -154,46 +154,51 @@
       </el-table-column>
       <el-table-column label="备注" align="center" prop="remark" :show-overflow-tooltip="true"/>
       <el-table-column label="创建时间" align="center" prop="createTime" width="180">
+      <template slot-scope="scope">
+        <span>{{ parseTime(scope.row.createTime) }}</span>
+      </template>
+    </el-table-column>
+      <el-table-column label="更新时间" align="center" prop="updateTime" width="180">
         <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.createTime) }}</span>
+          <span>{{ parseTime(scope.row.updateTime) }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" width="240">
-        <template slot-scope="scope">
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-link"
-            @click="handleConnect(scope.row)"
-            v-hasPermi="['system:config:connect']"
-          >连接
-          </el-button>
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-close"
-            @click="handleDisconnect(scope.row)"
-            v-hasPermi="['system:config:connect']"
-          >断开
-          </el-button>
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-edit"
-            @click="handleUpdate(scope.row)"
-            v-hasPermi="['system:config:edit']"
-          >修改
-          </el-button>
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-delete"
-            @click="handleDelete(scope.row)"
-            v-hasPermi="['system:config:remove']"
-          >删除
-          </el-button>
-        </template>
-      </el-table-column>
+      <!--      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" width="240">-->
+      <!--        <template slot-scope="scope">-->
+      <!--          <el-button-->
+      <!--            size="mini"-->
+      <!--            type="text"-->
+      <!--            icon="el-icon-link"-->
+      <!--            @click="handleConnect(scope.row)"-->
+      <!--            v-hasPermi="['system:config:connect']"-->
+      <!--          >连接-->
+      <!--          </el-button>-->
+      <!--          <el-button-->
+      <!--            size="mini"-->
+      <!--            type="text"-->
+      <!--            icon="el-icon-close"-->
+      <!--            @click="handleDisconnect(scope.row)"-->
+      <!--            v-hasPermi="['system:config:connect']"-->
+      <!--          >断开-->
+      <!--          </el-button>-->
+      <!--          <el-button-->
+      <!--            size="mini"-->
+      <!--            type="text"-->
+      <!--            icon="el-icon-edit"-->
+      <!--            @click="handleUpdate(scope.row)"-->
+      <!--            v-hasPermi="['system:config:edit']"-->
+      <!--          >修改-->
+      <!--          </el-button>-->
+      <!--          <el-button-->
+      <!--            size="mini"-->
+      <!--            type="text"-->
+      <!--            icon="el-icon-delete"-->
+      <!--            @click="handleDelete(scope.row)"-->
+      <!--            v-hasPermi="['system:config:remove']"-->
+      <!--          >删除-->
+      <!--          </el-button>-->
+      <!--        </template>-->
+      <!--      </el-table-column>-->
     </el-table>
     <!--    <div>-->
     <!--      <el-button @click="handleConnect(1)">测试连接网关1</el-button>-->
@@ -300,6 +305,7 @@
           name: undefined,
           //网关ip
           ip: undefined,
+          status: undefined,
           type: undefined,
           paramKey: undefined
 
@@ -321,6 +327,8 @@
       };
     },
     created() {
+      //默认展示已连接的网关
+      this.queryParams.status=0;
       this.getList();
       //网关字典
       listDict("status").then(response => {
@@ -380,6 +388,7 @@
       /** 重置按钮操作 */
       resetQuery() {
         this.dateRange = [];
+        this.queryParams.status = undefined;
         this.resetForm("queryForm");
         this.handleQuery();
       },
@@ -482,7 +491,7 @@
             this.gatewayInfo.status = 1;
           }
           //  修改网关状态
-          updateStatus(this.gatewayInfo).then(response =>{
+          updateStatus(this.gatewayInfo).then(response => {
             console.log("开始刷新状态");
             this.getList();
           });
@@ -490,7 +499,7 @@
       },
 
       //仿照（批量）删除，先给一个警示弹窗
-      handleDisconnect(row){
+      handleDisconnect(row) {
 
       }
     }

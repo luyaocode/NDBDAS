@@ -7,24 +7,19 @@ import com.asurplus.common.utils.RES;
 import com.asurplus.gateway.entity.GatewayInfo;
 import com.asurplus.gateway.mapper.GatewayInfoMapper;
 import com.asurplus.gateway.service.GatewayInfoService;
-import com.asurplus.mytcp.TcpConnection;
-import com.asurplus.mytcp.ThreadReceive;
 import com.asurplus.system.vo.PageVO;
 import com.asurplus.system.vo.TableInfo;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import lombok.SneakyThrows;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import java.net.Socket;
 import java.util.Arrays;
-
-import static com.asurplus.App.socketMap;
+import java.util.List;
 
 /**
  * @author chenluyao
@@ -38,6 +33,9 @@ public class GatewayInfoServiceImpl extends ServiceImpl<GatewayInfoMapper, Gatew
     public TableInfo list(GatewayInfo gatewayInfo) {
         // 获取分页对象
         PageVO pageVO = PageUtils.getPageVO();
+        if(null==gatewayInfo){
+            return TableInfo.no();
+        }
         // 查询条件
         QueryWrapper<GatewayInfo> queryWrapper = new QueryWrapper<>();
         if (StringUtils.isNotBlank(gatewayInfo.getName())) {
@@ -51,6 +49,9 @@ public class GatewayInfoServiceImpl extends ServiceImpl<GatewayInfoMapper, Gatew
         }
         if (null != gatewayInfo.getType()) {
             queryWrapper.lambda().eq(GatewayInfo::getType, gatewayInfo.getType());
+        }
+        if (null != gatewayInfo.getStatus()) {
+            queryWrapper.lambda().eq(GatewayInfo::getStatus, gatewayInfo.getStatus());
         }
         // 时间段
         if (StringUtils.isNotBlank(pageVO.getBeginTime())) {
@@ -81,62 +82,62 @@ public class GatewayInfoServiceImpl extends ServiceImpl<GatewayInfoMapper, Gatew
         return RES.ok(this.baseMapper.selectById(id));
     }
 
-    @SneakyThrows
-    @Override
-    public RES connect(Integer id) {
-//        log.info("id==" + id);
-        GatewayInfo gatewayInfo = this.baseMapper.selectById(id);
-        String ip = gatewayInfo.getIp();
-        Integer port = gatewayInfo.getPort();
-        String addr = ip + ":" + port;
-        Socket socket = null;
-        if (null != socketMap.get(addr)) {
-            socket = socketMap.get(addr);
-        }
-        log.info("==map==");
-        for (String k : socketMap.keySet()) {
-            log.info(k + socketMap.get(k));
-        }
-        log.info("==map==");
-        if (socket != null) {
-            if (socketMap.containsKey(addr) && !socket.isClosed() && socket.isConnected() && !TcpConnection.isServerClose(socket)) {
-                log.info("别点了，已经连接上了" + addr);
-                return RES.ok("别点了，已经连接上了" + addr);
-            } else if (TcpConnection.isServerClose(socket)) {
-                log.info("网关断开连接" + addr);
-//                return RES.no("网关断开连接，请检查后再试"+addr);
-            } else {
-                log.info("本地断开连接，正在准备重连");
-            }
-
-        }
-//        重新new一个socket
-        TcpConnection tcpConnection = new TcpConnection();
-//        异步方法
-        socket = tcpConnection.connect(ip, port).get();
-        if (socket == null) {
-            log.info("连接失败了" + addr);
-//          修改网关状态为未连接
-//            GatewayInfo gateway = new GatewayInfo();
-//            gateway.setStatus(1);
-//            gateway.setId(id);
-//            this.baseMapper.updateById(gateway);
-//            log.info("网关状态修改为未连接");
-            return RES.no("连接失败了" + addr);
-        }
-        socketMap.put(addr, socket);
-
-        log.info("==map==");
-        for (String k : socketMap.keySet()) {
-            log.info(k + socketMap.get(k));
-        }
-        log.info("==map==");
-        log.info("连接成功了" + addr);
-
-        //开启接收线程
-        new ThreadReceive(socket).start();
-        return RES.ok("连接成功了" + addr);
-    }
+//    @SneakyThrows
+//    @Override
+//    public RES connect(Integer id) {
+////        log.info("id==" + id);
+//        GatewayInfo gatewayInfo = this.baseMapper.selectById(id);
+//        String ip = gatewayInfo.getIp();
+//        Integer port = gatewayInfo.getPort();
+//        String addr = ip + ":" + port;
+//        Socket socket = null;
+//        if (null != socketMap.get(addr)) {
+//            socket = socketMap.get(addr);
+//        }
+//        log.info("==map==");
+//        for (String k : socketMap.keySet()) {
+//            log.info(k + socketMap.get(k));
+//        }
+//        log.info("==map==");
+//        if (socket != null) {
+//            if (socketMap.containsKey(addr) && !socket.isClosed() && socket.isConnected() && !TcpServer.isServerClose(socket)) {
+//                log.info("别点了，已经连接上了" + addr);
+//                return RES.ok("别点了，已经连接上了" + addr);
+//            } else if (TcpServer.isServerClose(socket)) {
+//                log.info("网关断开连接" + addr);
+////                return RES.no("网关断开连接，请检查后再试"+addr);
+//            } else {
+//                log.info("本地断开连接，正在准备重连");
+//            }
+//
+//        }
+////        重新new一个socket
+//        TcpConnection tcpConnection = new TcpConnection();
+////        异步方法
+//        socket = tcpConnection.connect(ip, port).get();
+//        if (socket == null) {
+//            log.info("连接失败了" + addr);
+////          修改网关状态为未连接
+////            GatewayInfo gateway = new GatewayInfo();
+////            gateway.setStatus(1);
+////            gateway.setId(id);
+////            this.baseMapper.updateById(gateway);
+////            log.info("网关状态修改为未连接");
+//            return RES.no("连接失败了" + addr);
+//        }
+//        socketMap.put(addr, socket);
+//
+//        log.info("==map==");
+//        for (String k : socketMap.keySet()) {
+//            log.info(k + socketMap.get(k));
+//        }
+//        log.info("==map==");
+//        log.info("连接成功了" + addr);
+//
+//        //开启接收线程
+//        new ThreadReceive(socket).start();
+//        return RES.ok("连接成功了" + addr);
+//    }
 
     @Override
     public RES updateStatus(GatewayInfo gatewayInfo) {
@@ -146,12 +147,20 @@ public class GatewayInfoServiceImpl extends ServiceImpl<GatewayInfoMapper, Gatew
     }
 
     @Override
+    public RES setAllStatus(int status) {
+        QueryWrapper<GatewayInfo> qw=new QueryWrapper<>();
+        List<GatewayInfo> list = this.baseMapper.selectList(qw);
+        for(GatewayInfo obj:list){
+            obj.setStatus(status);
+            this.baseMapper.updateById(obj);
+        }
+        return RES.ok();
+    }
+
+    @Override
     public RES add(GatewayInfo gatewayInfo) {
         if (null == gatewayInfo) {
             return RES.no("提交错误");
-        }
-        if (null == gatewayInfo.getName()) {
-            return RES.no("请输入网关名称");
         }
         if (null == gatewayInfo.getIp()) {
             return RES.no("请输入IP地址");
@@ -162,13 +171,13 @@ public class GatewayInfoServiceImpl extends ServiceImpl<GatewayInfoMapper, Gatew
 
         //查重
         LambdaQueryWrapper<GatewayInfo> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(GatewayInfo::getPort, gatewayInfo.getPort());
+        queryWrapper.eq(GatewayInfo::getIp, gatewayInfo.getIp()).eq(GatewayInfo::getPort, gatewayInfo.getPort());
         int count = this.baseMapper.selectCount(queryWrapper);
         if (0 < count) {
-            return RES.no("端口已存在");
+            return RES.no("记录已经存在");
         }
-        gatewayInfo.setCreateUser(StpUtil.getLoginIdAsInt());
         this.baseMapper.insert(gatewayInfo);
+        log.info("记录增加成功！");
         return RES.ok();
     }
 

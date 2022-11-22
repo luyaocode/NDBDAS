@@ -29,6 +29,10 @@ public class MinioConfig {
      */
     @Bean
     public MinioClient minioClient() throws InvalidPortException, InvalidEndpointException {
-        return new MinioClient(minioProp.getEndpoint(), minioProp.getAccesskey(), minioProp.getSecretKey());
+//        增加
+        String endPoint = "http://localhost:9000";
+        String accessKey = "minioadmin";
+        String secretKey = "minioadmin";
+        return new MinioClient(endPoint, accessKey, secretKey);
     }
 }

@@ -11,8 +11,11 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 
 public interface GatewayInfoService extends IService<GatewayInfo> {
+
     /**
-     * 分页查询
+     * @param gatewayInfo 查询的参数
+     * @return 网关信息表
+     * 根据参数查询网关信息
      */
     TableInfo list(GatewayInfo gatewayInfo);
     /**
@@ -20,14 +23,21 @@ public interface GatewayInfoService extends IService<GatewayInfo> {
      */
     RES getById(Integer id);
 
-    /**
-     * 连接网关
-     * @param id
-     * @return
-     */
-    RES connect(Integer id);
+//    /**
+//     * 连接网关
+//     * @param id
+//     * @return
+//     */
+//    RES connect(Integer id);
 
     RES updateStatus(GatewayInfo gatewayInfo);
+
+    /**
+     * 将所有网关状态设为未连接
+     * @param status 网关状态
+     * @return RES
+     */
+    RES setAllStatus(int status);
     /**
      * 新增
      */

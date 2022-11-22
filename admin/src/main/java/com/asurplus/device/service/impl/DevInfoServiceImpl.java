@@ -18,6 +18,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -43,6 +45,8 @@ public class DevInfoServiceImpl extends ServiceImpl<DevInfoMapper, DevInfo> impl
     @Autowired
     private DevLocInfoMapper devLocInfoMapper;
 
+    private static final Logger log = LoggerFactory.getLogger(DevInfoServiceImpl.class);
+
     /**
      * 查询回收站外的设备--
      * devInfo包含了locId，支持根据locId查询设备
@@ -59,6 +63,7 @@ public class DevInfoServiceImpl extends ServiceImpl<DevInfoMapper, DevInfo> impl
         // 获取分页对象，前端时间信息存入到pageVO的beginTime和endTime属性
 //        考虑到原来的PageVO和PageUtils已经满足使用需求，所以直接使用就行了
         PageVO pageVO = PageUtils.getPageVO();
+//        log.info("pageSize=="+pageVO.getPageSize());
 
 //      获取要查询的初始locId
         Integer locId = devInfo.getLocId();
@@ -117,10 +122,11 @@ public class DevInfoServiceImpl extends ServiceImpl<DevInfoMapper, DevInfo> impl
 //            System.out.println("第二次遍历list结束=======");
         }
 
-//        是否导出
+//        是否导出。
         if (isExport) {
-            pageVO.setPageSize(Integer.MAX_VALUE);
+            pageVO.setPageSize(Integer.MAX_VALUE);//2147483647
         }
+        log.info("isExport=="+isExport);
 //      1、根据devId查询设备
         if (StringUtils.isNotBlank(devInfo.getDevId())) {
             queryWrapper.eq("dev_id", devInfo.getDevId());
@@ -159,6 +165,7 @@ public class DevInfoServiceImpl extends ServiceImpl<DevInfoMapper, DevInfo> impl
 
         //加上delFlag==0
         queryWrapper.eq("del_flag", 0);
+//        mybatis-plus 处于性能和安全的考虑，默认分页查询的单页最大数量为500
         return TableInfo.ok(devInfoMapper.selectPage(new Page<>(pageVO.getPageNum(), pageVO.getPageSize()), queryWrapper));
 
     }

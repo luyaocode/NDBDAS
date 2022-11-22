@@ -1,0 +1,199 @@
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::        (v2.3.1.RELEASE)
+
+2022-11-16 17:53:44.097  INFO 14056 --- [           main] o.s.boot.SpringApplication               : Starting application on LAPTOP-TRIRPGNR with PID 14056 (started by chenluyao in D:\sprintboot\asurplus-vue-master\admin\target)
+2022-11-16 17:53:44.100  INFO 14056 --- [           main] o.s.boot.SpringApplication               : No active profile set, falling back to default profiles: default
+2022-11-16 17:53:44.139  INFO 14056 --- [           main] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2022-11-16 17:53:45.183  INFO 14056 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2022-11-16 17:53:45.184  INFO 14056 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFERRED mode.
+2022-11-16 17:53:45.355  INFO 14056 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 164ms. Found 1 JPA repository interfaces.
+2022-11-16 17:53:45.368  INFO 14056 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2022-11-16 17:53:45.369  INFO 14056 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2022-11-16 17:53:45.400  INFO 14056 --- [           main] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.asurplus.onlyfortest.repository.DeviceRepository. If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository.
+2022-11-16 17:53:45.400  INFO 14056 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 25ms. Found 0 Redis repository interfaces.
+2022-11-16 17:53:45.968  INFO 14056 --- [           main] trationDelegate$BeanPostProcessorChecker : Bean 'spring.redis-org.springframework.boot.autoconfigure.data.redis.RedisProperties' of type [org.springframework.boot.autoconfigure.data.redis.RedisProperties] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-11-16 17:53:45.973  INFO 14056 --- [           main] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.boot.autoconfigure.data.redis.LettuceConnectionConfiguration' of type [org.springframework.boot.autoconfigure.data.redis.LettuceConnectionConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-11-16 17:53:46.052  INFO 14056 --- [           main] trationDelegate$BeanPostProcessorChecker : Bean 'lettuceClientResources' of type [io.lettuce.core.resource.DefaultClientResources] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-11-16 17:53:46.121  INFO 14056 --- [           main] trationDelegate$BeanPostProcessorChecker : Bean 'redisConnectionFactory' of type [org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-11-16 17:53:46.128  INFO 14056 --- [           main] trationDelegate$BeanPostProcessorChecker : Bean 'redisConfig' of type [com.asurplus.common.redis.RedisConfig$$EnhancerBySpringCGLIB$$48bd6f7d] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-11-16 17:53:46.148  INFO 14056 --- [           main] trationDelegate$BeanPostProcessorChecker : Bean 'druidDataSourceConfig' of type [com.asurplus.configurer.DruidDataSourceConfig$$EnhancerBySpringCGLIB$$998c171d] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-11-16 17:53:46.159  INFO 14056 --- [           main] c.a.configurer.DruidDataSourceConfig     : Datasource创建完成 ...
+2022-11-16 17:53:46.160  INFO 14056 --- [           main] c.a.configurer.DruidDataSourceConfig     : {
+	CreateTime:"2022-11-16 17:53:46",
+	ActiveCount:0,
+	PoolingCount:0,
+	CreateCount:0,
+	DestroyCount:0,
+	CloseCount:0,
+	ConnectCount:0,
+	Connections:[
+	]
+}
+2022-11-16 17:53:46.193  INFO 14056 --- [           main] trationDelegate$BeanPostProcessorChecker : Bean 'druidDataSource' of type [com.alibaba.druid.pool.DruidDataSource] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-11-16 17:53:46.234  INFO 14056 --- [           main] trationDelegate$BeanPostProcessorChecker : Bean 'spring.jpa-org.springframework.boot.autoconfigure.orm.jpa.JpaProperties' of type [org.springframework.boot.autoconfigure.orm.jpa.JpaProperties] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-11-16 17:53:46.238  INFO 14056 --- [           main] trationDelegate$BeanPostProcessorChecker : Bean 'spring.jpa.hibernate-org.springframework.boot.autoconfigure.orm.jpa.HibernateProperties' of type [org.springframework.boot.autoconfigure.orm.jpa.HibernateProperties] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-11-16 17:53:46.247  INFO 14056 --- [           main] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaConfiguration' of type [org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-11-16 17:53:46.255  INFO 14056 --- [           main] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.boot.autoconfigure.transaction.TransactionAutoConfiguration' of type [org.springframework.boot.autoconfigure.transaction.TransactionAutoConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-11-16 17:53:46.262  INFO 14056 --- [           main] trationDelegate$BeanPostProcessorChecker : Bean 'spring.transaction-org.springframework.boot.autoconfigure.transaction.TransactionProperties' of type [org.springframework.boot.autoconfigure.transaction.TransactionProperties] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-11-16 17:53:46.264  INFO 14056 --- [           main] trationDelegate$BeanPostProcessorChecker : Bean 'platformTransactionManagerCustomizers' of type [org.springframework.boot.autoconfigure.transaction.TransactionManagerCustomizers] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-11-16 17:53:46.291  INFO 14056 --- [           main] trationDelegate$BeanPostProcessorChecker : Bean 'jpaVendorAdapter' of type [org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-11-16 17:53:46.293  INFO 14056 --- [           main] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.boot.autoconfigure.data.jpa.JpaRepositoriesAutoConfiguration' of type [org.springframework.boot.autoconfigure.data.jpa.JpaRepositoriesAutoConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-11-16 17:53:46.296  INFO 14056 --- [           main] trationDelegate$BeanPostProcessorChecker : Bean 'entityManagerFactoryBootstrapExecutorCustomizer' of type [org.springframework.boot.autoconfigure.data.jpa.JpaRepositoriesAutoConfiguration$$Lambda$487/783682673] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-11-16 17:53:46.301  INFO 14056 --- [           main] trationDelegate$BeanPostProcessorChecker : Bean 'entityManagerFactoryBuilder' of type [org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-11-16 17:53:46.378  INFO 14056 --- [           main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2022-11-16 17:53:47.143  INFO 14056 --- [           main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2022-11-16 17:53:47.191  INFO 14056 --- [           main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 5.4.17.Final
+2022-11-16 17:53:47.293  INFO 14056 --- [           main] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2022-11-16 17:53:47.415  INFO 14056 --- [           main] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.MySQL8Dialect
+2022-11-16 17:53:48.000  INFO 14056 --- [           main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2022-11-16 17:53:48.007  INFO 14056 --- [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2022-11-16 17:53:48.008  INFO 14056 --- [           main] trationDelegate$BeanPostProcessorChecker : Bean 'entityManagerFactory' of type [org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-11-16 17:53:48.013  INFO 14056 --- [           main] trationDelegate$BeanPostProcessorChecker : Bean 'entityManagerFactory' of type [com.sun.proxy.$Proxy107] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-11-16 17:53:48.017  INFO 14056 --- [           main] trationDelegate$BeanPostProcessorChecker : Bean 'transactionManager' of type [org.springframework.orm.jpa.JpaTransactionManager] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-11-16 17:53:48.019  INFO 14056 --- [           main] trationDelegate$BeanPostProcessorChecker : Bean 'transactionConfig' of type [com.asurplus.common.config.TransactionConfig$$EnhancerBySpringCGLIB$$5873a5d] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-11-16 17:53:48.024  INFO 14056 --- [           main] trationDelegate$BeanPostProcessorChecker : Bean 'txAdvice' of type [org.springframework.transaction.interceptor.TransactionInterceptor] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-11-16 17:53:48.024  INFO 14056 --- [           main] trationDelegate$BeanPostProcessorChecker : Bean 'txAdviceAdvisor' of type [org.springframework.aop.support.DefaultPointcutAdvisor] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-11-16 17:53:48.297  INFO 14056 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2022-11-16 17:53:48.312  INFO 14056 --- [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2022-11-16 17:53:48.312  INFO 14056 --- [           main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.36]
+2022-11-16 17:53:48.382  INFO 14056 --- [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2022-11-16 17:53:48.382  INFO 14056 --- [           main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 4243 ms
+2022-11-16 17:53:48.732  WARN 14056 --- [           main] c.b.m.core.injector.AbstractMethod       : [com.asurplus.device.mapper.DevInfoMapper.insert] Has been loaded by XML or SqlProvider or Mybatis's Annotation, so ignoring this injection for [class com.baomidou.mybatisplus.core.injector.methods.Insert]
+2022-11-16 17:53:48.735  WARN 14056 --- [           main] c.b.m.core.injector.AbstractMethod       : [com.asurplus.device.mapper.DevInfoMapper.deleteById] Has been loaded by XML or SqlProvider or Mybatis's Annotation, so ignoring this injection for [class com.baomidou.mybatisplus.core.injector.methods.DeleteById]
+2022-11-16 17:53:48.738  WARN 14056 --- [           main] c.b.m.core.injector.AbstractMethod       : [com.asurplus.device.mapper.DevInfoMapper.update] Has been loaded by XML or SqlProvider or Mybatis's Annotation, so ignoring this injection for [class com.baomidou.mybatisplus.core.injector.methods.Update]
+2022-11-16 17:53:48.758  WARN 14056 --- [           main] c.b.m.core.injector.AbstractMethod       : [com.asurplus.device.mapper.DevLocInfoMapper.insert] Has been loaded by XML or SqlProvider or Mybatis's Annotation, so ignoring this injection for [class com.baomidou.mybatisplus.core.injector.methods.Insert]
+2022-11-16 17:53:48.761  WARN 14056 --- [           main] c.b.m.core.injector.AbstractMethod       : [com.asurplus.device.mapper.DevLocInfoMapper.deleteById] Has been loaded by XML or SqlProvider or Mybatis's Annotation, so ignoring this injection for [class com.baomidou.mybatisplus.core.injector.methods.DeleteById]
+2022-11-16 17:53:48.763  WARN 14056 --- [           main] c.b.m.core.injector.AbstractMethod       : [com.asurplus.device.mapper.DevLocInfoMapper.update] Has been loaded by XML or SqlProvider or Mybatis's Annotation, so ignoring this injection for [class com.baomidou.mybatisplus.core.injector.methods.Update]
+ _ _   |_  _ _|_. ___ _ |    _ 
+| | |\/|_)(_| | |_\  |_)||_|_\ 
+     /               |         
+                        3.3.2 
+2022-11-16 17:53:49.905  INFO 14056 --- [           main] org.quartz.impl.StdSchedulerFactory      : Using default implementation for ThreadExecutor
+2022-11-16 17:53:49.917  INFO 14056 --- [           main] org.quartz.core.SchedulerSignalerImpl    : Initialized Scheduler Signaller of type: class org.quartz.core.SchedulerSignalerImpl
+2022-11-16 17:53:49.917  INFO 14056 --- [           main] org.quartz.core.QuartzScheduler          : Quartz Scheduler v.2.3.2 created.
+2022-11-16 17:53:49.918  INFO 14056 --- [           main] org.quartz.simpl.RAMJobStore             : RAMJobStore initialized.
+2022-11-16 17:53:49.918  INFO 14056 --- [           main] org.quartz.core.QuartzScheduler          : Scheduler meta-data: Quartz Scheduler (v2.3.2) 'quartzScheduler' with instanceId 'NON_CLUSTERED'
+  Scheduler class: 'org.quartz.core.QuartzScheduler' - running locally.
+  NOT STARTED.
+  Currently in standby mode.
+  Number of jobs executed: 0
+  Using thread pool 'org.quartz.simpl.SimpleThreadPool' - with 10 threads.
+  Using job-store 'org.quartz.simpl.RAMJobStore' - which does not support persistence. and is not clustered.
+
+2022-11-16 17:53:49.918  INFO 14056 --- [           main] org.quartz.impl.StdSchedulerFactory      : Quartz scheduler 'quartzScheduler' initialized from an externally provided properties instance.
+2022-11-16 17:53:49.918  INFO 14056 --- [           main] org.quartz.impl.StdSchedulerFactory      : Quartz scheduler version: 2.3.2
+2022-11-16 17:53:49.918  INFO 14056 --- [           main] org.quartz.core.QuartzScheduler          : JobFactory set to: org.springframework.scheduling.quartz.SpringBeanJobFactory@25172993
+2022-11-16 17:53:51.107  WARN 14056 --- [           main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2022-11-16 17:53:51.274  INFO 14056 --- [           main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService
+2022-11-16 17:53:51.275  INFO 14056 --- [           main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'taskExecutor'
+2022-11-16 17:53:51.342  INFO 14056 --- [           main] pertySourcedRequestMappingHandlerMapping : Mapped URL path [/v2/api-docs] onto method [springfox.documentation.swagger2.web.Swagger2ControllerWebMvc#getDocumentation(String, HttpServletRequest)]
+____ ____    ___ ____ _  _ ____ _  _ 
+[__  |__| __  |  |  | |_/  |___ |\ | 
+___] |  |     |  |__| | \_ |___ | \| 
+DevDoc：http://sa-token.dev33.cn (v1.28.0)
+GitHub：https://github.com/dromara/sa-token
+2022-11-16 17:53:51.765  INFO 14056 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2022-11-16 17:53:51.766  INFO 14056 --- [           main] d.s.w.p.DocumentationPluginsBootstrapper : Documentation plugins bootstrapped
+2022-11-16 17:53:51.769  INFO 14056 --- [           main] d.s.w.p.DocumentationPluginsBootstrapper : Found 2 custom documentation plugin(s)
+2022-11-16 17:53:51.821  INFO 14056 --- [           main] s.d.s.w.s.ApiListingReferenceScanner     : Scanning for api listing references
+2022-11-16 17:53:51.840  INFO 14056 --- [           main] s.d.s.w.s.ApiListingReferenceScanner     : Scanning for api listing references
+2022-11-16 17:53:51.892  INFO 14056 --- [           main] o.s.s.quartz.SchedulerFactoryBean        : Starting Quartz Scheduler now
+2022-11-16 17:53:51.892  INFO 14056 --- [           main] org.quartz.core.QuartzScheduler          : Scheduler quartzScheduler_$_NON_CLUSTERED started.
+2022-11-16 17:53:51.893  INFO 14056 --- [           main] DeferredRepositoryInitializationListener : Triggering deferred initialization of Spring Data repositories…
+2022-11-16 17:53:52.132  INFO 14056 --- [           main] DeferredRepositoryInitializationListener : Spring Data repositories initialized!
+2022-11-16 17:53:52.138  INFO 14056 --- [           main] o.s.boot.SpringApplication               : Started application in 8.361 seconds (JVM running for 8.743)
+2022-11-16 17:53:52.174  INFO 14056 --- [           main] com.asurplus.App                         : 
+----------------------------------------------------------
+	Application Declare is running! Access URLs:
+	Local: 		http://localhost:nullnull
+	External: 	http://10.1.11.98:nullnull
+	Swagger-UI: 		http://10.1.11.98:nullnull/doc.html
+----------------------------------------------------------
+2022-11-16 17:53:52.175  INFO 14056 --- [           main] com.asurplus.App                         : 数据库网关个数为3
+2022-11-16 17:53:52.176  INFO 14056 --- [           main] com.asurplus.mytcp.TcpConnection         : [localhost:9090]开始连接...
+2022-11-16 17:53:54.205  INFO 14056 --- [           main] com.asurplus.mytcp.TcpConnection         : 连接失败！
+2022-11-16 17:53:54.218  INFO 14056 --- [           main] com.asurplus.myutil.SqlUtil              : 更新记录条数：1
+2022-11-16 17:53:54.219  INFO 14056 --- [           main] com.asurplus.mytcp.TcpConnection         : [localhost:10000]开始连接...
+2022-11-16 17:53:56.246  INFO 14056 --- [           main] com.asurplus.mytcp.TcpConnection         : 连接失败！
+2022-11-16 17:53:56.257  INFO 14056 --- [           main] com.asurplus.myutil.SqlUtil              : 更新记录条数：1
+2022-11-16 17:53:56.257  INFO 14056 --- [           main] com.asurplus.mytcp.TcpConnection         : [localhost:9091]开始连接...
+2022-11-16 17:53:58.266  INFO 14056 --- [           main] com.asurplus.mytcp.TcpConnection         : 连接失败！
+2022-11-16 17:53:58.277  INFO 14056 --- [           main] com.asurplus.myutil.SqlUtil              : 更新记录条数：1
+2022-11-16 17:54:12.185  INFO 14056 --- [     Thread-217] c.a.mytcp.HeartBeatDetectionClient       : 开启客户端心跳检测线程
+2022-11-16 17:54:12.216  INFO 14056 --- [     Thread-217] c.a.mytcp.HeartBeatDetectionClient       : 当前已连接的网关个数为:0
+2022-11-16 17:54:22.250  INFO 14056 --- [     Thread-217] c.a.mytcp.HeartBeatDetectionClient       : 当前已连接的网关个数为:0
+2022-11-16 17:54:32.276  INFO 14056 --- [     Thread-217] c.a.mytcp.HeartBeatDetectionClient       : 当前已连接的网关个数为:0
+2022-11-16 17:54:42.309  INFO 14056 --- [     Thread-217] c.a.mytcp.HeartBeatDetectionClient       : 当前已连接的网关个数为:0
+2022-11-16 17:54:52.336  INFO 14056 --- [     Thread-217] c.a.mytcp.HeartBeatDetectionClient       : 当前已连接的网关个数为:0
+2022-11-16 17:55:02.376  INFO 14056 --- [     Thread-217] c.a.mytcp.HeartBeatDetectionClient       : 当前已连接的网关个数为:0
+2022-11-16 17:55:10.743  INFO 14056 --- [nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-11-16 17:55:10.743  INFO 14056 --- [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2022-11-16 17:55:10.757  INFO 14056 --- [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 14 ms
+2022-11-16 17:55:10.811 ERROR 14056 --- [nio-8080-exec-1] o.a.c.c.C.[.[.[/].[dispatcherServlet]    : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed; nested exception is com.google.code.kaptcha.util.ConfigException: Invalid value 'com.asurplus.common.kaptcha.KaptchaTextCreator' for config parameter 'kaptcha.textproducer.impl'.] with root cause
+
+java.lang.ClassNotFoundException: com.asurplus.common.kaptcha.KaptchaTextCreator
+	at java.net.URLClassLoader.findClass(URLClassLoader.java:387) ~[na:1.8.0_333]
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:418) ~[na:1.8.0_333]
+	at sun.misc.Launcher$AppClassLoader.loadClass(Launcher.java:355) ~[na:1.8.0_333]
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:351) ~[na:1.8.0_333]
+	at java.lang.Class.forName0(Native Method) ~[na:1.8.0_333]
+	at java.lang.Class.forName(Class.java:264) ~[na:1.8.0_333]
+	at com.google.code.kaptcha.util.ConfigHelper.getClassInstance(ConfigHelper.java:111) ~[kaptcha-2.3.2.jar:2.3.2]
+	at com.google.code.kaptcha.util.Config.getTextProducerImpl(Config.java:78) ~[kaptcha-2.3.2.jar:2.3.2]
+	at com.google.code.kaptcha.impl.DefaultKaptcha.createText(DefaultKaptcha.java:82) ~[kaptcha-2.3.2.jar:2.3.2]
+	at com.asurplus.system.controller.KaptchaController.getKaptchaImage(KaptchaController.java:57) ~[classes!/:0.0.1-SNAPSHOT]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:1.8.0_333]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62) ~[na:1.8.0_333]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:1.8.0_333]
+	at java.lang.reflect.Method.invoke(Method.java:498) ~[na:1.8.0_333]
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:190) ~[spring-web-5.2.7.RELEASE.jar:5.2.7.RELEASE]
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:138) ~[spring-web-5.2.7.RELEASE.jar:5.2.7.RELEASE]
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:105) ~[spring-webmvc-5.2.7.RELEASE.jar:5.2.7.RELEASE]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:879) ~[spring-webmvc-5.2.7.RELEASE.jar:5.2.7.RELEASE]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:793) ~[spring-webmvc-5.2.7.RELEASE.jar:5.2.7.RELEASE]
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87) ~[spring-webmvc-5.2.7.RELEASE.jar:5.2.7.RELEASE]
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1040) ~[spring-webmvc-5.2.7.RELEASE.jar:5.2.7.RELEASE]
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:943) ~[spring-webmvc-5.2.7.RELEASE.jar:5.2.7.RELEASE]
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1006) ~[spring-webmvc-5.2.7.RELEASE.jar:5.2.7.RELEASE]
+	at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:898) ~[spring-webmvc-5.2.7.RELEASE.jar:5.2.7.RELEASE]
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:634) ~[tomcat-embed-core-9.0.36.jar:9.0.36]
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:883) ~[spring-webmvc-5.2.7.RELEASE.jar:5.2.7.RELEASE]
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:741) ~[tomcat-embed-core-9.0.36.jar:9.0.36]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:231) ~[tomcat-embed-core-9.0.36.jar:9.0.36]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166) ~[tomcat-embed-core-9.0.36.jar:9.0.36]
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100) ~[spring-web-5.2.7.RELEASE.jar:5.2.7.RELEASE]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119) ~[spring-web-5.2.7.RELEASE.jar:5.2.7.RELEASE]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193) ~[tomcat-embed-core-9.0.36.jar:9.0.36]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166) ~[tomcat-embed-core-9.0.36.jar:9.0.36]
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93) ~[spring-web-5.2.7.RELEASE.jar:5.2.7.RELEASE]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119) ~[spring-web-5.2.7.RELEASE.jar:5.2.7.RELEASE]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193) ~[tomcat-embed-core-9.0.36.jar:9.0.36]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166) ~[tomcat-embed-core-9.0.36.jar:9.0.36]
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201) ~[spring-web-5.2.7.RELEASE.jar:5.2.7.RELEASE]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119) ~[spring-web-5.2.7.RELEASE.jar:5.2.7.RELEASE]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193) ~[tomcat-embed-core-9.0.36.jar:9.0.36]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166) ~[tomcat-embed-core-9.0.36.jar:9.0.36]
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:202) ~[tomcat-embed-core-9.0.36.jar:9.0.36]
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:96) [tomcat-embed-core-9.0.36.jar:9.0.36]
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:541) [tomcat-embed-core-9.0.36.jar:9.0.36]
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:139) [tomcat-embed-core-9.0.36.jar:9.0.36]
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:92) [tomcat-embed-core-9.0.36.jar:9.0.36]
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74) [tomcat-embed-core-9.0.36.jar:9.0.36]
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:343) [tomcat-embed-core-9.0.36.jar:9.0.36]
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:373) [tomcat-embed-core-9.0.36.jar:9.0.36]
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:65) [tomcat-embed-core-9.0.36.jar:9.0.36]
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:868) [tomcat-embed-core-9.0.36.jar:9.0.36]
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1590) [tomcat-embed-core-9.0.36.jar:9.0.36]
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49) [tomcat-embed-core-9.0.36.jar:9.0.36]
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149) [na:1.8.0_333]
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624) [na:1.8.0_333]
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61) [tomcat-embed-core-9.0.36.jar:9.0.36]
+	at java.lang.Thread.run(Thread.java:750) [na:1.8.0_333]
+
+2022-11-16 17:55:12.413  INFO 14056 --- [     Thread-217] c.a.mytcp.HeartBeatDetectionClient       : 当前已连接的网关个数为:0

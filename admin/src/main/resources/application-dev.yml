@@ -126,6 +126,7 @@ mybatis-plus:
 
 # Minio文件存储配置信息
 minio:
-  endpoint: http://${server.host}:9000
+#  ${server.host}部署的时候读取不到
+  endpoint: http://localhost:9000
   accesskey: minioadmin
   secretKey: minioadmin

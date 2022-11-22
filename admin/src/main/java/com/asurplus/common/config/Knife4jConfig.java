@@ -1,7 +1,6 @@
 package com.asurplus.common.config;
 
 import com.asurplus.common.consts.SystemConst;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.ApiInfoBuilder;
@@ -25,8 +24,9 @@ public class Knife4jConfig {
     /**
      * 是否开启swagger
      */
-    @Value("${knife4j.enabled}")
-    private boolean enabled;
+//    @Value("${knife4j.enabled}")
+//            运行jar的时候读不到这个值
+    private boolean enabled=true;
 
     @Bean("appApi")
     public Docket appApi() {
