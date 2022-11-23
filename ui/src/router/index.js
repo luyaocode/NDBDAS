@@ -126,7 +126,20 @@ export const constantRoutes = [
       }
     ]
   },
-
+  //设备管理
+  {
+    path: '/tool',
+    component: Layout,
+    hidden: true,
+    children: [
+      {
+        path: 'chat',
+        component: (resolve) => require(['@/views/tool/chat/index.vue'], resolve),
+        name: 'Chat',
+        meta: {title: '通讯工具'},
+      }
+    ]
+  },
 
 
   {

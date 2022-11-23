@@ -2,7 +2,10 @@ import request from '@/utils/request'
 
 const baseUrl = '/device/dev-epara-info/';
 
-// 查询当前电参数
+/**
+ * 根据设备编号查询设备电参量
+ * @param devId
+ */
 export function getEParas(devId) {
   return request({
     url: baseUrl + devId,

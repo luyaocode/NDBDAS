@@ -11,6 +11,8 @@ import com.asurplus.system.vo.TableInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * <p>
  * 字典配置 前端控制器
@@ -66,8 +68,7 @@ public class SysDictDetailController {
     @GetMapping(value = "/listDetail/{dictCode}")
     public RES listDetail(@PathVariable String dictCode) {
         RES res = RES.ok(sysDictDetailService.listSysDictDetailByDictCode(dictCode));//ok里面是List对象
-//        Object data = res.getData();
-//        System.out.println("statusData=="+data);
+        List<SysDictDetail> sysDictDetails = sysDictDetailService.listSysDictDetailByDictCode(dictCode);
         return res;
     }
 }

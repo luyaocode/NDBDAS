@@ -141,6 +141,8 @@ public class SysDictDetailServiceImpl extends ServiceImpl<SysDictDetailMapper, S
 
     @Override
     @Cacheable(value = SystemConst.SYS_DICT_CACHE, key = "#dictCode")
+//    @CacheEvict(value = SystemConst.SYS_DICT_CACHE, key = "#dictCode")
+//    @CacheEvict清除缓存。需要指定缓存的名称
     public List<SysDictDetail> listSysDictDetailByDictCode(String dictCode) {
         return this.baseMapper.listSysDictDetailByDictCode(dictCode);
     }

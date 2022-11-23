@@ -1,5 +1,6 @@
 package com.asurplus.mytcp;
 
+import com.asurplus.device.service.DevGatewayInfoService;
 import com.asurplus.gateway.entity.GatewayInfo;
 import com.asurplus.gateway.service.GatewayInfoService;
 import com.asurplus.myutil.SpringUtil;
@@ -30,6 +31,9 @@ public class TcpServer {
      */
     @Autowired
     private GatewayInfoService gatewayInfoService;
+    @Autowired
+    private DevGatewayInfoService devGatewayInfoService;
+
     @SneakyThrows
     @Async("taskExecutor")
     public void accept() {
@@ -57,16 +61,19 @@ public class TcpServer {
 //            调用接收线程
             TcpReceive tcpReceive = SpringUtil.getBean(TcpReceive.class);
             tcpReceive.receive(socket);
+//            请求设备地址及编号
+            String sendStr=FrameUtil.FramingRead(3,0,40029,1);
+            TcpServer.send(socket,sendStr);
         }
 
     }
     /**
-     * 发送数据
+     * 发送单条指令
      */
     @SneakyThrows
     public static void send(Socket socket, String sendStr) {
         if(null==socket){
-            log.info("socket error");
+            log.info("socket is null");
             return ;
         }
         OutputStream os = null;
@@ -192,7 +199,7 @@ public class TcpServer {
     /**
      * 判断客户端否断开连接
      */
-    public static boolean isServerClose(Socket socket){
+    public static boolean isClientClose(Socket socket){
         try{
             //发送1个字节的紧急数据，默认情况下，服务器端没有开启紧急数据处理，不影响正常通信
             socket.sendUrgentData(0xFF);

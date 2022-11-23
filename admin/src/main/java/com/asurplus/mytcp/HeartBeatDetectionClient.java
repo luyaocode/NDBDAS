@@ -18,11 +18,11 @@ import static com.asurplus.App.socketMap;
 @Component
 public class HeartBeatDetectionClient {
     private static final Logger log = LoggerFactory.getLogger(HeartBeatDetectionClient.class);
+
     @SneakyThrows
     @Async("taskExecutor")
     public void heartBeat() {
         int count, connectedNum;
-        Thread.sleep(20000);
         log.info("开启客户端心跳检测线程");
         while (true) {
             connectedNum = 0;
@@ -39,8 +39,8 @@ public class HeartBeatDetectionClient {
                     if (socket != null) {
                         connectedNum++;
                         //                    检测发送数据是否异常
-                        while (count-- >= 0) {
-                            if (TcpServer.isServerClose(socket) || socket.isClosed() || !socket.isConnected()) {
+                        while (count >= 0) {
+                            if (TcpServer.isClientClose(socket) || socket.isClosed() || !socket.isConnected()) {
                                 log.info("网关状态异常，请等一会儿" + socket);
                                 Thread.sleep(5000);
 
@@ -48,20 +48,21 @@ public class HeartBeatDetectionClient {
                                 log.info("太好了，网关状态正常" + socket);
                                 break;
                             }
+                            count--;
                         }
                         if (count < 0) {
-                            if (status == 0) {
+                            if (status == 0 || status == 2) {
                                 //                    更新网关状态,并将相应的socket置为null
-                                log.info("当前网关状态为已连接，需要设置为未连接" + socket);
+                                log.info("当前网关状态需要设置为未连接" + socket);
                                 String sql = "UPDATE gateway_info SET status='1' WHERE ip='" + desIp + "' AND port='" + desPort + "'";
                                 SqlUtil.executeUpdate(sql);
                                 socket.close();
                                 socketMap.replace(addr, socket, null);
                             }
                         } else {
-                            if (status == 1) {
+                            if (status == 1 || status == 2) {
                                 //                    更新网关状态
-                                log.info("当前网关状态为未连接，需要设置为已连接" + socket);
+                                log.info("当前网关状态需要设置为已连接" + socket);
                                 String sql = "UPDATE gateway_info SET status='0' WHERE ip='" + desIp + "' AND port='" + desPort + "'";
                                 SqlUtil.executeUpdate(sql);
                             }

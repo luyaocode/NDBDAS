@@ -21,8 +21,8 @@ public class CtlTest {
         log.info("socketMap==" + socketMap);
         for (String k : socketMap.keySet()) {
             Socket socket = socketMap.get(k);
-            if (socket != null && !TcpServer.isServerClose(socket)) {
-                TcpServer.send(socket, "0001 0000 0006 01 03 9C44 0001");
+            if (socket != null && !TcpServer.isClientClose(socket)) {
+                TcpServer.send(socket, "0001 0000 0006 01 03 9C5D 0001");
             }
 
         }

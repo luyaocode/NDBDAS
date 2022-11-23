@@ -1,14 +1,21 @@
 package com.asurplus.mytcp;
 
+import com.asurplus.device.entity.DevGatewayInfo;
+import com.asurplus.device.service.DevGatewayInfoService;
+import com.asurplus.myutil.Dict;
 import com.asurplus.myutil.SqlUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.Socket;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Map;
 
 /**
  * @author chenluyao
@@ -16,9 +23,16 @@ import java.net.Socket;
 @Component
 public class TcpReceive {
     private static final Logger log = LoggerFactory.getLogger(TcpReceive.class);
+    @Autowired
+    private DevGatewayInfoService devGatewayInfoService;
 
     @Async("taskExecutor")
     public void receive(Socket socket) {
+        if (socket == null || TcpServer.isClientClose(socket)) {
+            return;
+        }
+        String ip = socket.getInetAddress().getHostAddress();
+        Integer port = socket.getPort();
         InputStream is = null;
         try {
             is = socket.getInputStream();
@@ -45,6 +59,33 @@ public class TcpReceive {
                 sql = "insert into test_table(resp_data) values('" + recvStr + "')";
                 //                这里调用一个将字符串携带的信息写进数据库的工具类
                 SqlUtil.executeUpdate(sql);
+//                解析帧
+                Map<String, String> map = FrameUtil.frameSplit(recvStr.toString());
+                if (map != null) {
+//                  读保持寄存器
+                    if (Dict.FUN_CODE_READ.equals(map.get(Dict.FUN_CODE))) {
+//                      读设备编号，保存到表dev_gateway_info
+                        if (Dict.SLAVE_ID_00.equals(map.get(Dict.SLAVE_ID))) {
+                            DevGatewayInfo devGatewayInfo = new DevGatewayInfo();
+                            devGatewayInfo.setDevId(map.get(Dict.DEVICE_ID));
+                            devGatewayInfo.setIp(ip);
+                            devGatewayInfo.setPort(port);
+                            devGatewayInfo.setSort(Integer.parseInt(map.get(Dict.SORT), 16));
+                            try {
+                                devGatewayInfo.setCreateTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+                                        .parse(map.get(Dict.DATE_TIME)));
+                            } catch (ParseException e) {
+                                log.info("时间格式有误");
+                            }
+//                            如果原设备存在，就更新。否则保存新的设备
+                            devGatewayInfoService.save(devGatewayInfo);
+                            log.info("设备-网关关联表更新成功");
+
+                        }
+
+                    }
+
+                }
                 recvStr.delete(0, recvStr.length());
 //                recvStr=new String(bytes,0,len);
 //                System.out.println(recvStr);

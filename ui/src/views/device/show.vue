@@ -67,6 +67,7 @@
     <el-card v-loading="loading" :data="eParas">
       <el-col :xs="24" :sm="24" :md="6" :lg="6" :xl="6" style="margin-bottom: 10px">
         <el-button type="primary" size="mini" @click="handleRefresh">刷新</el-button>
+        <div class="footer">编号：{{eParas.id}}</div>
         <div class="footer">设备编号：{{eParas.devId}}</div>
         <div class="footer">时间：{{eParas.createTime}}</div>
         <div class="footer">频率：{{eParas.freq}}Hz</div>
@@ -105,7 +106,7 @@
       </el-col>
     </el-card>
 
-    <el-button type="primary" size="mini" @click="handleCommand">控制按钮测试</el-button>
+<!--    <el-button type="primary" size="mini" @click="handleCommand">控制按钮测试</el-button>-->
     <!--    折线图显示-->
     <div>
       <el-row :gutter="6">
@@ -420,6 +421,7 @@
               this.voltInfo.xAxis.data.shift();
               this.voltInfo.series[0].data.shift();
               this.voltInfo.series[1].data.shift();
+              this.voltInfo.series[2].data.shift();
             }
 
             if (this.currInfo.xAxis.data.length >= 8) {

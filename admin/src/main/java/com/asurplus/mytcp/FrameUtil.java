@@ -1,6 +1,14 @@
 package com.asurplus.mytcp;
 
+import com.asurplus.myutil.Dict;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
+
+import static com.asurplus.App.randMap;
 
 //帧操作工具
 
@@ -16,6 +24,7 @@ import java.util.Random;
  * 0x10	    写多个保持寄存器	WRITE MULTIPLE REGISTER	字操作	    多个
  */
 public class FrameUtil {
+    private static final Logger log = LoggerFactory.getLogger(FrameUtil.class);
 
     public static void main(String[] args) {
         String sendStr;
@@ -34,12 +43,10 @@ public class FrameUtil {
 //        写多个线圈
         sendStr = FramingWriteCoils(1, 30001, 4, 0x0f);
         System.out.println(sendStr);
-
 //        写多个保持寄存器
         sendStr = FramingWriteHoldingRegisters(1, 40001, 3, "aabbccddeeff");
         System.out.println(sendStr);
     }
-
 
     //    一、读取:01,02,03读电参量,04
 
@@ -59,6 +66,7 @@ public class FrameUtil {
 //        for (String s : strs) {
 //            System.out.println(s);
 //        }
+        String rand = strs[0] + strs[1];
         sb.append(strs[0]).append(strs[1]).append(" ");//事务处理标识，2字节
         sb.append("0000").append(" ");//0000，2字节，表示Modbus TCP协议
         sb.append("0006").append(" ");//长度，2字节，表示后面还有6字节
@@ -67,7 +75,8 @@ public class FrameUtil {
         sb.append(int2hex2(funCode)).append(" ");//操作码，1字节
         sb.append(int2hex(offSet)[0]).append(int2hex(offSet)[1]).append(" ");//起始地址,2字节
         sb.append(int2hex(num)[0]).append(int2hex(num)[1]);//线圈数量,2字节
-
+//      将随机码保存到randSet
+        randMap.put(rand, funCode);
         return sb.toString();
     }
 
@@ -160,6 +169,88 @@ public class FrameUtil {
         sb.append(value);
 
         return sb.toString();
+
+    }
+
+    /**
+     * 对网关响应帧的解析
+     *
+     * @param recvStr
+     * @return String[]
+     */
+    static Map<String, String> frameSplit(String recvStr) {
+        if (recvStr == null) {
+            return null;
+        }
+        log.info("开始解析响应帧...");
+        Map<String, String> frameMap = new HashMap<>();
+        String[] ss = recvStr.split(" ");
+        if (ss.length < Dict.WRITE_MIN_LENGTH) {
+            log.info("帧长有误");
+            return null;
+        }
+        String rand = ss[0];
+        log.info("randMap==" + randMap);
+        if (!randMap.containsKey(rand)) {
+            log.info("未知的随机码");
+            return null;
+        }
+        String protocol = ss[1];
+        if (!Dict.PROTOCOL_TCP.equals(protocol)) {
+            log.info("协议标识有误");
+            return null;
+        }
+//        后面跟着多少字节
+        String tailLen = ss[2];
+        if (tailLen.length() != 4) {
+            log.info("tailLen长度有误");
+            return null;
+        }
+        String slaveId = ss[3];
+        if (slaveId.length() != 2) {
+            log.info("设备编号长度有误");
+            return null;
+        }
+        String funCode = ss[4];
+        if (funCode.length() != 2) {
+            log.info("控制码长度有误");
+            return null;
+        }
+        if (Integer.parseInt(funCode, 16) > 16) {
+            log.info("控制码错误");
+        }
+        String contentLen = ss[5];
+        if (contentLen.length() != 2) {
+            log.info("数据长度有误");
+        }
+        String content = ss[6];
+        String sort = "";
+        String devId = "";
+        String dateTime = "";
+        if (Dict.SLAVE_ID_00.equals(slaveId) && content.length() >= 2) {
+            devId = content.substring(2);
+            sort = content.substring(0, 2);
+            dateTime = ss[7] + " " + ss[8];
+        }
+        frameMap.put(Dict.RAND, rand);
+        frameMap.put(Dict.PROTOCOL, protocol);
+        frameMap.put(Dict.TAIL_LEN, tailLen);
+        frameMap.put(Dict.SLAVE_ID, slaveId);
+        frameMap.put(Dict.FUN_CODE, funCode);
+        frameMap.put(Dict.CONTENT_LENGTH, contentLen);
+        frameMap.put(Dict.CONTENT, content);
+        frameMap.put(Dict.DEVICE_ID, devId);
+        frameMap.put(Dict.SORT, sort);
+        frameMap.put(Dict.DATE_TIME, dateTime);
+        log.info("解析成功");
+//            消除rand
+        if (Dict.SLAVE_ID_00.equals(slaveId)) {
+
+        } else {
+            randMap.remove(rand);
+        }
+        log.info("frameMap==" + frameMap);
+        return frameMap;
 
     }
 

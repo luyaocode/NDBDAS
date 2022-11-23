@@ -2,6 +2,7 @@ package com.asurplus;
 
 import com.asurplus.mytcp.HeartBeatDetectionClient;
 import com.asurplus.mytcp.TcpServer;
+import com.asurplus.mytcp.Timer;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
@@ -13,8 +14,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
 
 import java.net.InetAddress;
 import java.net.Socket;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 项目启动类
@@ -35,6 +35,11 @@ public class App {
      * 定义一个全局变量，哈希表< 主键,socket对象>形式存放socket对象
      */
     public static Map<String, Socket> socketMap = new HashMap<>();
+    /**
+     * < rand,funCode>
+     */
+    public static Map<String, Integer> randMap = new HashMap<>();
+
 
     @SneakyThrows
     public static void main(String[] args) {
@@ -83,7 +88,10 @@ public class App {
         TcpServer tcpServer = application.getBean(TcpServer.class);
         tcpServer.accept();
 //        开启心跳检测线程
-        HeartBeatDetectionClient heartBeatDetectionClient=application.getBean(HeartBeatDetectionClient.class);
+        HeartBeatDetectionClient heartBeatDetectionClient = application.getBean(HeartBeatDetectionClient.class);
         heartBeatDetectionClient.heartBeat();
+//        开启定时器，发送请求帧
+        Timer timer = application.getBean(Timer.class);
+        timer.requestEPara();
     }
 }
