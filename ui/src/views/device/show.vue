@@ -66,7 +66,7 @@
     <!--    数据显示-当前电参量-->
     <el-card v-loading="loading" :data="eParas">
       <el-col :xs="24" :sm="24" :md="6" :lg="6" :xl="6" style="margin-bottom: 10px">
-        <el-button type="primary" size="mini" @click="handleRefresh">刷新</el-button>
+<!--        <el-button type="primary" size="mini" @click="handleRefresh">刷新</el-button>-->
         <div class="footer">编号：{{eParas.id}}</div>
         <div class="footer">设备编号：{{eParas.devId}}</div>
         <div class="footer">时间：{{eParas.createTime}}</div>

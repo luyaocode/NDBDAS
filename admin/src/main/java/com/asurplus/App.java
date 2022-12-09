@@ -93,5 +93,6 @@ public class App {
 //        开启定时器，发送请求帧
         Timer timer = application.getBean(Timer.class);
         timer.requestEPara();
+
     }
 }
