@@ -1,24 +1,25 @@
 <template>
   <div class="industrial-zone">
     <div id="float" v-show="showFloat">
+<!--      标题-->
       <div style="text-align: center;font-family: '楷体';font-size: 35px;color:yellow;margin-top: 10px">XX园区智能配电柜管理系统</div>
-
-      <el-card id="header" :data="headerInfo">
-        <el-row>
-
-          <el-col :xs="24" :sm="24" :md="6" :lg="12" :xl="6" style="margin-bottom: 10px">
+      <el-row :gutter="10">
+        <el-col :span="12">
+          <el-card class="header" :data="headerInfo">
             总设备数量
             <div>在线：台</div>
             <div>离线：台</div>
-          </el-col>
-          <el-col :xs="24" :sm="24" :md="6" :lg="12" :xl="6" style="margin-bottom: 10px">
+          </el-card>
+        </el-col>
+        <el-col :span="12">
+          <el-card class="header" :data="headerInfo">
             总功率
             <div>有功：</div>
             <div>无功：</div>
             <div>视在：</div>
-          </el-col>
-        </el-row>
-      </el-card>
+          </el-card>
+        </el-col>
+      </el-row>
       <el-card id="search" @click.native="changeStatus">
         <el-row>
           <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" style="margin-bottom: 10px">
@@ -68,12 +69,12 @@
         </router-link>
       </g>
     </svg>
-
   </div>
 </template>
 
 <script>
   // import SvgPanZoom from "vue-svg-pan-zoom";
+  // import "../../public/scripts/cursor-click";
   export default {
     name: "index",
     data() {
@@ -102,7 +103,6 @@
   };
 
 </script>
-
 <style scoped lang="scss">
   .home {
     blockquote {
@@ -172,7 +172,7 @@
 
 <style>
   .cls-1 {
-    fill: transparent;
+    /*fill: transparent;*/
     stroke: none;
     /*stroke-miterlimit: 10;*/
     /*stroke-width: 2px;*/
@@ -191,7 +191,9 @@
     width: 100%;
     height: 100%;
     zoom: 1;
-    overflow-y: scroll; /*解决切换页面剧烈抖动的问题*/
+    /*解决切换页面剧烈抖动的问题*/
+    overflow-y: hidden;
+    overflow-x: hidden;
 
   }
 
@@ -203,8 +205,10 @@
   }
 
   /*window*/
-  #header {
+  .header {
     margin-top: 30px;
+    margin-left: 30px;
+    margin-right: 30px;
     font-family: "宋体";
     font-size: 25px;
     color: greenyellow;
@@ -213,13 +217,16 @@
     background-color: rgba(240, 240, 240, 0.5);
 
   }
-  #header:hover {
-    margin-left: 20px;
+  .header:hover {
+    margin-left: 10px;
+    margin-right: 10px;
     background-color: rgba(240, 240, 240, 0.9);
   }
 
   #footer {
-    margin-top: 30px;
+    margin-top: 50px;
+    margin-left: 30px;
+    margin-right: 30px;
     font-family: "宋体";
     font-size: 25px;
     color: greenyellow;
@@ -229,13 +236,16 @@
 
   }
   #footer:hover{
-    margin-left: 20px;
+    margin-left: 10px;
+    margin-right: 10px;
     background-color: rgba(20, 240, 240, 0.9);
 
   }
 
   #search {
     margin-top: 30px;
+    margin-left: 30px;
+    margin-right: 30px;
     width: 30%;
     height: 20%;
     font-family: "宋体";
@@ -247,7 +257,8 @@
 
   }
   #search:hover{
-    margin-left: 20px;
+    margin-left: 10px;
+    width: 35%;
     /*width: 35%;*/
     /*height: 35%;*/
     background-color: rgba(240, 200, 240, 0.9);

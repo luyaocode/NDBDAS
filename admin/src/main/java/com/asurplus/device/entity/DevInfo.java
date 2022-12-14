@@ -41,6 +41,11 @@ public class DevInfo extends Model<DevInfo> implements Serializable {
     @TableField("loc_id")
     private Integer locId;
 
+    @Excel(name = "设备网关编号", width = 20)
+    @ApiModelProperty(value = "设备网关编号")
+    @TableField("gateway_id")
+    private Integer gatewayId;
+
     @Excel(name = "设备名称", width = 15)
     @ApiModelProperty(value = "设备名称")
     @TableField("dev_name")
@@ -80,6 +85,11 @@ public class DevInfo extends Model<DevInfo> implements Serializable {
     @ApiModelProperty(value = "修改时间")
     @TableField("update_time")
     private Date updateTime;
+
+    @Excel(name = "设备序号",width = 15)
+    @ApiModelProperty(value = "设备序号")
+    @TableField("sort")
+    private Integer sort;
 
     @Override
     public String toString() {

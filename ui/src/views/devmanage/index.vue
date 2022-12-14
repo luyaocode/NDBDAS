@@ -115,7 +115,7 @@
               plain
               icon="el-icon-plus"
               size="mini"
-              @click="handleAdd"
+              @click="handleAddDev"
               v-hasPermi="['system:user:add']"
             >新增设备
             </el-button>
@@ -179,8 +179,20 @@
             >回收站
             </el-button>
           </el-col>
+          <el-col :span="1.5">
+            <el-button
+              type="primary"
+              plain
+              icon="el-icon-connection"
+              size="mini"
+              @click="handleGateway"
+              v-hasPermi="['system:user:del']"
+            >切换到网关视图
+            </el-button>
+          </el-col>
+
           <!--          显示隐藏搜索框的小组件-->
-          <right-toolbar :showSearch.sync="showSearch" @queryTable="getList" />
+          <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"/>
         </el-row>
 
         <!--        设备信息显示区域
@@ -193,6 +205,12 @@
           <el-table-column label="设备编号" align="center" prop="devId">
           </el-table-column>
           <el-table-column label="设备名称" align="center" prop="devName"/>
+          <el-table-column label="设备所属网关" align="center" prop="gatewayId" width="130px">
+            <!--            重要：scope包含当前行的所有数据-->
+            <template slot-scope="scope">
+              <span>{{getIp(scope.row.gatewayId)}}</span>
+            </template>
+          </el-table-column>
           <el-table-column label="设备状态" align="center" prop="status">
             <!--            <template slot-scope="scope">-->
             <!--              <el-switch-->
@@ -287,19 +305,30 @@
         <el-form-item label="设备名称" prop="devName">
           <el-input v-model="form.devName" placeholder="请输入设备名称" maxlength="20"/>
         </el-form-item>
-        <el-form-item label="所在位置" prop="deptId">
+        <el-form-item label="所在楼层" prop="locId">
           <treeselect v-model="form.locId" :options="locOptions" :show-count="true" placeholder="请选择所属楼层"/>
         </el-form-item>
-        <el-form-item v-if="form.id === undefined" label="运行状态">
-          <el-radio-group v-model="form.status">
-            <el-radio
-              v-for="dict in statusOptions"
-              :key="dict.id"
-              :label="dict.code"
-            >{{dict.name}}
-            </el-radio>
-          </el-radio-group>
+        <el-form-item label="所属网关" prop="gatewayId">
+          <el-select v-model="form.gatewayId" placeholder="请选择所属网关">
+            <!--            :label不写，默认和:value一样；若是数字，则value前必须加冒号-->
+            <el-option
+              v-for="item in gatewayOptions"
+              :key="item.id"
+              :label="item.ip+':'+item.port"
+              :value="item.id"/>
+          </el-select>
+          <el-button @click="handleAddGateway" type="primary" plain>新增网关</el-button>
         </el-form-item>
+        <!--        <el-form-item v-if="form.id === undefined" label="运行状态">-->
+        <!--          <el-radio-group v-model="form.status">-->
+        <!--            <el-radio-->
+        <!--              v-for="dict in statusOptions"-->
+        <!--              :key="dict.id"-->
+        <!--              :label="dict.code"-->
+        <!--            >{{dict.name}}-->
+        <!--            </el-radio>-->
+        <!--          </el-radio-group>-->
+        <!--        </el-form-item>-->
         <el-form-item label="备注" prop="remark">
           <el-input v-model="form.remark" placeholder="请输入设备详情" type="textarea"/>
         </el-form-item>
@@ -307,6 +336,25 @@
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
         <el-button @click="cancel">取 消</el-button>
+      </div>
+    </el-dialog>
+
+    <!-- 新增网关对话框 -->
+    <el-dialog :title="addGatewayTitle" :visible.sync="openAddGateway" width="600px" append-to-body>
+      <el-form ref="gatewayForm" :model="gatewayForm" :rules="rules" label-width="80px">
+        <el-form-item label="网关名称" prop="name">
+          <el-input v-model="gatewayForm.name" placeholder="请输入网关名称" maxlength="30"/>
+        </el-form-item>
+        <el-form-item label="网关ip地址" prop="ip">
+          <el-input v-model="gatewayForm.ip" placeholder="请输入网关ip" maxlength="30"/>
+        </el-form-item>
+        <el-form-item label="网关端口" prop="port">
+          <el-input v-model="gatewayForm.port" placeholder="请输入网关端口" maxlength="30"/>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="submitGatewayForm">确 定</el-button>
+        <el-button @click="cancelAddGateway">取 消</el-button>
       </div>
     </el-dialog>
 
@@ -359,6 +407,12 @@
         <el-table-column type="selection" width="50" align="center"/>
         <el-table-column label="设备编号" align="center" prop="devId"/>
         <el-table-column label="设备名称" align="center" prop="devName"/>
+        <el-table-column label="设备所属网关" align="center" prop="gatewayId" width="130px">
+          <!--            重要：scope包含当前行的所有数据-->
+          <template slot-scope="scope">
+            <span>{{getIp(scope.row.gatewayId)}}</span>
+          </template>
+        </el-table-column>
         <el-table-column label="设备状态" align="center" prop="status">
           <template slot-scope="scope">
               <span v-if="scope.row.status=== 0"
@@ -402,12 +456,14 @@
 <script>
   // import { listUser, getUser, delUser, addUser, updateUser, resetUserPwd, changeUserStatus, importTemplate } from "@/api/system/user";
   import {listDev, addDev, getDev, updateDev, delDev, listBin, rmvDev, restoreDev} from "@/api/dev/manage";
+  import {listGateway, addGateway} from "@/api/gateway/gateway";
   import {treeSelect} from "@/api/dev/loc";
   import {exportExcel} from "@/utils/zipdownload";
   import {getToken} from "@/utils/auth";
 
   import Treeselect from "@riophae/vue-treeselect";
   import "@riophae/vue-treeselect/dist/vue-treeselect.css";
+  import {resetForm} from "../../utils/asurplus";
 
   export default {
     name: "Dev",
@@ -442,6 +498,8 @@
         binTotal: 0,
         // 楼层树选项
         locOptions: undefined,
+        // 网关选项
+        gatewayOptions: [],
         // 状态数据字典。实际接收到的是后端查询到的List，将list各个元素放到前端数组里面
         statusOptions: [],
         // 弹出层标题
@@ -450,6 +508,9 @@
         open: false,
         //是否显示回收站弹出层
         openRecycleBin: false,
+        // 新增网关弹窗
+        openAddGateway: false,
+        addGatewayTitle: "",
         // 默认密码
         initPassword: undefined,
         // 日期范围
@@ -457,7 +518,11 @@
         // 默认排序
         defaultSort: {prop: 'createTime', order: 'descending'},
         // 表单参数，用于新增设备和修改设备的弹窗
-        form: {},
+        form: {
+          status: '1',
+        },
+        // 网关表单
+        gatewayForm: {},
         // roleIds: [],
         //楼层树的默认要用到的属性：子结点和标签（标签在impl类里用setExtra添加过了，也就是当前结点的name）
         defaultProps: {
@@ -508,6 +573,12 @@
           devId: [
             {required: true, message: "设备编号不能为空", trigger: "blur"},
           ],
+          ip: [
+            {required: true, message: "网关ip地址不能为空", trigger: "blur"},
+          ],
+          port: [
+            {required: true, message: "网关端口不能为空", trigger: "blur"},
+          ],
         }
       };
     },
@@ -521,6 +592,7 @@
       this.getList();
       this.getBinList();
       this.getTreeSelect();
+      this.getGatewaySelect();
       this.getDicts("status").then(response => {
         this.statusOptions = response.data;
         // console.log("[response]:"+this.statusOptions[0].name);
@@ -554,12 +626,27 @@
           this.loadingBin = false;
         });
       },
-      /** 查询部门下拉树结构 */
+      /** 查询楼层下拉树结构 */
       getTreeSelect() {
         treeSelect().then(response => {
           // console.log('设备楼层信息树'+response);
           this.locOptions = response.data;
         });
+      },
+      /** 查询网关表 */
+      getGatewaySelect() {
+        listGateway().then(response => {
+          this.gatewayOptions = response.data;
+        });
+      },
+      getIp(id) {
+        for (var item of this.gatewayOptions) {
+          // console.log(item);
+          if (item.id == id) {
+            return item.ip + ':' + item.port;
+          }
+        }
+        return undefined;
       },
       // 筛选节点
       filterNode(value, data) {
@@ -589,9 +676,15 @@
         });
       },
       // 取消按钮
+      /*优化：点击取消时，修改页面未完全消失，reset表单已经执行*/
       cancel() {
         this.open = false;
-        this.reset();
+        setTimeout("this.reset()", "500"); //0.5秒后执行重置表单，只执行一次。
+      },
+
+      cancelAddGateway() {
+        this.openAddGateway = false;
+        this.resetGateway();
       },
       //回收站取消框选
       cancelBin() {
@@ -608,11 +701,20 @@
           devId: undefined,//设备编号
           locId: undefined,//设备挂载的楼层编号
           devName: undefined,//设备名称
-          status: '0',//设备状态，默认可用
+          status: '1',//设备状态，默认离线
           delFlag: '0',//设备删除标记，默认没有删除
           remark: undefined,//设备详细信息描述
         };
         this.resetForm("form");
+      },
+      resetGateway() {
+        this.gatewayForm = {
+          id: undefined,
+          name: undefined,
+          ip: undefined,
+          port: undefined,
+          status: undefined,
+        }
       },
       /** 进行搜索 */
       handleQuery() {
@@ -683,12 +785,17 @@
       },
 
       /** 新增按钮操作 */
-      handleAdd() {
+      handleAddDev() {
         this.reset();
         this.getTreeSelect();
+        this.getGatewaySelect();
         // console.log("执行了getTreeSelect函数");
         this.open = true;
-        this.title = "添加设备";
+        this.title = "新增设备";
+      },
+      handleAddGateway() {
+        this.openAddGateway = true;
+        this.addGatewayTitle = "新增网关";
       },
 
       /** 修改按钮操作：包含两种方式，一种是上面的、一种是右边的 */
@@ -737,7 +844,10 @@
           });
         }
       },
-
+      /**切换到网关树状图**/
+      handleGateway(){
+        this.$router.push({path: '/gateway/' });
+      },
       /** 提交按钮 */
       submitForm: function () {
         this.$refs["form"].validate(valid => {
@@ -748,6 +858,7 @@
                 this.msgSuccess("修改成功");
                 this.open = false;
                 this.getList();
+
               });
             } else {
               //添加
@@ -757,6 +868,34 @@
                 this.msgSuccess("新增成功");
                 this.open = false;
                 this.getList();
+
+              });
+            }
+          }
+        });
+      },
+      /*提交新增网关表单*/
+      submitGatewayForm: function () {
+        this.$refs["gatewayForm"].validate(valid => {
+          if (valid) {
+            //修改
+            if (this.gatewayForm.id !== undefined) {
+              updateGateway(this.gatewayForm).then(response => {
+                this.msgSuccess("修改成功");
+                this.resetGateway();
+                this.openAddGateway = false;
+                this.getGatewaySelect();
+              });
+            } else {
+              //添加
+              addGateway(this.gatewayForm).then(response => {
+                // this.sout(response.msg + response.code + response.data);
+                //msgSuccess是一个全局方法，负责小弹窗显示
+                this.msgSuccess("新增成功");
+                this.resetGateway();
+                this.openAddGateway = false;
+                // console.log(response)
+                this.getGatewaySelect();
               });
             }
           }
@@ -840,7 +979,7 @@
       },
       // 提交上传文件
       submitFileForm() {
-        console.log("updateSupport=="+this.upload.updateSupport);
+        // console.log("updateSupport==" + this.upload.updateSupport);
         this.$refs.upload.submit();
       },
 

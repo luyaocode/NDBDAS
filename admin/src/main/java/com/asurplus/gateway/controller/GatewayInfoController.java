@@ -12,12 +12,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/config/gateway")
+@RequestMapping("/gateway")
 public class GatewayInfoController {
     @Autowired
     private GatewayInfoService gatewayInfoService;
     @Autowired
     private GatewayDictInfoService gatewayDictInfoService;
+    private GatewayInfo gatewayInfo;
+
     /**
      * 获取网关列表-分页形式
      *
@@ -33,6 +35,27 @@ public class GatewayInfoController {
         System.out.println("返回数据：" + list);
         return list;
     }
+
+    /**
+     * 获取网关列表-不分页形式
+     * @return RES
+     */
+    @SaCheckPermission("system:role:list")
+    @GetMapping("/listGateway")
+    public RES list() {
+        return gatewayInfoService.listGateway();
+    }
+
+    @PostMapping
+    public RES add(@RequestBody GatewayInfo gatewayInfo){
+        System.out.println(gatewayInfo);
+        return gatewayInfoService.add(gatewayInfo);
+    }
+    /**
+     * 根据id获取单个网关
+     * @param id
+     * @return
+     */
 
     @SaCheckPermission("system:config:list")
     @GetMapping("/{id}")
@@ -55,12 +78,12 @@ public class GatewayInfoController {
         return gatewayInfoService.updateStatus(gatewayInfo);
     }
 
-    @SysLog(title = "网关配置", type = BusinessType.INSERT)
-    @SaCheckPermission("system:config:add")
-    @PostMapping
-    public RES add(@RequestBody GatewayInfo gatewayInfo) {
-        return gatewayInfoService.add(gatewayInfo);
-    }
+//    @SysLog(title = "网关配置", type = BusinessType.INSERT)
+//    @SaCheckPermission("system:config:add")
+//    @PostMapping
+//    public RES add(@RequestBody GatewayInfo gatewayInfo) {
+//        return gatewayInfoService.add(gatewayInfo);
+//    }
 
     @SysLog(title = "网关配置", type = BusinessType.DELETE)
     @SaCheckPermission("system:config:remove")

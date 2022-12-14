@@ -30,6 +30,11 @@ public class GatewayInfoServiceImpl extends ServiceImpl<GatewayInfoMapper, Gatew
     private static final Logger log = LoggerFactory.getLogger(GatewayInfoServiceImpl.class);
 
     @Override
+    public RES listGateway() {
+        return RES.ok(this.baseMapper.selectList(null));
+    }
+
+    @Override
     public TableInfo list(GatewayInfo gatewayInfo) {
         // 获取分页对象
         PageVO pageVO = PageUtils.getPageVO();

@@ -171,17 +171,35 @@ exportExcel
 PMU功能、多采集+时钟。准确授时+电参量波形  
 将配置参数写到配置文件  
 ###2022-12-5 
-增加：数据库表更新、网关字典更新
+增加：数据库表更新、网关字典更新  
 ###2022-12-6  
 修改首页，园区图降一级。关键信息：园区总功率（各楼栋功率、各楼层功率、各房间功率）、设备数量（在线设备数量、离线设备数量）
+为每个svg图层g标签添加高亮...
 注册设备：将服务端的设备信息告知网关，网关据此请求电参量
-重要：删除dev_gateway_info ，合并到dev_info表（设备编号、设备所在楼层、设备所属网关（添加字段）、设备状态）
+重要：删除dev_gateway_info ，合并到dev_info表（设备编号、设备所在楼层、设备所属网关（添加字段,gateway_id）、设备状态(status)、设备序号（sort））
 保留gateway_info，增加设备时，查询网关表，若有，则可选，如没有，也可手动添加
 注册设备时，主动告知网关所辖设备。网关主动连接时，服务端查询dev_info，告知网关所辖设备。
 优化: 基于modbus-tcp协议优化收发策略，服务端为每台设备制定上报发送电参量的任务 
+考虑实时电参量表的扩容  
+### 2022-12-13  
+1. el-table根据属性显示不同的内容，例如根据0/1显示正确/错误。方法：el-table-column内嵌template，scope包含当前行的所有数据，scope.row  
+2. el-table根据属性值查字典，显示字典内容。同上，使用js函数对scope的属性先进行一个转换再渲染  
+3. el-form绑定的数据是id，显示的是字典里的数据。
+el-form-item>el-select v-model="form.id">el-option>:key="item.id" :label="item.ip+':'+item.port" :value="item.id"
+解读：  
+label	这是给用户看的，当点击下拉菜单时，会出来选项，用户看到的选项就是这个  
+value	这是你点击某个label(option)之后，将对应的值给v-model绑定的值model  
+key	    这个呢相当于身份令牌，唯一的，防止出错，虽然没有也行，但是官网推荐还是加上为好。  
+一般情况下，key和label都不是必须的，label不写，默认是value，也就是用户看到的是value  
+### 2022-12-14 
+1. 优化：点击取消时，修改页面未完全消失，reset表单已经执行，使用setTimeout进行延时  
+2. 引入echarts 5.3.3 绘制树状图。问题：解决vue报错-Syntax Error: TypeError: this.getOptions is not a function  
+解决办法：降低less-loader的版本，且加--force强制
+3. this指向组件的实例。$el指向当前组件的DOM元素，在Vue中，$el指向当前组件template模板中的根标签。this.$el只在mounted中才有效  
+4. 踩坑：TreeChart组件模板根元素的样式设置为height:100%，实际上高度为0px，从而无法显示树状图。已确认父组件传值给子组件的方法没错  
+5. 复习：jq中的$.get(url,function(data))表示向url发起一个请求，返回数据为data，传入function  
+  
 
-
-   
 
 
 

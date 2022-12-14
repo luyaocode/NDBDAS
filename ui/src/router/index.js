@@ -126,7 +126,7 @@ export const constantRoutes = [
       }
     ]
   },
-  //设备管理
+  //工具
   {
     path: '/tool',
     component: Layout,
@@ -140,7 +140,19 @@ export const constantRoutes = [
       }
     ]
   },
-
+  {
+    path: '/gateway',
+    component: Layout,
+    hidden: true,
+    children: [
+      {
+        path: '/',
+        component: (resolve) => require(['@/views/gateway/index.vue'], resolve),
+        name: 'Gateway',
+        meta: {title: '网关树状图'},
+      }
+    ]
+  },
 
   {
     path: '/redirect',

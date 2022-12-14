@@ -1,7 +1,8 @@
 package com.asurplus.mytcp;
 
-import com.asurplus.device.entity.DevGatewayInfo;
-import com.asurplus.device.service.DevGatewayInfoService;
+
+import com.asurplus.device.entity.DevInfo;
+import com.asurplus.device.service.DevInfoService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import lombok.SneakyThrows;
 import org.slf4j.Logger;
@@ -25,7 +26,7 @@ public class Timer {
     private final Logger log = LoggerFactory.getLogger(Timer.class);
 
     @Autowired
-    private DevGatewayInfoService devGatewayInfoService;
+    private DevInfoService devInfoService;
 
     @SneakyThrows
     @Async("taskExecutor")
@@ -40,13 +41,13 @@ public class Timer {
                     if (socket != null) {
                         String ip = socket.getInetAddress().getHostAddress();
                         Integer port = socket.getPort();
-                        QueryWrapper<DevGatewayInfo> qw = new QueryWrapper<>();
+                        QueryWrapper<DevInfo> qw = new QueryWrapper<>();
                         qw.eq("ip", ip).eq("port", port).orderByAsc("sort");
-                        List<DevGatewayInfo> list = null;
-                        list = devGatewayInfoService.list(qw);
+                        List<DevInfo> list = null;
+                        list = devInfoService.list(qw);
                         if (list != null) {
 
-                            for (DevGatewayInfo info : list) {
+                            for (DevInfo info : list) {
                                 //                            组帧
                                 String sendStr = FrameUtil.FramingRead(3, info.getSort(), 40004, 1);
                                 //                            发送请求帧

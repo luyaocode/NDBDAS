@@ -35,6 +35,7 @@ import DictTag from '@/components/DictTag'
 // 头部标签组件
 import VueMeta from 'vue-meta'
 
+// 自定义
 
 // 全局方法挂载
 Vue.prototype.getDicts = getDicts
@@ -67,13 +68,14 @@ Vue.component('RightToolbar', RightToolbar)
 Vue.component('Editor', Editor)
 Vue.component('FileUpload', FileUpload)
 Vue.component('ImageUpload', ImageUpload)
-
+//自定义
 // Vue.component('svgWheel', svgWheel)
 // Vue.component('svgDrag', svgDrag)
 
 
 Vue.use(directive)
 Vue.use(VueMeta)
+//自定义
 
 /**
  * If you don't want to use mock-server

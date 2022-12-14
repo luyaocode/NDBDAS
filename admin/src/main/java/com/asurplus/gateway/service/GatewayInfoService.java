@@ -11,12 +11,17 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 
 public interface GatewayInfoService extends IService<GatewayInfo> {
-
+    /**
+     * @return List
+     * 返回不分页的网关信息
+     */
+    RES listGateway();
     /**
      * @param gatewayInfo 查询的参数
      * @return 网关信息表
      * 根据参数查询网关信息
      */
+
     TableInfo list(GatewayInfo gatewayInfo);
     /**
      * 根据id查询

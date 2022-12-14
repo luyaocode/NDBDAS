@@ -1,6 +1,5 @@
 package com.asurplus.mytcp;
 
-import com.asurplus.device.service.DevGatewayInfoService;
 import com.asurplus.gateway.entity.GatewayInfo;
 import com.asurplus.gateway.service.GatewayInfoService;
 import com.asurplus.myutil.SpringUtil;
@@ -31,8 +30,6 @@ public class TcpServer {
      */
     @Autowired
     private GatewayInfoService gatewayInfoService;
-    @Autowired
-    private DevGatewayInfoService devGatewayInfoService;
 
     @SneakyThrows
     @Async("taskExecutor")

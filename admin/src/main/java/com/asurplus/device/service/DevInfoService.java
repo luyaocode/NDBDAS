@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
  * @since 2022-10-19 14:27:18
  */
 public interface DevInfoService extends IService<DevInfo> {
+
     //    回收站外设备列表
     TableInfo list(DevInfo devInfo, boolean isExport);
 
